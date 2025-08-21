@@ -13,10 +13,10 @@ class Config(object):
     LOGS_FOLDER ='app/static/chambai/tmp/'
 
     # Thư mục chứa test các bài được chấm bằng phần mềm Themis
-    TESTS_FOLDER='app/static/chambai/test/'#C:/Users/HaiPhong/Desktop/test/'
-    DOMAIN = "https://hpcode.edu.vn/"#"http://103.82.20.170/"
-    #TESTCASE = "D:/Haiphong129.88/haiphong/hpcode/AllTests/" #C:/Alltest/
-    TESTCASE = "app/static/AllT/" #C:/Alltest/
+    TESTS_FOLDER='app/static/chambai/test/'
+    DOMAIN = "https://hpcode.edu.vn/"
+    
+    TESTCASE = "app/static/AllT/"
     LOWERCHAR = "qwertyuiopasdfghjklzxcvbnm"
     NUMBER ="1234567890"
     UPPERCHAR = "QWERTYUIOPASDFGHJKLZXCVBNM"
