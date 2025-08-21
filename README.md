@@ -1,4 +1,22 @@
-**Cài đặt ứng dụng**
+
+
+### **Hệ thống chấm bài tự động HPCODE**
+
+
+
+### **Giới thiệu**
+
+
+
+Hệ thống chấm bài tự động HPCODE được xây dựng nhằm mục đích chấm bài lập trình
+
+Ngôn ngữ cho phép: Pascal, C++, Python, Scratch
+
+
+
+### **Cài đặt**
+
+
 
 1\. Cài đặt python
 
@@ -8,16 +26,25 @@
 
 4\. Sau khi cài đặt xong, hệ thống tự động mở trình duyệt web
 
-5\. Đăng nhập tài khoản admin vời:
+5\. Đăng nhập tài khoản admin với:
 
-&nbsp;		Tên đăng nhập: admin
+ 	Tên đăng nhập: admin
 
-&nbsp;		Mật khẩu mặc định: 123456
-
-
-
-**Chạy chương trình:** Chạy file **run.bat** trong cùng thư mục
+ 	Mật khẩu mặc định: 123456
 
 
 
-# hpcode
+#### **Chạy chương trình:**
+
+&nbsp;	Chạy file **run.bat** trong cùng thư mục
+
+
+
+### **Liên hệ**
+
+**Email:** haiphong129.88@gmail.com
+
+**zalo:** 0935911218
+
+
+
