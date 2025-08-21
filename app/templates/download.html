@@ -1,0 +1,46 @@
+{%if data==0 %}
+    {% extends "base.html" %}
+    {% block content %}
+    <h3 class="text-center text-success">Nhập Captcha</h3>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <form method="post" action="{{url_for('getAlltests') }}" enctype = "multipart/form-data" class="form-inline">
+                <div class="input-group mb-1 mt-1">
+                    <input type="hidden" name="idp" value="{{idp}}">
+                    {{ captcha_html(captcha)|safe }}
+                    <input class="btn btn-sm btn-success" id="submit"  type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+        {%if err %}
+        <p class="text-center"><span class="text-danger">{{err}}</span></p>
+        {%endif%}
+    {% endblock %}
+{%else%}
+    <html lang="vi">
+    <head>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script type='text/javascript'>
+     function load()
+    {
+        window.location.href = "{{link}}";
+    }
+    </script>
+    </head>
+    <body onload="load()">
+    </body>
+    </html> 
+{%endif%}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="2091597288"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>

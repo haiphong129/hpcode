@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+    
+    <div class="row justify-content-center d-flex">
+    <div class="col-sm text-center text-danger">
+        <p id="finish">
+            {%if not link%}
+                <h4>Link rút gọn <a href="{{domain+key}}">{{domain+key}}</a></h4>
+                <h4 class="text-success">{{titlelink|safe}}</h4>
+                <h3>Tự động chuyển hướng sau <span id="timewait" class="text-success">{{timewait}}</span> giây</h3>
+            {%endif%}
+        </p>
+    </div>
+    </div>
+    {%if link %}
+        <script>
+            document.getElementById("finish").innerHTML = "<h4 class='text-success'>{{titlelink|safe}}</h4><h4>Link rút gọn <a href='{{domain+key}}''>{{domain+key}}</a> đã được chuyển hướng đến Link:</h4><a href={{link}}>{{link}}</a>";
+            window.open("{{link}}");
+        </script>
+    {%else%}
+    <script language="javascript">
+        var element = document.querySelector("div");
+        window.onload = function() { start();  };
+         function start() {
+             var s_val = "{{timewait}}";
+             s = s_val;
+             updateClock();
+         }
+     
+         function updateClock() {
+             document.getElementById("timewait").innerHTML = s;
+             if (s === 0) {
+                 clearTimeout(timeout);
+                 window.location="{{domain+key}}";
+                 return;
+             }
+            //  if (s > 0 && element.matches(':hover'))  {s--;};
+            if (s > 0 )  {s--;};
+             timeout = setTimeout(updateClock, 1000);
+         }
+         </script>
+    {%endif%}
+    <hr>
+    
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-ex+6i-31-8x+ro"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="2529856227"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    <h4 class="text-success text-center">SHORTLINK NGẪU NHIÊN</h4>
+    <div class="table-responsive justify-content-center">
+        <table class="table table-hover table-bordered table-striped" width="100%">
+        <thead>
+            <tr class="text-center">
+                <th>TT</th>
+                <th>Tiêu đề</th>
+                <th>Link rút gọn</th>
+                <th width="12%">Đếm ngược</th>
+                <th width="10%" title="Số lượng lượt xem">Số lượng</th>
+                <th width="8%">Tác giả</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for d in datalink %}
+        <tr class="small">
+            <td class="text-center">{{ loop.index }}</td>
+            <td class="text-center"> {{d['title']|safe}} </td>
+            <td class="text-center">
+                <a href="{{domain+d['shortlink']}}" class="link" target="_blank">{{domain+d['shortlink']}}</a>
+            </td>
+            <td class="text-center"> {{d['timewait']}} </td>
+            <td class="text-center" > {{d['sl']}}</td>
+            <td class="text-center" > {{d['user']}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first_2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3180750038"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    
+{% endblock %}

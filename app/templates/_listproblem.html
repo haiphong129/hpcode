@@ -1,0 +1,36 @@
+<div class="table-responsive justify-content-center">
+        <table class="table table-hover table-bordered table-striped">
+        <thead>
+            <tr class="text-center">
+                <th class="th-sm">#</th>
+                <th class="th-sm">Problem</th>
+                <th class="th-sm">Author</th>
+                <th class="th-sm">*.docx</th>
+                <th class="th-sm">Solution</th>
+                <th class="th-sm">Solved</th>
+                <th class="th-sm">Tests</th>
+                <th class="th-sm">AC/Submit</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for p in problems %}
+        <tr class="small">
+            <td class="text-center">{{ loop.index }}</td>
+            <td >
+                <a href="{{ url_for('viewpr',idp=p['id_p']) }}" title="{{ p['pname']}}" class="{{p['disabled']}}">
+                    <b>[{{ p['id_p'] }}]</b> {{ p['pname'][:(25,p['pname']|length)|min]|safe }}
+                    {% if p['pname']|length >25 %} ... {% endif %}
+                </a>
+            </td>
+            <td class="text-center">{{ p['author'] }} </td>
+            <td class="text-center">{{ p['getpro']|safe }}</td>
+            <td class="text-center">{{ p['getsol']|safe }}</td>
+            <td class="text-center">{{ p['checkAC']|safe }}</td>
+            <td class="text-center">{{ p['checkTC']|safe }}</td>
+            <td class="text-center">{{ p['AC']|safe }} </td>
+        </tr>
+        {% endfor %}        
+        </tbody>
+        </table>
+</div>    

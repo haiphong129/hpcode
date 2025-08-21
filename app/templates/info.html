@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center d-flex" >
+    <div class="col-sm-7 m-1">
+        <h6 class="text-center">Thông tin tài khoản: {{data["fullname"]}}</h6>
+        Email: <b><i>{{data["email"]}}</i></b><br>
+        Tên đăng nhập: <b><i>{{data["username"]}}</i></b><br>
+
+    </div>
+</div>
+    {%if fhp_permit(['superadmin'])==1 %}
+    <div class="row justify-content-center d-flex" >
+    <div class="col-sm-4 text-center">
+        <form method="post" action="{{url_for('khoatk') }}">
+            <input type="hidden" value="{{data['username']}}" name="username">
+            {%if data['khoatk']==0%}
+                <input class="btn btn-danger btn-block m-1 p-2"  type="submit" value=" Khóa TK {{data['username']}}" name="submit">
+            {%else%}
+                <input class="btn btn-success btn-block m-1 p-2"  type="submit" value=" Mở khóa TK {{data['username']}}" name="submit">
+            {%endif%}
+        </form>
+    </div>
+    
+    {%if data['xacthuc']==0%}
+        <div class="col-sm-3 text-center">
+            <form method="post" action="{{url_for('xacthuc') }}">
+                <input type="hidden" value="{{data['username']}}" name="username">
+                <input class="btn btn-danger btn-block m-1 p-2"  type="submit" value=" Xác thực {{data['username']}}" name="submit">
+            </form>
+        </div>
+    {%endif%}
+    </div>
+    <div class="row justify-content-center d-flex" >
+        <div class="col-sm-5 text-center">
+            <b>Thời hạn: <span id="thoihaninfo"></span></b>
+        </div>
+    </div>
+    {%endif%}
+    {% if current_user.is_authenticated and current_user.username==data["username"]%}
+    <div class="row justify-content-center d-flex" >
+    <div class="col-sm-4 border-left border-info ">
+        <div class="row d-flex justify-content-center align-items-center-center pt-1 pb-1" >
+              <img src="data:image/png;base64, {{current_user.imgbase64}}"  style="height: 100; width: 100px;"/>
+        </div>
+        <form action="{{url_for('changeimg') }}" method = "POST"  enctype = "multipart/form-data" class="md-form">
+                <div class="custom-file ">
+                    <input type = "file" name = "file" class="custom-file-input " accept=".jpg, .png" max="5Mb"/>
+                    <label class="custom-file-label text-left" for="customFile">
+                        <b>Chọn ảnh mới</b>
+                    </label>
+                </div>
+                <input type = "submit" class="btn btn-primary btn-block mt-1" value="Đổi ảnh đại diện" />
+            </form>
+            {% if errimg=='Thành công!' %}<p class="error text-center"><strong> {{ errimg }} </strong></p> 
+            {% else %}
+                {% if errimg %}<p class="error text-center"> <strong>Error:</strong> {{ errimg }} </p>{% endif %}
+            {% endif %}
+    </div>
+    </div>
+    {%endif%}
+
+{% if current_user.is_authenticated and current_user.username==data["username"]%}
+<hr style="height:3px;border-width:1;color:red;background-color:green">
+<div class="row justify-content-center d-flex">
+    <div class="col-sm-5">
+        <h4 class="text-center">Đổi mật khẩu</h4>
+        <div class="row " >
+            <form action="{{url_for('changepass') }}" method="post" class="justify-content-center">
+                <div class="input-group mb-1 mt-1">
+                    <span class="input-group-text" style="width: 150px;">Mật khẩu cũ</span>
+                    <input type="password" class="form-control" name="oldpass">
+                </div>
+                <div class="input-group mb-1 mt-1">
+                    <span class="input-group-text" style="width: 150px;">Mật khẩu mới</span>
+                    <input type="password" class="form-control" name="newpass">
+                </div>
+                <div class="input-group mb-1 mt-1">
+                    <span class="input-group-text" style="width: 150px;">Nhập lại mật khẩu</span>
+                    <input type="password" class="form-control" name="repass">
+                </div>
+                
+                <div class="row justify-content-center d-flex">
+                    <div class="col text-center">
+                        <input class="btn btn-success btn-block"  type="submit" value="Đổi mật khẩu">
+                    </div>
+                </div>
+            </form>
+                {% if errpass=='Thành công!' %}<p class="error text-center"><strong> {{ errpass }} </strong> </p>
+                {% else %}
+                {% if errpass %}<p class="error text-center"><strong>Error:</strong> {{ errpass }}</p> {% endif %}
+                {% endif %}
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h4 class="text-center m-1 p-2">Thay đổi mặc định</h4>
+        <form method="post" action="{{url_for('setdef') }}">
+            <div class="input-group mb-1 mt-1">
+                <span class="input-group-text" style="width: 150px;">Ngôn ngữ lập trình</span>
+                <select class="form-select" name="langtmp" >
+                    {% for key in config['LANG'] %}
+                        {%if current_user.langdf==key %}
+                            <option value="{{key}}" selected="selected">{{config['LANG'][key]}}</option>
+                        {%else%}
+                            <option value="{{key}}" >{{config['LANG'][key]}}</option>
+                        {%endif%}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row justify-content-center d-flex">
+                <div class="col text-center">
+                    <input class="btn btn-success btn-block m-1 p-2"  type="submit" value=" Submit ">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{%endif%}
+
+<hr style="height:3px;border-width:1;color:red;background-color:green">
+
+<h3 class="text-center text-success">CÁC BÀI ĐÃ LÀM</h3>
+<div class="row m-1 p-1 text-align">
+    {%for day in data["sb"]%}
+        <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-3">
+                    <h6 class="card-title mb-2 text-primary" style="font-weight: 600;">
+                        <i class="bi bi-calendar-event"></i> Ngày: {{day}}
+                    </h6>
+                    <ul class="list-unstyled mb-0">
+                        {% if data["sb"][day]["AC"]|length > 0 %}
+                        <li>
+                            <span class="badge bg-success mb-1">Hoàn thành ({{data['sb'][day]['AC']|length}}):</span>
+                            {% for sb in data["sb"][day]["AC"] %}
+                                <a href="{{url_for('viewctpr', idp=sb)}}" target="_blank" class="text-decoration-none ms-1">{{sb}}</a>
+                            {% endfor %}
+                        </li>
+                        {% endif %}
+                        {% if data["sb"][day]["WA"]|length > 0 %}
+                        <li>
+                            <span class="badge bg-warning text-dark mb-1">Chưa hoàn thành ({{data['sb'][day]['WA']|length}}):</span>
+                            {% for sb in data["sb"][day]["WA"] %}
+                                <a href="{{url_for('viewctpr', idp=sb)}}" target="_blank" class="text-decoration-none ms-1">{{sb}}</a>
+                            {% endfor %}
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {%endfor%}
+</div>
+
+<script>
+    // Set the date we're counting down to
+    var countDownDatex = new Date("{{data['thoihaninfo']}}");
+    
+    var x = setInterval(function() {
+    var nowx = new Date().getTime();
+      var distance = countDownDatex - nowx;
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById("thoihaninfo").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("thoihaninfo").innerHTML = "EXPIRED";
+      }
+    }, 1000);
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+  crossorigin="anonymous"></script>   
+<!-- first -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="2091597288"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endblock %}

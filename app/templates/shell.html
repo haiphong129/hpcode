@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Shell</title>
+    <style>
+        body {
+            background-color: #2b2b2b;
+            color: #00ff00;
+            font-family: monospace;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #terminal {
+            background-color: #1e1e1e;
+            color: #00ff00;
+            padding: 10px;
+            width: 80%;
+            height: 60%;
+            overflow-y: scroll;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #commandInput {
+            background-color: #1e1e1e;
+            color: #00ff00;
+            border: none;
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        #commandInput:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+    <input type="text" id="commandInput" placeholder="Enter command" autofocus>
+
+    <script>
+        document.getElementById('commandInput').addEventListener('keyup', function(event) {
+            if (event.keyCode === 13) {
+                var command = this.value;
+                fetch('/shell', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({command: command})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var terminal = document.getElementById('terminal');
+                    terminal.innerHTML += `<span style="color: #00ff00;">$ ${command}</span><br>`;
+                    terminal.innerHTML += data.output.replace(/\n/g, '<br>') + '<br>';
+                    terminal.scrollTop = terminal.scrollHeight;
+                });
+                this.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

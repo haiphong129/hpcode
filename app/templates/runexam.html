@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% set  color={"cpp":"success","pas":"info","py":"danger"} %}
+{% block content %}
+    
+     <div class="row m-1 p-1 justify-content-center">
+        
+        <div class="col-auto m-1 p-1">
+            <select class="form-select" onchange="changeLang()" id="langtmp" >
+            <option value="c_cpp">C++</option>
+            <option value="pascal">Pascal</option>
+            <option value="python">Python</option>
+            </select>
+        </div>
+        
+        <div class="col-auto m-1 p-1">
+            <select class="form-select" onchange="changeTheme()" id="theme">
+                {% for theme in config['THEME'] %}
+                    <option value="{{theme}}">{{theme}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <form action="{{ url_for('runexam') }}" method = "POST"  onsubmit="return on_submit()">
+        <input type="hidden" name="ccode" id="ccode" >
+        <input type="hidden" name="lang" id="lang" ><!-- Ngôn ngữ -->
+        <textarea id="editor" class="form-control" name="codeexam">{{data['ccode']}}</textarea>
+        <div class="col-sm form-floating ">
+            <textarea class="form-control" id="testin" name="testin" style="height: 120px">{{request.form.testin}}</textarea>
+            <label for="testin"><b>Dữ liệu vào</b></label>
+        </div>
+        <div class="row d-grid gap-2 m-1 p-1">
+            <input type="submit" name="submit" id="test" class="btn btn-sm btn-primary" value="Run exam">
+        </div>
+        
+            
+        
+    </form>
+    <p class="m-1 p-1"><strong>Kết quả</strong></p>
+    <div  class="text-primary border m-1 p-1 rounded" id="result">Chưa nộp bài</div>
+    <script src="/static/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+    
+    if ( window.history.replaceState ) { window.history.replaceState( null, null, window.location.href ); }
+    var editor = ace.edit("editor");
+    var testlog='/static/chambai/tmp/'+"{{data['filelogs']}}";
+    
+    var refreshTest = setInterval(function()
+    {
+        var y=$.getScript(testlog);
+        y.done(function(data) { 
+            var dt=data.replaceAll("\n", "<br>");
+            document.getElementById("result").innerHTML = dt;
+            if(dt.indexOf("xong")>-1) clearInterval(refreshId);
+        });
+        y.fail(function(data) { clearInterval(refreshTest); });
+    },1000);
+
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/{{data['ext']}}");
+    editor.setFontSize(17);
+    editor.setAutoScrollEditorIntoView(true);
+    editor.setOption("maxLines", 80);
+    editor.setOption("minLines", 10);
+    document.getElementById("langtmp").value="{{data['ext']}}";
+    function on_submit() {
+        document.getElementById("ccode").value = editor.getSession().getValue();
+        document.getElementById("lang").value = document.getElementById("langtmp").value
+        return true;
+    }
+    
+    function changeLang()  { editor.session.setMode("ace/mode/"+document.getElementById("langtmp").value); }
+    function changeTheme() { editor.setTheme("ace/theme/"+document.getElementById("theme").value); }
+    </script>
+{% endblock %}

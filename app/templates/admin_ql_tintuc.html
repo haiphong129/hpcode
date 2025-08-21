@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% set  subtitle= "Quản lí tin tức" %}
+{% block content %}
+    {% set  choce= "Thêm mới" %}
+    {% if data["id"]>0 %} 
+        {% set  choce= "Cập nhật" %}
+    {%endif%}
+    {%if data["err"] %}
+        <div class="row justify-content-center">
+            <div class="col-sm-10 m-1 p-1 text-center">
+                <span class=" text-danger">{{data["err"]}}</span>
+            </div>
+        </div>
+    {%endif%}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <form method="post" action="{{url_for('admin_ql_tintuc')}}" class="m-0 p-0">
+        <div class="row m-2 p-1">
+            <div class="col-sm-3 p-2 text-right">Tiêu đề</div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" name="title" value="{{data['title']}}">
+            </div>
+        </div>
+        <div class=" m-1 p-1" >
+            <label for="md-editor"><b>Nội dung</b></label>
+            <textarea class="form-control" name="content"  id="md-editor"></textarea>
+        </div>
+        <input type="hidden" name="id" value="{{data['id']}}">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <input class="btn btn-success"  type="submit" value="{{choce}}" >
+            </div>
+        </div>    
+    </form>
+
+    <script>
+        $(function () {
+                MathJax.Hub.Config({
+                    tex2jax: {inlineMath: [["~","~"],["\\(","\\)"]]}
+                });
+                document.getElementById("md-editor").value="{{data['content']}}";
+                var QUEUE = MathJax.Hub.queue;
+                var simplemde = new SimpleMDE({
+                    element: document.getElementById("md-editor"),
+                    spellChecker: true,
+                    previewRender: function(plainText) {
+                        var preview = document.getElementsByClassName("editor-preview-side")[0];
+                        preview.innerHTML = this.parent.markdown(plainText);
+                        preview.setAttribute('id','editor-preview')
+                        MathJax.Hub.Queue(["Typeset",MathJax.Hub,"editor-preview"]);
+                        return preview.innerHTML;
+                    },
+                });
+    
+            })
+
+    </script>
+
+{% endblock %}

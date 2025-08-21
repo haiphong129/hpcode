@@ -1,0 +1,109 @@
+<form action="{{ url_for('viewctpr',idp=problem['id_p'] ) }}" method = "POST"  onsubmit="return on_submit()">
+    <div class="row m-1 p-1 justify-content-center">
+                <div class="col-auto m-1 p-1 ">
+                    <select class="form-select" onchange="changeLang()" id="langtmp" >
+                        {% for key in config['LANG'] %}
+                            <option value="{{key}}">{{config['LANG'][key]}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto m-1 p-1">    
+                    <select class="form-select" onchange="changeSize()" id="fontsize">
+                        <option value=17>17</option>
+                            {% for i in range(15,25,1) %} <option value={{i}}>{{i}}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto m-1 p-1">
+                    <select class="form-select" onchange="changeTheme()" id="theme">
+                        {% for theme in config['THEME'] %}
+                            <option value="{{theme}}">{{theme}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto m-1 p-1">
+                    <input type="submit" name="submit" id="submit" class="btn btn-outline-primary" value="{{layout['name']}}">
+                </div>
+                
+    </div>
+    <div class="row">
+                    <input type="hidden" name="ccode" id="ccode" >
+                    <input type="hidden" name="lang" id="lang" ><!-- Ngôn ngữ -->
+                    <input type="hidden" name="layoutsize" value="{{layout['size']}}" >
+                    <input type="hidden" name="layoutname" value="{{layout['name']}}" >
+                    <textarea id="editor" class="form-control">{{problem['tmpcode']}}</textarea>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-3 d-grid gap-2">
+                            {%if problem['activate']=="disabled"%} 
+                            <input type="submit" name="submit" id="submit" class="btn btn-sm btn-success hpsubmit" value="Submit Code ({{problem['numsub']}})" disabled> 
+                            {%else%}
+                                <input type="submit" name="submit" id="submit" class="btn btn-sm btn-success hpsubmit" value="Submit Code ({{problem['numsub']}})">
+                            {%endif%}
+                        </div>
+                        <div class="col-sm-5 m-1"></div>
+                        <div class="col-sm-3 d-grid gap-2">
+                            <input type="submit" name="submit" id="test" class="btn btn-sm btn-primary hpsubmit" value="Run Code">
+                        </div>
+                    </div>
+                    <div class="form-floating m-1 p-1">
+                        <textarea class="form-control" id="testin" name="testin" style="height: 120px">{{request.form.testin}}</textarea>
+                        <label for="testin"><b>Input</b></label>
+                    </div>
+                
+                <p class="m-1 p-1"><strong>Output</strong></p>
+                <div class="text-primary border m-0 p-0 rounded result" id="result"> </div>
+    </div>
+</form>
+
+<script src="/static/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    document.getElementById("submit").disabled = ("{{problem['activate']}}"==="true");
+    $(function(){
+    $('html, body').animate({ scrollTop: $('{{hpscroll}}').offset().top }, 100);
+    return false;
+    });
+
+    
+    if ( window.history.replaceState ) { window.history.replaceState( null, null, window.location.href ); }
+    var editor = ace.edit("editor");
+    var logs = "{{problem['filelogs']}}";
+    var refreshId = setInterval(function() {
+            var item = logs;
+            if(item==="") 
+                { 
+                    document.getElementById("result").innerHTML = "Chưa nộp bài";
+                    clearInterval(refreshId);
+                } else 
+                {
+
+                    var flog='/static/chambai/tmp/'+item;
+                    var y=$.getScript(flog);
+                    y.done(function(data) { 
+                        var dt=data.replaceAll("\n", "<br>");
+                        document.getElementById("result").innerHTML = dt;
+                        if(dt.indexOf("xong")>-1) clearInterval(refreshId);
+                    });
+                    y.fail(function(data) { 
+                        document.getElementById("result").innerHTML = "Chưa nộp bài";
+                    });
+            }
+        },1000);
+    
+
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/{{problem['ext']}}");
+    editor.setFontSize(parseInt(document.getElementById("fontsize").value));
+    editor.setAutoScrollEditorIntoView(true);
+    editor.setOption("maxLines", 80);
+    editor.setOption("minLines", 10);
+    document.getElementById("langtmp").value="{{problem['ext']}}";
+    function on_submit() {
+        document.getElementById("ccode").value = editor.getSession().getValue();
+        document.getElementById("lang").value = document.getElementById("langtmp").value
+        return true;
+    }
+    
+    function changeLang()  { editor.session.setMode("ace/mode/"+document.getElementById("langtmp").value); }
+    function changeTheme() { editor.setTheme("ace/theme/"+document.getElementById("theme").value); }
+    function changeSize()  { editor.setFontSize(parseInt(document.getElementById("fontsize").value));}
+    
+</script>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+    Đây là trang chủ<br>
+    {% if current_user.is_anonymous %}
+    	Bạn đang là khách của tớ, welcome!
+    {% else %}
+    	Chào mừng  {{current_user.username}}
+    {% endif %}
+{% endblock %}

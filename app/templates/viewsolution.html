@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% set  subtitle= "Danh sách kỳ thi" %}
+{% block content %}
+
+    <div class="row justify-content-center align-items-center m-1">
+        <div class="col-sm-9 m-1 p-1">
+            <form method="post" action="{{ url_for('viewsolution') }}">
+                <div class="row justify-content-center">
+                <div class="col-sm-5 m-1 p-1">
+                    <select class="form-select" name="idp" >
+                        {%if not data %}
+                            <option value="">Chọn bài tập</option>
+                        {%endif%}
+                        {% for post in listidp %}
+                            {%if data and post[0]==data['pro']%}
+                                <option value="{{post[0]}}" selected>{{post[0]+" - "+post[1]}}</option>
+                            {%else%}
+                                <option value="{{post[0]}}">{{post[0]+" - "+post[1]}}</option>
+                            {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-2 m-1 p-1">
+                    <select class="form-select" name="lang" >
+                        {%if not data %}
+                            <option value="">Chọn ngôn ngữ</option>
+                        {%endif%}
+                        {% for lang in config['LNAME'] %}
+                            {%if data and lang==config['L2L'][data['ext']]%}
+                                <option value="{{lang}}" selected>{{config['LNAME'][lang]}}</option>
+                            {%else%}
+                                <option value="{{lang}}">{{config['LNAME'][lang]}}</option>
+                            {%endif%}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-sm-auto m-1 p-1">
+                    <input class="btn btn-success" type="submit" value="Xem code">
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {%if data["num"] %}
+        <div class="row justify-content-center align-items-center m-1">
+            <div class="col-sm-auto text-center">
+                <h6><span class="text-success">Số lượng:</span> 
+                {%for lang in data["num"] %}
+                    {{config['LNAME'][lang]}}&nbsp;({{data["num"][lang]}})&nbsp;&nbsp;
+                {%endfor%}
+                </h6>
+            </div>
+        </div>
+    {%endif%}
+                
+        
+    {%if status %}
+        <div class="row justify-content-center align-items-center m-1">
+            <div class="col-sm-auto text-center">
+                <h6><span class="text-success"> {{status}}</span> </h6>
+            </div>
+        </div>
+    {%endif%}
+
+    {%if data['code'] %}
+        {% include '_viewcode.html' %}
+    {%endif%}
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first_2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3180750038"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endblock %}

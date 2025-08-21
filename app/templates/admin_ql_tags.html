@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% set  subtitle= "Quản lý Tags" %}
+{% block content %}
+    {% if data %}
+        <div class="row d-flex justify-content-center m-1 p-1">
+        <div class="col-sm border border-success rounded text-center m-1 p-1">
+            <form method="post" action="{{url_for('admin_ql_tags')}}" class="m-1">
+            <div class="input-group mb-1">
+                <span class="input-group-text" style="width: 100px;">ID</span>
+                <input class="form-control" type="text" name="tagname" id="tagname" value="{{data.tagname}}" onkeyup="check();">
+            </div> 
+            <div class="input-group mb-1">
+                <span class="input-group-text" style="width: 100px;">Tiêu đề</span>
+                <input class="form-control" type="text" name="tagtitle" value="{{data.tagtitle}}">
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text" style="width: 100px;">Link</span>
+                <input class="form-control" type="text" name="taglink" value="{{data.taglink}}">
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text" style="width: 100px;">Bắt đầu</span>
+                <input class="form-control" type="datetime-local" name="timeb" value="{{conertTimePythontoHTML(data.ts)}}">
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text" style="width: 100px;">Kết thúc</span>
+                <input class="form-control" type="datetime-local" name="timee" value="{{conertTimePythontoHTML(data.te)}}">
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text" style="width: 100px;">Đối tượng</span>
+                <select class="form-control" name="groups">
+                    {% for g in groups %}
+                        <option value="{{g['id']}}">{{g["gname"]}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {%if data.ts!=data.te %}
+                {%if data.addview %} <span class="text-success"><b>Đã thêm lượt xem cho User</b></span>
+                    {%else%}
+                    <a href="{{ url_for('addviewcontest',tagname=data.tagname) }}" class="link">Thêm lượt xem cho các User</a>
+                    {%endif %}
+            {%endif%}
+            
+            
+            <div class="row justify-content-center align-items-center" >
+                <div class="col-sm-3 d-grid gap-2">    
+                    <input class="btn btn-sm btn-success" id="submit"  type="submit" name="submit" value="Update">
+                </div>
+                <div class="col-sm-3 d-grid gap-2">    
+                    <input class="btn btn-sm btn-danger" id="del"  type="submit" name="submit" value="Delete">
+                </div>
+            </div>
+            </form>
+        </div>
+        
+        </div>
+    
+    {%endif%}
+
+
+<div class="container">
+<div class="row p-1 m-1">
+    <div class="col-sm text-center"> 
+        <a href="{{ url_for('ranking',cname=data.tagname) }}" class="link">Xem bảng xếp hạng</a>
+    </div>
+</div>
+<div class="row d-flex justify-content-center p-0 m-0">
+    <div class="col-sm-1 border border-primary fw-bold text-center pt-1">#</div>
+    <div class="col-sm-3 border border-primary text-center fw-bold pt-1">ID</div>
+    <div class="col-sm-1 border border-primary text-center fw-bold pt-1" title="Điểm của bài tập">Points</div>
+    <div class="col-sm-1 border border-primary text-center fw-bold p-0 m-0" title="Thứ tự trong Contest">Oder in Contest</div>
+    <div class="col-sm-1 border border-primary text-center fw-bold p-0 m-0" title="Số lần nộp tối đa">Max Sub</div>
+    <div class="col-sm-2 border border-primary text-center fw-bold pt-1">Update</div>
+    <div class="col-sm-2 border border-primary text-center fw-bold pt-1">Delete</div>
+</div>                
+{% for p in listpr %}
+    <form method="post" action="{{url_for('admin_tagpost')}}" >
+    <input type="hidden" name="tagid" value="{{data.id}}">
+    <div class="row justify-content-center p-0 m-0">
+        <div class="col-sm-1 text-center border border-primary pt-1">{{ loop.index }}</div>
+        <div class="col-sm-3 text-center border border-primary">
+                {% if loop.index==1%}
+                <select class="form-select form-select-sm" aria-label=".form-select-sm" name="postid">
+                    <option value="">Chọn bài tập</option>
+                    {%for px in allpost%}
+                        <option value={{px.id}}>{{px.id_p}} - {{px.id_name}}</option>
+                    {%endfor%}
+                </select>
+                {%else%}
+                    <input type="hidden" name="postid" value="{{p['id']}}">
+                        <a href="{{ url_for('viewctpr',idp=p['idp'],idc=data.tagname) }}">{{ p['idp'] }}</a> 
+                        <br><small>{{ p['name']}}</small>
+                {% endif %}
+        </div>
+        <div class="col-sm-1 border border-primary pt-1 p-0">
+            <input type="text" class="form-control form-control-sm text-center" name="point" value="{{p['point']}}">
+        </div>
+        <div class="col-sm-1 border border-primary pt-1 p-0">
+            <input type="text" class="form-control form-control-sm text-center" name="no" value="{{p['no']}}">
+        </div>
+        <div class="col-sm-1 border border-primary pt-1 p-0">
+            <input type="text" class="form-control form-control-sm text-center" name="maxsub" value="{{p['maxsub']}}">
+        </div>
+        <div class="col-sm-2 border border-primary pt-2 text-center">
+            <input class="btn btn-sm btn-success" id="submit"  type="submit" value="Update">
+        </div>
+        
+        <div class="col-sm-2 border border-primary pt-2 text-center"> 
+            <button type="button" class="btn btn-sm btn-danger pt-1" data-bs-toggle="modal" data-bs-target="#{{p['idp']}}">
+                <small>Remove</small>
+            </button>
+                <div class="modal" id="{{p['idp']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Xóa bài {{p['idp']}} khỏi Tag/Contest {{data.tagname}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">Chắc chắn xóa?</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <a href="{{ url_for('admin_delprtag',id_tag=data.id,id_post=p['idp']) }}" class="btn btn-sm btn-danger">Xác nhận</a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    </form>
+{% endfor %}
+</div>        
+{% endblock %}

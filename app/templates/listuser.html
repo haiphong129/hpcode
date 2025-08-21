@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div >
+    <form class="justify-content-center" method="post" action="{{url_for('listuser') }}">
+    <div class="form-group" >
+        <div class="row m-2 pt-1 pb-1" >
+        	<div class="col-sm-3 text-right pt-1"><b>Nhập tên tài khoản</b></div>
+        	<div class="col-sm-7">
+            	<input type="text" class="form-control" name="fusername" value="{{ request.form.fusername }}">
+            </div>
+        
+        	<div class="col-sm-2 text-center">
+        		<input class="btn btn-success btn-block"  type="submit" name="Seach" value="Tìm kiếm">
+        	</div>
+        </div>
+    
+    	{% if error %}
+    		<p class="error text-center text-danger"><strong>{{ error }}</strong> </p>
+    	{% else %}
+    		{% if infoacc != None %}
+    			<hr class="m-1 p-0">
+                <input type="hidden" name="fusername" value="{{infoacc[0]}}">
+    			<p class="text-center m-1"><b>Thông tin người dùng</b></p> 
+    		<div class="border border-info">
+    		
+    		<div class="row ml-2 mr-2 justify-content-md-center" >
+    			<div class="col-sm-3 text-right"> <b>Tên đăng nhập:</b></div>
+    			<div class="col-sm-5"> {{infoacc[0]}} </div>
+    		</div>
+    		<div class="row ml-2 mr-2 justify-content-md-center" >
+    			<div class="col-sm-3 text-right"> <b>Họ và tên:</b></div>
+    			<div class="col-sm-5 "> {{infoacc[1]}} </div>
+    		</div>
+    		<div class="row ml-2 mr-2 justify-content-md-center" >
+    			<div class="col-sm-3  text-right"> <b>Email:</b></div>
+    			<div class="col-sm-5 "> {{infoacc[2]}} </div>
+    		</div>
+    		<div class="row ml-2 mr-2 justify-content-md-center" >
+    			<div class="col-sm-3  text-right"> <b>Group: </b></div>
+                <div class="col-sm-5 ">
+                {% for per in infoacc[3] %}
+                    <b>{{ per[0] }}</b>{{ per[1:] }}&ensp;
+                    {% endfor %}
+                </div>
+    		</div>
+            {%if fhp_permit(['superadmin'])==1 %}
+    		<div class="row ml-2 mr-2 justify-content-md-center" >
+    			<div class="col-sm-3  text-right"> <b>Xóa tài khoản:</b></div>
+    			<div class="col-sm-5 pt-1">  
+    				<input type="checkbox" name="deleteacc" style="height: 20px; width: 20px;">
+    			</div>
+    		</div>
+            {%endif%}
+    		<div class="row ml-2 mr-2 justify-content-md-center" >
+    			<div class="col-sm-3  text-right"> <b>Reset Pass:</b></div>
+    			<div class="col-sm-5 pt-1">  
+    				<input type="checkbox" name="resetpass" style="height: 20px; width: 20px;">
+    			</div>
+    		</div>
+    		<div class="row ml-2 mr-2 justify-content-md-center" >
+    			<div class="col-sm-4  text-right p-1"> 
+    				 <input class="btn btn-success btn-block"  type="submit" value="Update" name="Update">
+    			</div>
+    		</div>
+    		{% if update != None %} <p class="error text-center text-danger"><strong>{{ update }}</strong> </p> {% endif %}
+    	</div>
+    		{% endif %}
+    	{% endif %}
+    </div>
+    </form>
+    <hr class="m-1 p-0">
+    {% for key, value in listgr.items() %}
+     <div class="row border border-info rounded m-1">
+        <div class="col-12">
+            <span class="text-danger"> <b>{{key}} ({{listgr[key]|length}}): </b> </span>
+            {% if key!="--tất cả--" %}{% for u in value %}
+                <a href="{{url_for('info',user=u)}}" target="_blank"> <b>{{u[0]}}</b>{{u[1:]}}</a>&ensp;
+            {% endfor %}{% endif %}
+        </div>
+    </div>
+    {% endfor %}
+ </div>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% set  subtitle= "Quản lý Tags" %}
+{% block content %}
+<style type="text/css" media="screen">
+    @media (max-width: 767px) {
+    .carousel-inner .carousel-item > div { display: none;  }
+    .carousel-inner .carousel-item > div:first-child { display: block; }
+    }
+
+    .carousel-inner .carousel-item.active,
+    .carousel-inner .carousel-item-next,
+    .carousel-inner .carousel-item-prev { display: flex;}
+
+/* medium and up screens */
+    @media (min-width: 768px) {
+        .carousel-inner .carousel-item-end.active,
+        .carousel-inner .carousel-item-next { transform: translateX(25%); }
+        .carousel-inner .carousel-item-start.active, 
+        .carousel-inner .carousel-item-prev { transform: translateX(-25%);}
+    }
+    .carousel-inner .carousel-item-end,
+    .carousel-inner .carousel-item-start { transform: translateX(0); }
+
+</style>
+{%if data %}
+<div class="border rounded border-success">
+    <div class="row">
+        <div class="col-sm"><span class="fs-3 m-1 p-1 text-success fw-bold">{{data.tieude}}</span></div>
+        <div class="col-sm text-end">
+            <span class="badge bg-secondary rounded-pill m-0" title="Lớp">{{data.lop.replace("_coban"," cơ bản").replace("_chuyen"," chuyên")}}</span>
+            <span class="badge bg-secondary rounded-pill m-0" title="Số lượt xem">{{data.luotxem}}</span>
+            <span class="badge bg-secondary rounded-pill m-0" title="Tác giả">{{User.query.filter_by(id=data.user_id).first().username}}</span>
+            <span class="badge bg-secondary rounded-pill m-0" title="Ngày đăng">{{data.ngaydang.strftime('%Y-%m-%d %H:%M')}}</span>
+        </div>
+    </div>
+    
+    
+
+    {%if data.gioithieu%}
+    <div class="m-2 p-1">
+        <p class=""><strong>Giới thiệu:</strong></p>
+        {{data.gioithieu|safe}}
+    </div>
+    <hr>
+    {%endif%}
+    {%if fileimage|length>0 %}
+    <div id="carouselhp" class="carousel slide m-1 p-1" data-bs-ride="carousel">
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+                <img src="{{fileimage[0]}}" class="img-thumbnail d-block" style="height:200px;">
+            </div>
+            {%for fn in fileimage[1:] %}
+                <div class="carousel-item ">
+                    <img src="{{fn}}" class="img-thumbnail d-block" style="height:250px;">
+                </div>
+            {%endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselhp" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselhp" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <hr>
+    {%endif%}
+    {%if data.noidung %}
+        <div class="m-2 p-1">
+            <p class="fw-bold">Nội dung:</p>
+            {{data.noidung|safe}}
+        </div>
+        <hr>
+    {%endif%}
+    {%if filedown|length>0%}
+        <div class="m-2 p-1">
+            <p><span class="fw-bold">Tải files:</span>
+            <small class="text-danger">(<b>*.exe:</b> -0 điểm; <b>*.pdf:</b> -{{data.diem}} điểm; <b>*.docx: </b>-{{data.diem*5}} điểm;<b> *.pptx: </b>-{{data.diem*10}} điểm; )</small></p>
+            <p class="text-center">
+            {% for fn in filedown %}
+                <a href="{{ url_for('downloadfiledoc',slug=data.slug,fn=fn) }}" role="button" class="btn btn-sm btn-primary m-1 p-1" target="_blank">{{fn}}</a>
+            {%endfor%}
+        </p>
+        </div>
+    {%endif%}
+</div>
+{%endif%}
+<!-- Danh sách các tài liệu khác -->
+<div class="row">{% include '_googleads_first_sm9.html' %}</div>
+<!-- Danh sách các tài liệu khác -->
+<div class="row m-1 p-1 d-flex justify-content-center">
+    <div class="col-sm-11">
+        <ol class="list-group list-group-numbered">
+        {% for d in doc %}
+            <li class="list-group-item d-flex justify-content-between align-items-start border-bottom-0">
+                <div class="ms-2 me-auto">
+                    <a href="{{ url_for('listdoc',page=page,tag=d.slug) }}" class="fw-bold">{{d.tieude}}</a><br>
+                    {{d.gioithieu|safe}}
+                </div>
+                {%if fhp_permit(["superadmin"])==1 %}
+                    <a href="{{ url_for('admin_adddoc',slug=d.slug) }}" role="buton" class="btn btn-sm btn-success m-1 p-1">Sửa</a>
+                    <a href="{{ url_for('admin_deldoc',slug=d.slug,slugmain=data.slug) }}" role="buton" class="btn btn-sm btn-danger m-1 p-1" onclick="return confirm_delete('Xác nhận xóa bài: {{d.tieude}}')">Xóa</a>
+                {%endif%}
+            </li>
+            <ul class="border border-top-0 text-end">
+                <span class="badge bg-secondary rounded-pill m-0" title="Lớp">{{d.lop.replace("_coban"," cơ bản").replace("_chuyen"," chuyên")}}</span>
+                <span class="badge bg-secondary rounded-pill m-0" title="Số lượt xem">{{d.luotxem}}</span>
+                <span class="badge bg-secondary rounded-pill m-0" title="Tác giả">{{User.query.filter_by(id=d.user_id).first().username}}</span>
+                <span class="badge bg-secondary rounded-pill m-0" title="Ngày đăng">{{d.ngaydang.strftime('%Y-%m-%d %H:%M')}}</span>
+            </ul>
+        {%endfor%}
+        </ol>
+    </div>
+</div>
+{% set direct = 'listdoc' %}
+{% set tag = data.slug %}
+{% include '_direct.html' %}
+<script type="text/javascript">
+    let items = document.querySelectorAll('.carousel .carousel-item')
+    items.forEach((el) => {
+        const minPerSlide = 4
+        let next = el.nextElementSibling
+        for (var i=1; i<minPerSlide; i++) {
+            if (!next) {
+            // wrap carousel by using first child
+            next = items[0]
+        }
+        let cloneChild = next.cloneNode(true)
+        el.appendChild(cloneChild.children[0])
+        next = next.nextElementSibling
+        }
+    })
+    function confirm_delete(question) {
+        if(confirm(question)){  return true; }else{  return false;  }
+    }
+</script>
+
+{% endblock %}

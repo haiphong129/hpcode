@@ -1,0 +1,23 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-danger m-1 p-1" data-bs-toggle="modal" data-bs-target="#idm">
+  <small>Del</small>
+</button>
+<!-- Modal -->
+<div class="modal" id="idm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Xóa Contest</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Chắc chắn xóa {{idm}}?<br>
+        Sau khi xóa Contest không thể khôi phục
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <a href="{{ url_for('admin_del_contest',tagname=d['tagname'])}}" class="btn btn-sm btn-danger p-1 m-1">Xóa</a>
+      </div>
+    </div>
+  </div>
+</div>

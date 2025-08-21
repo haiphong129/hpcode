@@ -1,0 +1,22 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-danger m-1 p-1" data-bs-toggle="modal" data-bs-target="#{{direct}}">
+  <small>{{Modalname}}</small>
+</button>
+<!-- Modal -->
+<div class="modal" id="{{direct}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ModalTitle}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{Modalbody}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <a href="{{ url_for(direct,idp=idp) }}" class="btn btn-sm btn-danger p-1 m-1">Xác nhận</a>
+      </div>
+    </div>
+  </div>
+</div>

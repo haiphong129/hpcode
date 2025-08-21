@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row m-1 justify-content-center d-flex" >
+        <div class="col-sm-8 mt-1 mb-1 text-center">
+            <h4 class="text-center text-success"><b>{{tag.tagtitle}}</b></h4>
+        </div>
+    </div>
+    <hr>
+    <div class="row m-1 justify-content-center d-flex" >
+        <div class="col-sm-8 mt-1 mb-1">
+            <div class="row">
+                <div class="col text-left"><small><b><span class="text-success">{{times["time_b"]}}</span></b></small></div>
+                <div class="col text-right"><small><b><span class="text-danger">{{times["time_e"]}}</span></b></small></div>
+            </div>
+            <div class="row m-0">
+                <div class="col m-0 main">
+                    <p id="timebar" class="m-0 p-0" > </p>
+                </div>
+            </div>
+            <div class="row m-0">
+                <div class="col m-0">
+                    <p id="timeleft" class="m-0 p-0 text-center"> </p>
+                </div>
+            </div>
+            <div class="row m-0 d-flex justify-content-center">
+                <div class="col-sm-auto m-1 p-1 text-center">
+                    <a href="{{ url_for('ranking',cname=tag.tagname)}}" target="_blank">Bảng xếp hạng</a>
+                </div>
+                <div class="col-sm-auto m-1 p-1 text-center">
+                    <a href="{{ url_for('admin_ql_tags',tagname=tag.tagname)}}" target="_blank" >Edit</a>
+                </div>
+            </div>
+            <div class="row m-0">
+                <div class="col m-0 text-center">
+                    <span class="text-danger"><b>Contest dành cho <i>{{groups}}</i> tham gia</b></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr style="height:2px;border-width:1;color:red;background-color:green" class="m-0">
+    {% set sizetable='' %}
+    {%if post|length >=20 %}
+      {% set sizetable='small' %}
+    {%endif%}
+    <div class="d-flex justify-content-center p-1" >
+        <table class="table table-hover w-auto table-striped table-bordered {{sizetable}}" >
+        <thead>
+            <tr class="thead-dark text-center">
+                <th>#</th>
+                <th>ID</th>
+                <th>Tên bài</th>
+                {%if tag.tagname in showtags %}
+                    <th>Tag</th>
+                {%endif%}
+                {%if showtinhdethi==1 %}
+                    <th>Tỉnh/TP</th>
+                    <th>Năm học</th>
+                {%endif%}
+                <th>Số lần nộp</th>
+                <th>Kết quả</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for p in post %}
+                <tr class="small m-1 p-1 mt-0 mb-0">
+                    {%if p['AC']==0 %} {%set colorx="text-danger fw-bold"%} {%endif%}
+                    {%if p['AC']==1 %} {%set colorx="text-warning fw-bold"%} {%endif%}
+                    {%if p['AC']==2 %} {%set colorx="text-success "%} {%endif%}
+
+                    <td class="text-center {{colorx}}">{{loop.index}}</td>
+                    <td class="text-center {{colorx}}">{{ p['idp'] }}</td>
+                    <td class="text-center {{colorx}}">
+                        <a href="{{ url_for('viewctpr',idp=p['idp']) }}" target="_blank" title="{{p['name']}}">{{ p['name'] }}</a>
+                    </td>
+                    {%if tag.tagname in showtags %}
+                    <td>
+                        {%for tx in p['listtg']%}
+                          <a href="{{url_for('viewtag',tag=tx)}}" class="link">{{tx}}</a>
+                        {%endfor%}  
+                    </td>
+                    {%endif%}
+                    {%if showtinhdethi==1 %}
+                        <td>{{p['tinh']}}</td>
+                        <td>{{p['year']}}</td>
+                    {%endif%}
+                    <td class="text-center {{colorx}}">{{p['slsub']}}</td>
+                    <td class="text-center {{colorx}}">{{p['maxm']}}</td>
+                </tr>
+                {% endfor %}
+                
+        </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-center p-1" >
+    <b>Tổng điểm: {{total}}</b>
+</div>
+<script>
+    // Set the date we're counting down to
+    var daybeg = new Date("{{times['time_b']}}");
+    var dayend = new Date("{{times['time_e']}}");
+    var now = new Date().getTime();
+    var distance = dayend - now;
+    var sig="";
+    if (distance<0) sig="-";
+    if(daybeg>now) distance=daybeg-now;
+    distance=Math.abs(distance);
+    var x = setInterval(function() {
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        var value = Math.floor((now-daybeg)/(1000*60));
+        var maxtime = Math.floor((dayend-daybeg)/(1000*60));
+        if (sig==="-") { minutes=minutes+1; }
+        var timetmp = sig + days + "d " + hours + ":" + minutes + ":" + seconds;
+        if (days==0) timetmp = sig + hours + ":" + minutes + ":" + seconds;
+        var timeleft ="<span class='text-success'><b><h4>"+ timetmp +"</h4></b></span>";
+        var timebar="<input type='range' id='timebar' min=0 max="+maxtime+" value='"+value+"' class='form-range' style='width: 100%;' data-toggle='tooltip' data-placement='top' title='"+timetmp+"'>";
+        if (distance<1000*60*20) timeleft="<span class='text-warning bg-dark'><b><h5>"+timetmp+"</h5></b></span>";
+        if (daybeg > now) { timeleft ="<span class='text-info'>Kỳ thi diễn ra sau:<b> "+ timetmp+"</b></span>"; }
+        document.getElementById("timebar").innerHTML = timebar;
+        document.getElementById("timeleft").innerHTML = timeleft;
+        if (sig==="-"){//Hết giờ
+         document.getElementById("timeleft").innerHTML = "<span class='text-danger'><b>"+timetmp+"</b></span>";   
+        }
+        distance=distance - 1000;
+        now.setSeconds(now.getSeconds() + 1);
+    }, 1000);
+</script>
+{% endblock %}

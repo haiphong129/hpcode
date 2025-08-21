@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center"> <div class="col-auto table-responsive">
+    <table class="table table-hover table-bordered small">
+    <thead>
+      <tr class="thead-dark text-center">
+        <th class="align-middle" >#</th>
+        <th class="align-middle" >Contest</th>
+        <th class="align-middle" >Author</th>
+        <th class="align-middle" >Start</th>
+        <th class="align-middle" >Length</th>
+        <th class="align-middle" >Num</th>
+        <th class="align-middle" >Status</th>
+        <th class="align-middle" ></th>
+        <th class="align-middle" ></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for x in range(3)%}
+            {% for d in data[x] %}
+            
+            <tr>
+                <td class="text-center align-middle"> {{loop.index}}</td>
+                <td class="text-center align-middle"> 
+                    {{d['title']}}
+                    {%if fhp_permit(['admin','superadmin'])==1%}
+                        <br>
+                        <a href="{{ url_for('admin_ql_tags',tagname=d['tagname'])}}">Edit</a>
+                        <a href="{{ url_for('admin_del_contest',tagname=d['tagname'])}}" >Del</a>
+                    {%endif%}
+                </td>
+                
+                <td class="text-center align-middle"> {{d['author']}}</td>
+                <td class="text-center align-middle"> {{d['ts']}}</td>
+                <td class="text-center align-middle"> {{d['length']|safe}}</td>
+                <td class="text-center align-middle"> {{d['soluong']}}</td>
+                
+                <td class="text-center align-middle"> 
+                    <b><p id="{{d['tagname']}}x"></p></b>
+                </td>
+
+                <td class="text-center align-middle"><a href="{{ url_for('ranking',cname=d['tagname'])}}">ranking</a></td>
+                <td class="text-center align-middle">
+                    <a href="{{ url_for('contest',tagname=d['tagname'])}}">Tham gia</a><br> 
+                    <img src="/static/hinhanh/user.png" title="Lấy từ http://codeforces.com/">
+                    <small class="text-success">x {{d['sltg']}}</small>
+                </td>
+            </tr>
+              
+            {%endfor%}
+        {%endfor%}    
+    </tbody>
+    </table>
+    {% set direct = 'listcontest' %}
+    {% include '_direct.html' %}
+</div></div>
+
+<script>
+    // Set the date we're counting down to
+    var dict={};
+    var now = new Date("{{now}}");
+    {% for x in range(3)%}
+        {% for d in data[x] %}
+            dict["{{d['tagname']}}"]={"sig":"","ts":new Date("{{d['ts']}}"),"dist":new Date("{{d['te']}}")- now};
+            if(dict["{{d['tagname']}}"]["dist"]<0) dict["{{d['tagname']}}"]["sig"]="-";
+            dict["{{d['tagname']}}"]["dist"]=Math.abs(dict["{{d['tagname']}}"]["dist"]);
+        {% endfor %}
+    {% endfor %}
+    
+    var x = setInterval(function() {
+        for(var key in dict)
+        {
+            var distance=dict[key]["dist"];
+            if (dict[key]["ts"] > now) {distance=dict[key]["ts"]-now;}
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            var timetmp=days+"d "+hours+":"+ minutes + ":" + seconds;
+            if (days==0)  timetmp=hours+":"+ minutes + ":" + seconds;
+            //alert(timetmp);
+            var timeleft ="<span class='text-success'>Đang diễn ra<br>"+ timetmp +"</span>";
+            if (dict[key]["ts"] > now) {timeleft ="<span class='text-warning'>Diễn ra sau<br>"+ timetmp+"</span>";}
+            if (dict[key]["sig"]==="-") timeleft="<span class='text-danger'>Kết thúc</span>";
+            document.getElementById(key+'x').innerHTML = timeleft;
+            
+            dict[key]["dist"]=dict[key]["dist"]-1000;
+        }
+        now.setSeconds(now.getSeconds() + 1);
+    }, 1000);
+
+</script>
+
+{% endblock %}

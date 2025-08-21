@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h4 class="text-center">XÁC THỰC TÀI KHOẢN</h4>
+<hr>
+<p class="text-center">  {{note|safe}}</p>
+<hr>
+    <form method="post" action="{{url_for('xacthuctaikhoan') }}">
+        <div class="row justify-content-md-center d-flex">
+        <div class="col-sm-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" name="username" id="username" value="{{data['username']}}" disabled>
+                <label for="username"><b>Tên đăng nhập</b></label>    
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <div class="form-floating">
+                <input type="email" class="form-control" name="email" id="email" value="{{data['email']}}">
+                <label for="email"><b>Email:</b></label>
+            </div>
+        </div>
+        </div>
+        <div class="row justify-content-md-center d-flex m-1 p-1">
+            <div class="col-sm-10">
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="chuoixacthuc" id="chuoixacthuc" value="">
+                    <label for="chuoixacthuc"><b>Chuỗi xác thực:</b></label>
+                </div>
+            </div>
+            </div>
+        <div class="row justify-content-md-center d-flex m-1 p-1">
+            <div class="col-sm-6 text-center">
+                <input class="btn btn-sm btn-success" name="submit" type="submit" value="Xác thực">
+            </div>
+            <div class="col-sm-6 text-center">
+                <input class="btn btn-sm btn-success" name="submit" type="submit" value="Gửi lại chuỗi xác thực">
+               
+            </div>
+        </div>
+    </form>
+    
+    <p class="text-center">
+        Các tài khoản được tạo trước ngày 25/7/2024 sẽ có thời hạn sử dụng đến 01/9/2025 và mỗi bài được tối đa 10 lượt nộp<br>
+        Các tài khoản được tạo từ ngày 25/7/2024 về sau sẽ có thời gian sử dụng 10 ngày kể từ ngày đăng ký và mỗi bài được tối đa 02 lượt nộp.
+    </p>
+    {% include '_donate.html' %}
+{% endblock %}

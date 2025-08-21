@@ -1,0 +1,31 @@
+Để đánh dấu sự thay đổi quan trong trong công việc, [admin](https://www.facebook.com/phong.hai.750/) thực hiện dự án chia sẻ bài bài tập lập trình. Mỗi ngày [admin](https://www.facebook.com/phong.hai.750/) soạn và chia sẻ đến mọi người từ 1 đến 10 bài tập, bao gồm đề bài, hướng dẫn thuật toán, chương trình tham khảo (C++, Python) bằng file .docx
+
+**Lưu ý:**
+
++ Không có hướng dẫn thuật toán với những bài quá dễ
++ Số lượng bài phụ thuộc vào độ khó của các bài được chia sẻ trong mỗi ngày
++ Các bài đều có link để nộp chấm Online
++ Các bài được phân loại theo kiến thức
+
+Từ ngày 17/9/2023 đến nay (4/11/2023), <strong>[admin](https://www.facebook.com/phong.hai.750/)</strong> đã chia sẻ được <span class="text-success"><strong> 298 bài tập</strong><span>, bao gồm:
+
++ *49 bài [Dự án cá nhân: Bài tập cơ bản](https://hpcode.edu.vn/IQxcM)*  -  Đăng ngày: 17-21/9/2023. Số điểm yêu cầu: 0 điểm/file docx
++ *60 bài [Dự án cá nhân: Câu lệnh if](https://hpcode.edu.vn/leznk)* - Đăng ngày: 26/9-03/10/2023. Số điểm yêu cầu:  5 điểm/file docx
++ *45 bài [Dự án cá nhân: Câu lệnh lặp](https://hpcode.edu.vn/Laiey)* - Đăng ngày: 16-21/10/2023. Số điểm yêu cầu:  10 điểm/file docx
++ *40 bài [Dự án cá nhân: kiểu danh sách](https://hpcode.edu.vn/xTNTF)* - Đăng ngày: 22 - 27/10/2023. Số điểm yêu cầu: 75 điểm/file docx
++ *39 bài [Dự án cá nhân: String](https://hpcode.edu.vn/gWz3g)* - Đăng ngày: <span class="text-danger"><strong>28/10 - 4/11</strong></span>/2023. Số điểm yêu cầu: 25 điểm/file docx
++ *10 bài [Dự án cá nhân: Đếm phân phối](https://hpcode.edu.vn/dempp)* - Đăng ngày: 04, 05/10/2023. Số điểm yêu cầu: 75 điểm/file docx
++ *31 bài [Dự án cá nhân: Sắp xếp](https://hpcode.edu.vn/sort)* - Đăng ngày: 06 - 11/10/2023. Số điểm yêu cầu: 70 điểm/file docx
++ *18 bài [Dự án cá nhân: Tìm kiếm nhị phân](https://hpcode.edu.vn/binaryseach)* - Đăng ngày: 12 - 15/10/2023. Số điểmm yêu cầu 100 điểm/file word
++ *24 bài [Dự án cá nhân: Toán học](https://hpcode.edu.vn/hpsohoc)* - Đăng ngày: 22 - 25/9/2023. Số điểmm yêu cầu 120 điểm/file word
+
+**Các bài tập khác**
+
++ 10+ Sàng Eratosthenes (sắp có, hoặc có thể làm bài và chấm [tại đây](https://hpcode.edu.vn/contest/eratosthenes))
++ 20+ bài Quy hoạch độngg (sắp có)
++ 50+ bài tập Đồ thị (sắp có)
++ 100+ bài tập khác (sắp có)
+
+**<span class="text-danger"><strong>Làm thế nào để có điểm?</strong></span>**
+
+Chỉ cần tham gia giải các bài tập trên [https://hpcode.edu.vn](https://hpcode.edu.vn), mỗi bạn tập bạn nhận được tối đa 5 điểm. Hiện tại có nhiều bài tập không hạn chế đối tượng tham gia. Bạn có thể bắt đầu với các bài trong Contest [Lập trình cơ bản](https://hpcode.edu.vn/contest/laptrinhcb) và một số Contest khác

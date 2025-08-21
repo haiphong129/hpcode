@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  
+  <style type="text/css" media="screen">
+   #editor {
+        margin: 0;
+        position: sticky;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    pre {
+      background-color:GhostWhite;
+    }
+    img {
+    display: block;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    }
+  </style>
+  
+  <title>{{session['meta']['title']}}</title>
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta property="og:type"  content="article" />
+  <meta property="og:title" content="{{session['meta']['title']}}" />
+  <meta property="og:description"  content="{{session['meta']['des']}}" />
+  <meta property="og:url"   content="{{session['meta']['url']}}"/>
+  <meta property="og:image" content="{{session['meta']['img']}}" />
+  <meta name="google-adsense-account" content="ca-pub-6806423260473745">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+
+  <script type="text/javascript">
+       MathJax.Hub.Config({
+                tex2jax: {inlineMath: [["~","~"],["\\(","\\)"]]}
+            });
+     </script>
+  <div class="container">
+    <!--Phần header-->
+    <div class="row p-0 m-0 d-flex justify-content-center">
+      <div class="col-sm-6 p-0 m-0 ">
+        {% include '_menu.html' %}
+      </div>
+      <div class="col-sm-2" >
+        <div class="dropdown">
+        {% if current_user.is_authenticated %}
+          
+              <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{{current_user.img}}" height="30px" width="30px" class="rounded float-start"/>
+                <span class="text-success"><strong>{{current_user.fullname}}</strong></span><br>
+                <small>Điểm: {{current_user.ndow}}</small>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+                <li><a class="dropdown-item" href="{{ url_for('info') }}">Thông tin</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Thoát</a></li>
+              </ul>
+          
+          {% else %}
+          
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src='/static/hinhanh/face.png' height="30px" width="30px"/>
+                Anonymous
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+                <li><a class="dropdown-item" href="{{ url_for('login') }}">Đăng nhập</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('signup') }}">Đăng ký</a></li>
+              </ul>
+          
+          {% endif %}
+        </div>
+      </div> 
+    </div>
+    <!--Phần nội dung-->
+    <div class="row justify-content-center d-flex">
+      <div class="col-sm-8 ">
+        {% include '_notice.html' %}
+      </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+    <!--Phần Footer-->
+    <div class="row justify-content-center d-flex m-1 p-1 " >
+      <div class="col-sm-3 text-center">
+        <img src="{{ url_for('static', filename='favicon.ico') }}" ><br>
+        <span class="text-success">
+          <b>Lưu Hải Phong - 2020</b><br>
+          haiphong129.88@gmail.com
+        </span>
+      </div>
+    </div>
+    {% include '_googleads_first.html' %}
+    
+  </div>
+  </div>
+      {% include '_googleads_multiplex.html' %}
+  <script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+  </script>
+
+</body>
+</html>

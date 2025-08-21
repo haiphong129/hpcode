@@ -1,0 +1,76 @@
+        <h4 class="text-center text-success mt-1">{{problem["id_name"]}}</h4>
+        <div class="row m-0 d-flex justify-content-center">
+            <div class="col-sm-auto "> 
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-dark btn-sm m-1 rounded">stdin|stdout</button>
+                    <button type="button" class="btn btn-secondary btn-sm m-1 rounded">pas/cpp:<span class="badge badge-light">{{problem['conf'].tlexe}}(s)</span></button>
+                    <button type="button" class="btn btn-dark btn-sm m-1 rounded">Py:<span class="badge badge-light">{{problem['conf'].tlpy}}(s)</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex p-0 m-0">
+            <div class="col-sm text-center" >
+            {%if problem['pdf']%}
+                <a href="{{url_for('getpdf',idp=problem['id_p'])}}" class="link" target="_blank">{{problem["id_p"]}}.pdf</a>
+            {%endif%} 
+            {%if problem['docx']%}
+                &ensp;<a href="{{url_for('getdocx',idp=problem['id_p'])}}" class="link" target="_blank">{{problem["id_p"]}}.docx</a>
+            {%endif%} 
+            
+            </div>
+        </div>
+        
+        <div class="row justify-content-center d-flex p-0 m-0">
+            <div class="col-sm-auto text-center" id="source" > 
+                {%if problem['source'] %} <b>Nguồn:</b> {{problem['source']|safe}} {%endif%}
+            </div>
+        </div>
+        
+        <div class="row border-top border-bottom rounded-3 p-1 m-1">
+            <div class="col-sm" >
+            {%if problem['imgbase64']!=0%}
+                <img src="data:image/png;base64, {{problem['imgbase64']}}"  style="width: 100%;" class=""/>
+            {%else%}
+                {%if problem['body']|length<=100 and problem['pdf']%}
+                    <iframe src="/static/download/{{problem['id_p']}}.pdf" frameBorder="0" scrolling="auto" height="700" width="100%" ></iframe>
+                {%else%}
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+                    {{problem['body']|safe}}
+                    <script type="text/javascript">
+                        MathJax.Hub.Config({
+                                 tex2jax: {inlineMath: [["~","~"],["\\(","\\)"]]}
+                             });
+                     </script>
+                {%endif%}
+            {%endif%}
+            </div>
+        </div>
+        
+        <div class="row p-1 m-1">
+            <div class="col-sm-auto">
+                {% for tag in problem["tags"] %}
+                    <a href="{{ url_for('viewtag',tag=tag)}}" class="btn-sm btn-primary m-0">{{tag}}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+<script type="text/javascript">
+function validURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+if(validURL("{{problem['source']}}")) {
+    document.getElementById("source").innerHTML = '<b>Ngồn:</b> <a href="'+'{{problem["source"]}}' + '">' + '{{problem["source"]}}' +'</a>';
+} 
+</script>
+  
+ <script>
+   if ( window.history.replaceState ) {
+     window.history.replaceState( null, null, window.location.href );
+   }
+ </script>

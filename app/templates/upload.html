@@ -1,0 +1,72 @@
+{% extends "basepr.html" %}
+{% block content %}
+    <form method=post enctype=multipart/form-data action="{{url_for('upload',idp=idp)}}">
+        <div class="row justify-content-center">
+            <div class="col-sm-7 m-1 p-1 text-center">
+                <span class=" text-success">Chọn tệp <b>*.zip</b> để upload test</span>
+            <div class="input-group">
+                <input type="file" multiple="" class="form-control" id="file" name="file[]" >
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+                <span class=" text-success">Chọn tệp <b>*.docx</b> để upload đề, tệp <b>*_sol.docx</b> để upload hướng dẫn </span>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-7 m-1 p-1 text-center">
+                <span id="err" class="text-danger">
+                    {% if status %} <span class="text-success">{{status}}</span> {% endif %}
+                </span>
+            </div>
+        </div>
+    </form>
+    <hr style="height:2px;border-width:1;color:red;background-color:green" class="m-0">
+    <a href="{{url_for('delalltc',idp=idp)}}"> Xóa tất cả testcase bài {{idp}}</a>
+    <hr style="height:2px;border-width:1;color:red;background-color:green" class="m-0">
+    
+    <div class="table-responsive d-flex justify-content-center w-auto m-1 p-1">
+        <table class="table table-hover table-bordered table-striped w-auto">
+        <thead>
+            <tr class="text-center">
+                <th class="th-sm">TT</th>
+                <th class="th-sm">Id</th>
+                <th class="th-sm">Input</th>
+                <th class="th-sm">Output</th>
+                <th class="th-sm">Xóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tc in tests %}
+            <tr class="small">
+                <td class="text-center align-middle">{{ loop.index-1 }}</td>
+                <td class="text-center align-middle">{{ tc['fnstt'] }}</td>
+                <td class="text-left">
+                    {{tc['inp']|safe}}<br>
+                    <a href="{{ url_for('gettests',id=tc['id'],flag='inp') }}" target="_blank">view input</a>
+                </td>
+                <td class="text-left">
+                    {{tc['out']|safe}}<br>
+                    <a href="{{ url_for('gettests',id=tc['id'],flag='out') }}" target="_blank">view output</a>
+                </td>
+                <td class="text-center align-middle">
+                    <a href="{{ url_for('deltest',id=tc['id']) }}" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <script>
+
+        function fileValidation() {
+            document.getElementById("err").innerHTML = "";
+            var fileInput = document.getElementById('file');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.zip|\.docx)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                document.getElementById("err").innerHTML = "Chỉ được upload *.zip/docx ";
+                return false;
+            } 
+            return true;
+        }
+    </script>
+{% endblock %}

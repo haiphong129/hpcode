@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="text-info m-1 p-1 text-center border border-danger rounded">
+    <b>Lưu ý: </b>Nếu muốn chia sẽ tài liệu cho mọi người thì bạn cần phải chọn vào nút "Công khai"<br>
+    Các tài liệu bạn chia sẽ phải được kiểm duyệt của admin.<br>
+    Bạn cần phải điền đầy đủ thông tin. <br>
+    Để thêm nội dung mới, hãy click vào dấu <span class="text-success"> <b>+</b></span> phía sau ô nội dung.
+  </div>
+<div class="m-1 p-1 border border-success rounded">
+<form method="POST" action="{{url_for('adtailieu') }}">
+  <div class="form-group row m-1 p-1">
+    <div class="col-sm-3 text-right p-1 mt-1"><b>Tiêu đề</b></div>
+    <div class="col-sm-9">
+      <input type="text" class="form-control w-75" name="tieude" placeholder="Nhập tên tài liệu" required>
+    </div>
+  </div>
+
+  <div class="form-group row m-1 p-1">
+    <div class="col-sm-3 text-right p-1 mt-1"><b>Link</b></div>
+    <div class="col-sm-9">
+      <input type="text" class="form-control w-75" name="link" placeholder="" required>
+    </div>
+  </div>
+
+  <div class="form-group row m-1 p-1">
+    <div class="col-sm-1 p-1 mt-1 text-right"><b>Lớp</b></div>
+    <div class="col-sm-2 p-1">
+      <select class="form-control" id="lop" name="lop" onchange='changend({{data | tojson }})'>
+        {% for i in range(12,0,-1)%} 
+            <option value='lop{{i}}'>{{i}}</option>
+        {% endfor %}
+        <option value="dh">Đại học</option>
+        <option value="khac">.Khác.</option>
+      </select>
+    </div>
+    <div class="col-sm-2 p-1 text-right mt-1"><b>Nội dung</b></div>
+    <div class="col-sm-6 p-1"> 
+      <select class="form-control" name="noidung" id="noidung">
+
+        {% for d in data["lop12"] %}
+          <option >{{d}}</option>
+        {% endfor %}
+        {% if data["lop12"]|length==0 %}
+          <option >Hãy thêm mới</option>
+        {% endif %}
+      </select>
+    </div>
+    <div class="col-sm-1 p-1">
+      <input type="button" onclick="addx()" id="add" value="+" class="btn-sm p-1 mt-1 btn-success">
+      <input type="hidden" name="add" value="+" id="hidden">
+    </div>
+  </div>
+
+  <span id="addxx"></span>
+
+  <div class="form-group pl-1 row">
+    <div class="col-sm-2 text-right"><b>Giới thiệu</b></div>
+    <div class="col-sm-9">
+      <textarea class="form-control" rows="6" name="gioithieu" id="gioithieu" required></textarea>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-3 text-right mt-1"><b>Công khai</b></div>
+    <div class="col-sm-1 text-left mt-1">
+      <input type="checkbox" class="form-check-input mt-2" name="congkhai">
+    </div>
+    <div class="col-sm-5">
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>      
+    </div>
+  </div>
+</form>
+</div>
+<script type="text/javascript" language="javascript">
+  function addx() 
+  {
+    var x=document.getElementById("add").value;
+    if(x=="+") {
+      document.getElementById("addxx").innerHTML="<div class='form-group row m-1 p-1'><div class='col-sm-3 text-right p-1 mt-1'><b>Thêm mới</b></div><div class='col-sm-6'><input type='text' class='form-control' name='addnoidung'></div></div>";
+      document.getElementById("add").value="-";
+      }
+    else
+    {
+      document.getElementById("addxx").innerHTML="";
+      document.getElementById("add").value="+";
+    }
+    document.getElementById("hidden").value=document.getElementById("add").value;
+  }
+  function changend(data)
+  {
+    var x= document.getElementById("lop").value;
+    var i;
+    var y="";
+    for(i=0;i<data[x].length;i++)
+    {
+      y=y+"<option>"+data[x][i]+"</option>";
+    }
+    document.getElementById("noidung").innerHTML=y;
+  }
+</script>
+{% endblock %}

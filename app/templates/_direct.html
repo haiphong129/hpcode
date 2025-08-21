@@ -1,0 +1,11 @@
+<div class="text-center">
+        <a href="{{ url_for(direct, page=1, tag=tag) }}">Trang đầu </a> |
+        {% for i in range((2,page-5)|max,page,1) %}
+            <a href="{{ url_for(direct, page=i, tag=tag) }}">{{ i }}</a>|
+        {% endfor %}
+        <a href="{{ url_for(direct, page=page, tag=tag) }}"><b>{{ page }}</b></a>|
+        {% for i in range(page+1,(page+5,lastpage)|min,1) %}
+            <a href="{{ url_for(direct, page=i, tag=tag) }}">{{ i }}</a>|
+        {% endfor %}
+        <a href="{{ url_for(direct, page=lastpage, tag=tag) }}">Trang cuối </a> 
+</div>

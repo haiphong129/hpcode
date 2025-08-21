@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% set  subtitle= "Phân loại bài tập" %}
+{% block content %}
+    <div class=" d-flex justify-content-center">
+        <table class="table table-hover table-sm table-bordered table-striped" width="100%">
+        <thead class="thead-dark">
+            <tr class="text-center " >
+                <th class="th-sm">TT</th>
+                <th class="th-sm">ID</th>
+                <th class="th-sm">Tên</th>
+                <th class="th-sm">Số lượng</th>
+                <th class="th-sm">Tham khảo</th>
+                {%if fhp_permit(['admin','superadmin'])==1%}
+                    <th class="th-sm"></th>
+                {%endif%}
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+                <tr class="m-0 p-0 small">
+                    <td class="text-center">{{loop.index}}</td>
+                    <td class="text-center">
+                        <a href="{{url_for('viewtag',tag=d['tagname'])}}" class="link">{{d['tagname']}}</a>
+                    </td>
+                    <td class="text-center">
+                        <a href="{{url_for('viewtag',tag=d['tagname'])}}" class="link">{{d['tagtitle']}}</a>
+                    </td>
+                    <td class="text-center">{{d['soluong']}}</td>
+                    <td class="text-center"><a href="{{d['taglink']}}" class="link">{{d['linkview']}}</td>
+                    {%if fhp_permit(['admin','superadmin'])==1%}
+                    <td class="text-center">
+                        <a href="{{ url_for('admin_ql_tags',tagname=d['tagname'])}}">Edit</a>
+                    </td>
+                    {%endif%}
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}

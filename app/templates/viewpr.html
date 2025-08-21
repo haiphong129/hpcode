@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% set  color={"cpp":"success","pas":"primary","py":"danger"} %}
+{% block content %}
+    {% include '_viewpr.html' %}
+    <div class="row justify-content-center d-flex p-0 m-0">
+        <div class="col-sm text-center" >
+            <h4 class="text-danger">
+                {%if current_user.is_authenticated %}
+                    {% if current_user.khoatk==1 %}
+                        Tài khoản của bạn đã bị khóa.
+                    {%else%}
+                        Bạn cần liên hệ với <span class="text-success"> Giáo viên </span> hoặc <span class="text-success">admin</span> để được nộp bài!
+                    {%endif%}
+                {%else%}
+                    Bạn cần <a href="{{url_for('login')}}">đăng nhập</a> để nộp bài
+                {%endif%}
+            </h4>
+        </div>
+    </div>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- Cố định ngang -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:720px;height:90px"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3322050954"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first_2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3180750038"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+{% endblock %}

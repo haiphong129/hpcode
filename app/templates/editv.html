@@ -1,0 +1,138 @@
+{% extends "basepr.html" %}
+{% block content %}
+    
+        <div class="row justify-content-center">
+            <div class="col-sm-12 text-success text-center" >
+                <b>{{vid.title}}</b><br>
+                <a href="https://www.youtube.com/watch?v={{vid.idv}}">Xem trên Youtube</a>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex" >
+            <div class="col-sm-11 text-center responsive" id="playvideo">
+                {%if vid.idgd == ""%}
+                     <div class="ratio ratio-16x9 text-center mt-4 mb-4 ">
+                        <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/{{vid.idv}}?rel=0" allowfullscreen>
+                        </iframe>
+                    </div>
+                {%else%}
+                <video width="90%" height="auto" controls> 
+                    <source src="https://drive.google.com/uc?export=download&id={{vid.idgd}}" type="video/mp4"> 
+                </video>
+                {%endif%}
+            </div>
+        </div>
+        <hr>
+        <h5 class="text-success text-center">{{status}}</h3>
+        <form method="POST" action="{{url_for('editv',idv=vid.idv)}}" class="m-1">
+            <div class="row justify-content-center d-flex">
+                <div class="col-sm-3 ">
+                    <div class="input-group mb-1 ">
+                        <span class="input-group-text">Sách</span>
+                        <select class="form-select" title="Sách" name="sach">
+                            {% for d in data['sach']%}
+                                {% if d==vid.sach %}                    
+                                    <option value="{{d}}" selected >{{data['sach'][d]}}</option>
+                                {%else%}
+                                    <option value="{{d}}" >{{data['sach'][d]}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-5 ">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text" >Tiêu đề</span>
+                        <input class="form-control" type="text" name="title" value="{{vid.title}}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center d-flex">
+                <div class="col-sm-2">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text" >IDV</span>
+                        <input class="form-control col-sm-2"  type="text" name="idvx" value="{{vid.idv}}">
+                    </div>
+                </div>
+                <div class="col-sm-2 ">
+                    <div class="input-group m-0 p-0">        
+                        <span class="input-group-text">Lớp</span>
+                        <select class="form-select" title="Lớp" name="lop" >
+                            {% for d in data['lop']%}
+                                {% if d==vid.lop %}                    
+                                    <option value="{{d}}" selected >{{data['lop'][d]}}</option>
+                                {%else%}
+                                    <option value="{{d}}" >{{data['lop'][d]}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group ">
+                        <span class="input-group-text">Môn</span>
+                        <select class="form-select" title="Môn" name="mon">
+                            {% for d in data['mon']%}
+                                {% if d==vid.mon %}                    
+                                    <option value="{{d}}" selected >{{data['mon'][d]}}</option>
+                                {%else%}
+                                    <option value="{{d}}" >{{data['mon'][d]}}</option>
+                                {%endif%}
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-text" >Tác giả</span>
+                        <input class="form-control" type="text" name="author" value="{{vid.author}}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center d-flex">
+                <div class="col-sm-3 ">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text" >Num</span>
+                        <input class="form-control" type="text" name="num" value="{{vid.num}}">
+                    </div>
+                </div>
+                <div class="col-sm-5 ">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text" >ID GD</span>
+                        <input class="form-control" type="text" name="idgd" value="{{vid.idgd}}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-md-center d-flex">
+                <div class="col-sm-auto text-center form-check ">
+                    <input class="form-check-input" type="checkbox" value="" id="addnew" name="addnew">
+                    <label class="form-check-label text-success" for="addnew">
+                        <strong>Thêm mới video này</strong>
+                    </label>
+                <div class="col-sm-auto text-center form-check ">
+                    <input class="form-check-input" type="checkbox" value="" id="delvid" name="delvid">
+                    <label class="form-check-label text-danger" for="delvid">
+                        <strong>Xóa video này</strong>
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="row justify-content-center align-items-center" >
+                <div class="col-sm-3 d-grid gap-2">    
+                    <input class="btn btn-sm btn-success" id="submit"  type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+        <hr>
+        <form method="POST" action="{{url_for('updateviews')}}" class="m-1">
+            <div class="row justify-content-center align-items-center" >
+                <div class="col-sm-4 d-grid gap-2">    
+                    <input class="btn btn-sm btn-warning" id="submit"  type="submit" value="Cập nhật lượt xem cho tất cả video">
+
+                </div>
+            </div>
+        </form>
+{% endblock %}

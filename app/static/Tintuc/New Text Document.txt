@@ -1,0 +1,15 @@
+Bài giảng Powerpoint - Tin học 10 - Cánh Diều
+
+Chia sẻ đến mọi người tất cả các bài giảng Powerpoint chương trình Tin học lớp 10, bộ sách Cánh Diều. Đây là các bài giảng **admin** tự biên soạn để dạy học trong năm học 2022-2023.
+
+Các bài giảng Powerpoint đều có đặc điều nhiều hình, ít chứ, chú trọng đến nội dung chính cần truyền đạt theo sách giáo khoa Tin học 10 (bộ Cánh Diều). Để sử dụng tốt các bài giảng này thầy cô cần tìm hiểu thêm các kiến thức liên quan đến nội dung bài học, có nhiều hiểu biết về Tin học trong từng chủ đề hoặc có thể dựa vào các hình ảnh trong bài giảng để đưa ra các câu hỏi phù hợp nhằm kích thích sự tò mò, thể hiện sự hiểu biết của học sinh. Các thầy cô cần thường xuyên cập nhập thông tin để nhận biết và thay đổi nội dung trong các Slide cho phù hợp sự phát triển của Tin học Việt Nam và thế giới.
+
+ [Chủ đề A, bài 01: Dữ liệu, thông tin và xử lý thông tin](https://bit.ly/CD_tinhoc10_A01)
+
+ [Chủ đề A, bài 02: Sự ưu việt của máy tính và những thành tựu của Tin học](https://bit.ly/CD_Tinhoc10_A02)
+
+ [Chủ đề A, bài 04: Tin học trong sự phát triển kinh tế xã hội](https://bit.ly/CD-Tinhoc10-A04)
+ 
+ [Chủ đề B, bài 01: Mạng máy tính với cuộc sống](https://bit.ly/CD-Tinhoc10-B01)
+
+ [Chủ đề B, bài 02: Điện toán đám mây và Internet vạn vật](https://bit.ly/CD-Tinhoc10-B02)

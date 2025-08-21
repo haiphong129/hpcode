@@ -1,0 +1,194 @@
+{% set checklayout= (current_user.is_authenticated and current_user.username=='haccolo') %}
+{% if checklayout %}
+    {% extends "basepr.html" %}
+{%else%}
+    {% extends "base.html" %}
+{%endif%}
+
+{% block content %}
+    {% set page =1 %}
+{% if fhp_permit(['admin','superadmin'])==1 %}
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-9 text-center">
+        <a href="{{ url_for('adminproblem',idp=problem['id_p']) }}" class="btn btn-sm btn-danger p-1 m-1">
+            <small>Sửa bài</small>
+        </a>
+        <a href="{{ url_for('upload',idp=problem['id_p']) }}" class="btn btn-sm btn-danger p-1 m-1" title="test/đề bài/hướng dẫn" target="_blank">
+        <small>Upload</small>
+        </a>
+        
+        {% set Modalname="Chấm lại" %} {% set ModalTitle="Chấm lại"%} {%set Modalbody="Tất cả các bài nộp sẽ được chấm lại"%} 
+        {% set direct = 'rejuger' %} {% set idp=problem['id_p'] %}
+        {%include 'confimbox.html' %}
+
+        {% set Modalname="Xóa" %} {% set ModalTitle="Xóa bài tập"%} {%set Modalbody="Bài tập sẽ bị xóa"%}
+        {% set direct = 'admin_del_problem' %} {% set idp=problem['id_p'] %}
+        {%include 'confimbox.html' %}
+        </div>
+    </div>
+{%endif%}
+
+{% if problem["checkalow"]==1 %}
+    <script type="text/javascript">
+        alert("Bài nộp bị từ chối do dùng dấu trong tiếng Việt hoặc lỗi không xác định");
+    </script>
+{%endif%}
+
+<div class="d-flex justify-content-center">
+    <ul class="nav nav-tabs mb-1" id="nav-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active btn-sm m-1 p-1" id="problem-tab" data-bs-toggle="tab" data-bs-target="#problem" type="button" role="tab" aria-controls="nav-problem" aria-selected="true">Problem</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link btn-sm m-1 p-1" id="allsubmission-tab" data-bs-toggle="tab" data-bs-target="#allsubmission" type="button" role="tab" aria-controls="nav-allsubmission" aria-selected="false">All Submissions</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link btn-sm m-1 p-1" id="mysubmission-tab" data-bs-toggle="tab" data-bs-target="#mysubmission" type="button" role="tab" aria-controls="nav-mysubmission" aria-selected="false">My Submissions</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link btn-sm m-1 p-1" id="tests-tab" data-bs-toggle="tab" data-bs-target="#tests" type="button" role="tab" aria-controls="nav-test" aria-selected="false">Tests</button>
+        </li>
+        {%if problem['yt']%}
+        <li class="nav-item" role="presentation">
+            <button class="text-danger nav-link btn-sm m-1 p-1" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="nav-video" aria-selected="false" style="display: flex;">
+                <b>Video</b>
+            </button>
+        </li>
+        {%endif%}
+        <li class="nav-item" role="presentation">
+            <button class="text-danger nav-link btn-sm m-1 p-1" id="huongdan-tab" data-bs-toggle="tab" data-bs-target="#huongdan" type="button" role="tab" aria-controls="nav-huongdan" aria-selected="false" style="display: flex;">
+                <b>Hướng dẫn</b>
+            </button>
+        </li>
+    </ul>
+</div>
+
+    <div class="tab-content hpscroll" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="problem" role="tabpanel" aria-labelledby="problem-tab">
+            
+            <div class="row justify-content-center p-0 m-0" >
+                {% if checklayout %}
+                <div class="col-sm-6 border">
+                    {% include '_viewpr.html' %}
+                </div>
+                <div class="col-sm-6 border">
+                    {% include '_runcode.html' %}
+                </div>
+                {%else%}
+                <div class="col-md border">
+                    {% include '_viewpr.html' %}
+                    
+                    {% include '_runcode.html' %}
+                </div>
+
+                {%endif%}
+            </div>
+            
+            
+        </div>
+        <div class="tab-pane fade" id="allsubmission" role="tabpanel" aria-labelledby="allsubmission-tab">
+            <div class="row justify-content-center p-0 m-0">
+                <div class="col-sm-8">{% include '_listsubmit.html' %}</div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="mysubmission" role="tabpanel" aria-labelledby="mysubmission-tab">
+            <div class="row justify-content-center p-0 m-0">
+                <div class="col-sm-8">
+                    {% set  listsub=listsubuser %}{% include '_listsubmit.html' %}
+                </div>
+            </div>
+            
+            
+        </div>
+        {%if problem['yt']%}
+        <div class="tab-pane fade" id="video" role="tabpanel" aria-labelledby="video-tab">
+            <div class="row justify-content-center d-flex" >
+                <div class="col-sm-10 text-center responsive" id="playvideo">
+                    <div class="ratio ratio-16x9 text-center mt-4 mb-4 ">
+                        <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/{{problem['yt']}}" allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+
+        <div class="tab-pane fade" id="huongdan" role="tabpanel" aria-labelledby="huongdan-tab">
+            <div class="row justify-content-center d-flex" >
+                <div class="col-sm-10 responsive">
+                    {% if current_user.is_authenticated and current_user.giaovien==1 and problem['sol']%}
+                        {{ problem['sol']|safe }}
+                    {%else%}
+                    {% if current_user.is_authenticated and current_user.giaovien==1 and not problem['sol']%}
+                        <span class="text-danger">
+                            Bài tập này chưa có hướng dẫn.
+                        </span>
+                    {%else%}
+                    {% if current_user.is_authenticated and current_user.giaovien!=1 %}
+                        <span class="text-danger">
+                            Hướng dẫn chỉ dành cho <a href="{{ url_for('giaovien') }}" class="ms-2">giáo viên</a>
+                        </span>
+                    {% endif %}{% endif %}{% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tests" role="tabpanel" aria-labelledby="mtests-tab">
+            <div class="row justify-content-center p-0 m-0">
+                <div class="col-sm-9 text-center p-1 m-1">
+                     <a href="{{ url_for('getAlltests',idp=problem['id_p']) }}" target="_blank" class="btn btn-sm btn-success">Download Full Tests</a>
+                </div>
+            </div>
+            <div class="row justify-content-center p-0 m-0 border">
+                <div class="col-sm-9 text-center p-1 m-1">
+                    Click vào tên của Input/Output tương ứng để xem/tải về<br>
+                    Bạn còn <b>{{countx}}</b> lượt xem/tải miễn phí trong 24h
+                </div>
+            </div>
+            
+            <div class="row justify-content-center p-0 m-0">
+                <div class="col-auto table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead>
+                            <tr class="text-center">
+                                <th>TT</th><th>Input</th><th>Output</th><th>Tải về lần cuối</th>
+                            </tr>
+                        </thead>
+                        {% for i in range(problem['alltestcase']|length) %}
+                            <tr class="small">
+                                <td class="text-center">{{i}}</td>
+                                <td><a href="{{ url_for('gettests',id=problem['alltestcase'][i][0]) }}" target="_blank">Input{{ i }}.txt</a>
+                                </td>
+                                <td><a href="{{ url_for('gettests',id=problem['alltestcase'][i][0]) }}" target="_blank">Output{{ i }}.txt</a>
+                                </td>
+                                <td class="text-center">{{problem['alltestcase'][i][1]}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="row justify-content-center d-flex">
+        <div class="col-sm">
+            
+</div>
+</div>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first_2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3180750038"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+{% endblock %}

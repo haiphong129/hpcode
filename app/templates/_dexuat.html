@@ -1,0 +1,19 @@
+<div class="border rounded shadow-sm bg-white mt-2 p-3">
+  <table class="table table-hover table-borderless table-sm">
+    <thead m-0 p-0>
+      <tr class="text-center bg-success">
+        <th class="align-middle text-white">Đề xuất cho bạn</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%for bt in btdexuat(current_user.username) %}
+    <tr>
+      <td>
+            <a href="{{url_for('viewctpr',idp=bt[0])}}" target="_blank">{{loop.index}}. {{bt[1]}}</a> 
+      </td>
+      </tr>
+    {%endfor%}
+    
+    </tbody>
+  </table>
+</div>

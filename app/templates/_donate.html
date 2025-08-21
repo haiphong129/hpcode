@@ -1,0 +1,98 @@
+{%if current_user.is_authenticated and slac(current_user)>=20 %}
+{% set data50 = Imagebase64.query.filter(Imagebase64.loai=="Nhận tiền",Imagebase64.ma=="50",Imagebase64.ghichu=="50K").first().base64 %}
+{% set data99 = Imagebase64.query.filter(Imagebase64.loai=="Nhận tiền",Imagebase64.ma=="99",Imagebase64.ghichu=="99K").first().base64 %}
+{% set data149 = Imagebase64.query.filter(Imagebase64.loai=="Nhận tiền",Imagebase64.ma=="149",Imagebase64.ghichu=="149K").first().base64 %}
+<h4 class="text-center"><b>ỦNG HỘ ĐỂ DUY TRÌ HOẠT ĐỘNG CỦA WEBSITE</b></h4>
+<div class=" row d-flex justify-content-center p-1 m-1 border border-success rounded">
+    <div class="col-sm"><i>
+        Năm 2020, khi đại dịch Covid-19 diễn ra, mình đã dành thời gian để xây dựng website này với mục đích ban đầu là trở thành một công cụ dạy học cho cá nhân và sau đó mang tính cộng đồng: là nơi chia sẽ các tài liệu, bài tập lập trình dành cho tất cả mọi người.
+        Thỉnh thoảng có dịp đi công tác, gặp một số thầy cô được chia sẻ nhờ tài liệu của mình mà các thầy cô có được định hướng trong việc dạy BDHSG, chỉ cần vậy cũng là động lực để mình tiếp tục phát triển website.
+        Tuy nhiên sau một thời gian làm việc, mình quyết định chia tay với nghề giáo viên, một công việc đối với mình là "việc nhẹ lương cao" để đến với công việc mới bận rộn hơn, trách nhiệm hơn. Điều này dẫn đến thu nhập bị giảm rất nhiều so với trước và cũng thay đổi suy nghĩ của mình về mục đích mang tính cộng đồng.
+        Từ nay, website này sẽ mang tính cá nhân nhiều hơn, là một công cụ để dạy mình dạy thêm và là nơi quản lý các bài tập, tài liệu. 
+        Các bài tập trên website không hoàn toàn là tự mình tạo ra mầ còn là sự đóng góp của nhiều thầy cô, bạn bè trên cả nước.
+        <span class="text-success"><b>Để tham gia các Contest</b></span>
+        <ul>
+            <li><a href="{{ url_for('contest',tagname='hpctnc') }}">Luyện thi chuyên tin nâng cao</a></li>
+            <li><a href="{{ url_for('contest',tagname='ts10') }}">Tuyển tập Đề thi Tuyển sinh 10</a></li>
+            <li><a href="{{ url_for('contest',tagname='thcs') }}">Tuyển tập Đề thi HSG THCS</a></li>
+            <li><a href="{{ url_for('contest',tagname='hsgb') }}">Tuyển tập Đề thi HSG THPT</a></li>
+            <li><a href="{{ url_for('contest',tagname='hsba') }}">Tuyển tập Đề thi HSG Chọn đội tuyển QG</a></li>
+        </ul>
+        <span class="text-success"><b>các bạn có thể ủng hộ mình bằng cách quét mã QRcode ở bên dưới.</b></span><br><br>
+        <span class="text-success"><b>Trân trọng cảm ơn!</b></span>
+        <hr>
+        <span class="text-danger">
+            <small>Điền nội dung chuyển tiền là <mark>tên đăng nhập</mark> để được kích hoạt trong vòng 24h. Bạn có thể nhắn qua Zalo <b>0935911218</b> để được kích hoạt nhanh hơn</small>
+        </span>
+        </i>
+    </div>
+</div>
+
+
+<div class="row justify-content-center d-flex d-1 m-1 border border-success rounded">
+    <div class="col-sm-4">
+        <img src="data:image/png;base64, {{data50}}" class="img-thumbnail rounded-2 mx-auto d-block" />
+    </div>
+    <div class="col-sm d-flex align-items-center" >
+        
+        <ul>
+            <li>Số tiền ủng hộ: 50.000 VNĐ</li>
+            <li>Quyền lợi: Cộng <span class="text-success"><b>365</b></span> ngày sử dụng tài khoản và có tối đa <span class="text-success"><b>05</b></span> lượt nộp/bài.</li>
+            <li>Áp dụng các Contest:</li>
+                <ul>
+                    <li><a href="{{ url_for('contest',tagname='laptrinhcb') }}">Lập trình cơ bản</a></li>
+                    <li><a href="{{ url_for('contest',tagname='chuyentincb') }}">Chuyên tin cơ bản</a></li>
+                    <li><a href="{{ url_for('contest',tagname='ts10') }}">Tuyển tập Đề thi Tuyển sinh 10</a></li>
+                </ul>
+        </ul>
+    </div>
+</div>
+<div class="row justify-content-center d-flex d-1 m-1 border border-success rounded">
+    <div class="col-sm-4">
+        <img src="data:image/png;base64, {{data99}}"  class="img-thumbnail rounded-2 mx-auto d-block"/>
+    </div>
+    <div class="col-sm d-flex align-items-center" >
+        <ul>
+            <li>Số tiền ủng hộ: 99.000 VNĐ</li>
+            <li>Quyền lợi: Cộng <span class="text-success"><b>365</b></span> ngày sử dụng tài khoản và có tối đa <span class="text-success"><b>1000</b></span> lượt nộp cho tất cả bài tập.</li>
+            <li>Áp dụng các Contest:</li>
+                <ul>
+                    <li><a href="{{ url_for('contest',tagname='laptrinhcb') }}">Lập trình cơ bản</a></li>
+                    <li><a href="{{ url_for('contest',tagname='chuyentincb') }}">Chuyên tin cơ bản</a></li>
+                    <li><a href="{{ url_for('contest',tagname='ts10') }}">Tuyển tập Đề thi Tuyển sinh 10</a></li>
+                    <li><a href="{{ url_for('contest',tagname='thcs') }}">Tuyển tập Đề thi HSG THCS</a></li>
+                </ul>
+        </ul>
+    </div>
+</div>
+<div class="row justify-content-center d-flex d-1 m-1 border border-success rounded">
+    <div class="col-sm-4">
+        <img src="data:image/png;base64, {{data149}}"  class="img-thumbnail rounded mx-auto d-block"/>
+    </div>
+    <div class="col-sm d-flex align-items-center">
+        <ul>
+            <li>Số tiền ủng hộ: 149.000 VNĐ</li>
+            <li>Quyền lợi: Cộng <span class="text-success"><b>365</b></span> ngày sử dụng tài khoản và có tối đa <span class="text-success"><b>2000</b></span> lượt nộp cho tất cả bài tập.</li>
+            <li>Áp dụng các Contest:</li>
+                <ul>
+                    <li><a href="{{ url_for('contest',tagname='laptrinhcb') }}">Lập trình cơ bản</a></li>
+                    <li><a href="{{ url_for('contest',tagname='chuyentincb') }}">Chuyên tin cơ bản</a></li>
+                    <li><a href="{{ url_for('contest',tagname='chuyentinnc') }}">Chuyên tin nâng cao</a></li>
+                    <li><a href="{{ url_for('contest',tagname='ts10') }}">Tuyển tập Đề thi Tuyển sinh 10</a></li>
+                    <li><a href="{{ url_for('contest',tagname='thcs') }}">Tuyển tập Đề thi HSG THCS</a></li>
+                    <li><a href="{{ url_for('contest',tagname='hsgb') }}">Tuyển tập Đề thi HSG THPT</a></li>
+                    <li><a href="{{ url_for('contest',tagname='hsba') }}">Tuyển tập Đề thi HSG Chọn đội tuyển QG</a></li>
+                </ul>
+        </ul>
+    </div>
+</div>
+{%else%}
+<h4 class="text-center text-success"><b>BẠN CẦN HOÀN THÀNH ÍT NHẤT 20 BÀI TẬP ĐỂ THẤY ĐƯỢC NỘI DUNG NÀY</b></h4>
+<h5 class="text-center text-success"><b>BẠN CÓ THỂ GIẢI CÁC BÀI TRONG 02 Contest</b></h5>
+<div class="row justify-content-center d-flex d-1 m-1">
+    <div class="col-sm-5 m-1 d-1 text-center">
+        <p><a href="{{ url_for('contest',tagname='laptrinhcb') }}">Lập trình cơ bản</a></p>
+        <p><a href="{{ url_for('contest',tagname='chuyentincb') }}">Chuyên tin cơ bản</a></p>
+    </div>
+</div>
+{%endif%}

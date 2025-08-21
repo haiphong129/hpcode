@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-sm navbar-light">
+  
+    <a class="navbar-brand" href="#">
+        <img src="https://hpcode.edu.vn/static/hinhanh/lhp.jpg" height="30" class="hpads" alt="" loading="lazy" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
+      <ul class="navbar-nav me-auto mb-0 mb-lg-0">
+        {% for m in menus[0] %}
+        <li class="nav-item">
+        <a class="btn btn-outline-{{m[2]}} p-1 m-1 me-0 border-end-0 border-start-0" aria-current="page" href="{{ url_for('index',menu=m[0]) }}">
+          <b><small>{{m[1]}}</small></b>
+        </a>
+        </li>
+        {% endfor %}
+      
+      </ul>
+    </div>
+  
+</nav>

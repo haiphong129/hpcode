@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}    
+    <div class="row justify-content-center">
+        <div class="col-sm-10 m-1 p-1  bg-light text-success border-primary rounded-3">
+            <h4 class="text-center">LỢI ÍCH KHI GÓP ĐỀ</h4>
+            <ul>
+                <li><h5>Nhận được tối đa 20 đề thi miễn phí với số lần tải về không hạn chế</h5></li>
+                <li><h5>Nhận 100 điểm khi có người khác tải đề của bạn</h5></li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <div class="row justify-content-center">
+        <div class="col-sm-7 m-1 p-1 text-center">
+            <span id="err" class="text-success">
+                {% if status %} {{status}} {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="row d-flex justify-content-center">
+        <h4 class="text-center text-success m-1 p-1">ĐÓNG GÓP ĐỀ THI BẠN CÓ</h4>
+        <div class="col-sm-8 ">
+        <form method="post" action="{{url_for('gopde') }}" enctype = "multipart/form-data">
+            <div class="input-group mb-1">
+                <label class="input-group-text" style="width: 100px;">Đề thi</label>
+                <select class="form-control" name="kythi">
+                    <option>Tuyển sinh 10</option>      <option>HSG THCS</option>
+                    <option>HSG THPT</option>    <option>HSG Chọn Đội tuyển</option>
+                    <option>Olympic 30/4</option>       <option>Duyên Hải Bắc Bộ</option>
+                    <option>Tin học trẻ</option>        <option>Trại hè</option>
+                    <option>Khác...</option>
+                </select>
+            </div>
+            <div class="input-group mb-1 form-inline">
+                <label class="input-group-text" style="width: 100px;">Tỉnh</label>
+                <select class="form-control me-1" name="tinh" >
+                    {% for t in tinh %}
+                        <option>{{t}}</option>
+                    {%endfor%}
+                </select>
+                <label class="input-group-text" style="width: 100px;">Năm học</label>
+                <select class="form-control" name="year">
+                    {% for y in range(10,0,-1) %}
+                        <option>{{y+year-5}}-{{y+year-4}}</option>
+                    {%endfor%}
+                </select>
+            </div>
+            <!-- <div class="input-group mb-1">
+                <label class="input-group-text" style="width: 100px;">Link</label>
+                <input class="form-control" type="text" name="link">
+            </div> -->
+            <!-- <div class="input-group mb-1">
+                <input type = "file" class="form-control" name = "file" id="file" onchange="fileValidation();" />
+            </div> -->
+            <div class="input-group">
+                <span class="input-group-text" style="width: 100px;">Ghi chú</span>
+                <textarea class="form-control" aria-label="With textarea" name="note"></textarea>
+            </div>
+            
+            {%for file in datagopde %}
+            <div class="input-group mb-1 mt-1">
+                <input type="file" class="form-control" id="{{file[0]}}" aria-describedby="{{file[0]}}" aria-label="{{file[0]}}" name="{{file[0]}}" accept="{{file[3]}}" {{file[2]}} max="20Mb">
+                <label class="input-group-text" for="{{file[0]}}">{{file[1]}}</label>
+            </div>
+            {%endfor%}
+            <div class="input-group mb-1 mt-1">
+                {%if fhp_permit(['admin'])%}
+                    <input type="file" multiple="" class="form-control" id="testcase" aria-describedby="testcase" aria-label="testcase" name="testcase" accept=".zip" max="200Mb">
+                {%else%}
+                    <input type="file" multiple="" class="form-control" id="testcase" aria-describedby="testcase" aria-label="testcase" name="testcase" accept=".zip" max="200Mb" required>
+                {%endif%}
+                <label class="input-group-text" for="testcase">Bộ tests (*.zip)</label>
+            </div>
+            <div class="row justify-content-md-center d-flex">
+                <div class="col-sm-8 form-check m-1 p-1">
+                    <input class="form-check-input" type="checkbox" value="" id="checker" name="checker" onchange="changeSubmit();">
+                    <label class="form-check-label text-success" for="checker">
+                        <strong>Bạn đã đọc kỹ và đồng ký với các <a href="https://hpcode.edu.vn/tintuc/21"> điều kiện</a></strong>
+                    </label>
+                </div>
+            </div>
+            <div class="row justify-content-center align-items-center m-1 p-1" >
+                <div class="col-sm-4 d-grid gap-2"> 
+                    <input class="btn btn-lg btn-success" id="submit"  type="submit" value="Submit" disabled>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+    
+    <hr>
+    <h4 class="text-success text-center">Các đề bạn đã đóng góp</h4>
+    {% if dethi|length==0 %}
+        <h5 class="text-success text-center">Bạn chưa đóng góp đề</h5>
+    {%else%}
+    {% set shownamekythi = 0 %}
+        {%include '_dethi.html'%}
+    {%endif%}
+    <hr>
+    <h4 class="text-success text-center">Các đề bạn đã tải</h4>
+    <div class="row justify-content-center">
+        <div class="col-sm-11">
+            {%for d in denhan%}
+                {{loop.index}}. Kỳ thi <b>{{d['kythi']}}</b> năm <b>{{d['year']}}</b> tỉnh <b>{{d['tinh']}}</b>&nbsp; 
+                <small>Đóng góp: {{d['username']}} - Ngày tải: {{conertTimePythontoHTML(d['ngaytai'])}}</small> <br>
+            {%endfor%}
+        </div>
+    </div>
+<script>
+    function fileValidation() {
+        document.getElementById("err").innerHTML = "";
+        var fileInput = document.getElementById('file');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.zip)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            document.getElementById("err").innerHTML = "Chỉ được upload *.zip";
+            document.getElementById("submit").disabled = true;
+            return false;
+        } 
+        document.getElementById("submit").disabled = false;
+        return true;
+    }
+    function changeSubmit()
+    {
+        if (document.getElementById('checker').checked)
+        {
+            document.getElementById("submit").disabled = false;
+        }
+         else 
+         {
+            document.getElementById("submit").disabled = true;
+         }
+
+    }
+</script>
+{% endblock %}

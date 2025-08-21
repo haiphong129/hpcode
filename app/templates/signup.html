@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+   	<h2 class="text-center"> ĐĂNG KÝ </h2>
+    <p class="text-center text-danger" id="err"> {{ error }} </p>
+    <div class="row justify-content-center align-items-center m-1">
+        <div class="col-sm-6 m-1 p-1">
+            <form method="post" action="{{ url_for('signup') }}" onsubmit="return on_submit()">
+                <div class="input-group mb-1 mt-1">
+                    <span class="input-group-text" style="width: 150px;">Họ và tên</span>
+                    <input type="text" class="form-control" name="fullname" id="fn" value="{{ request.form.fullname }}" required>
+                </div>
+                <div class="input-group mb-1">
+                    <span class="input-group-text" style="width: 150px;">Email</span>
+                    <input type="email" class="form-control" name="email" id="email" value="{{ request.form.email }}" required>
+                </div>
+                <div class="input-group mb-1">
+                    <span class="input-group-text" style="width: 150px;">Tên đăng nhập</span>
+                    <input type="text" class="form-control " name="username" id="username" required>
+                </div>
+                <div class="input-group mb-1">
+                    <span class="input-group-text" style="width: 150px;">Mật khẩu</span>
+                    <input type="password" class="form-control" name="password" id="pass" required>
+                </div>
+                <div class="input-group mb-1">
+                    <span class="input-group-text" style="width: 150px;">Nhập lại mật khẩu</span>
+                    <input type="password" class="form-control" name="Repassword" id="repass" required>
+                </div>
+                <div class="input-group mb-1">
+                    <span class="input-group-text" style="width: 150px;">Ngôn ngữ lập trình</span>
+                    <select class="form-select" name="lang" required>
+                        <option value="python">Python</option>
+                        <option value="c_cpp">C++</option>
+                        <option value="pascal">Pascal</option>
+                    </select>
+                </div>
+                
+                <div class="row justify-content-center align-items-center m-1">
+                    <div class="col-sm-4 d-grid gap-2">
+                        <input class="btn btn-success" type="submit" value="Đăng ký" id="submit" >
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <p class="text-center text-danger"> 
+        Các tài khoản đăng ký mới có thời hạn sử dụng 30 ngày và 300 lượt nộp bài.
+    </p>
+    <p class="text-center text-danger"> 
+        <b>Lưu ý quan trọng</b>: Các thông tin bạn nhập không được mang ý nghĩa <b>tục tĩu, đen tối, phản động,...</b>Tất cả các tài khoản sẽ bị khóa ngay lập tức nếu vi phạm mà không có thông báo trước.
+        <br>Admin có quyền quyết định và không giải thích.
+    </p>
+ <script type="text/javascript">
+
+    function on_submit() 
+    {
+        var regex = /[^a-z0-9_]/;
+        var username=document.getElementById('username').value;
+        var pass=document.getElementById('pass').value;
+        var repass=document.getElementById('repass').value;
+        var fn=document.getElementById('fn').value;
+        var err="";
+        if(regex.test(username)) err =err+ "<b>Tên đăng nhập </b>Chỉ được dùng chữ cái in thường hoặc số hoặc dấu gạch dưới.<br>";
+        if(username.length>15) err =err+ "<b>Tên đăng nhập </b>Tối đa 15 ký tự. ";
+        if(username.length<6) err =err+ "<b>Tên đăng nhập </b>Tối thiểu 06 ký tự. ";
+        if(pass!=repass) err=err+ "<b>Mật khẩu</b> không giống nhau. "
+        document.getElementById("err").innerHTML = err;
+        if(err!="") return false;
+        return true;
+    }
+ </script>
+{% endblock %}

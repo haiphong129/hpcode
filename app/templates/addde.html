@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-sm-8  border border-success rounded m-1 p-1 text-center">
+            <form method="post" enctype="multipart/form-data" action="{{url_for('addde',idx=info.id)}}" >
+                <input type="hidden" name="num" value="{{post|length}}">
+                <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                        <div class="input-group mb-1 p-1 m-1">
+                        <span class="input-group-text" >Người đóng góp</span>
+                            <select class="form-select" aria-describedby="nguoigop" name="nguoigop" title="Người đóng góp">
+                                <option selected value="{{info.username}}">{{info.username[:20]}}</option>
+                                {% for user in luser %} <option>{{user[:20]}}</option>{%endfor%}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-11">
+                        <div class="input-group mb-1 p-1 m-1">
+                            <select class="form-select" aria-describedby="tenkithi" name="tenkythi" title="Tên kỳ thi">
+                                <option selected value="{{info.kythi}}">{{info.kythi}}</option>
+                                <option>Tuyển sinh 10</option>      <option>HSG THCS</option>
+                                <option>HSG THPT</option>    <option>HSG Chọn Đội tuyển</option>
+                                <option>Olympic 30/4</option>       <option>Duyên Hải Bắc Bộ</option>
+                                <option>Tin học trẻ</option>        <option>Trại hè</option>
+                                <option>Khác...</option>
+                            </select>
+
+                            <span class="input-group-text" >Tỉnh</span>
+                            <select class="form-select" aria-describedby="tinh" name="tinh" title="Tỉnh/TP">
+                                <option selected value="{{info.tinh}}">{{info.tinh}}</option>
+                                {% for t in tinh %} <option>{{t}}</option>{%endfor%}
+                            </select>
+
+                            <span class="input-group-text" >Năm</span>
+                            <select class="form-select " aria-describedby="year" name="year" title="Năm">
+                                <option selected value="{{info.year2}}">{{info.year2}}</option>
+                                {% for t in range(info.ngaygop.year-10,info.ngaygop.year+2) %} <option>{{t}}-{{t+1}}</option>{%endfor%}
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-sm-10">
+                        <span class=" text-success">Chọn tệp <b>*.docx</b> để upload đề/solution</span>
+                        <input type="file" multiple="" class="form-control" id="file" name="file[]" >
+                        {% if info.dedocx %} Đề.docx {% endif%}
+                        {% if info.depdf %} Đề.pdf  {% endif%}
+                        {% if info.sol %} Hướng_dẫn  {% endif%}
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-10 form-floating">
+                        <div class="input-group mb-1 p-1 m-1">
+                            <span class="input-group-text" >Ghi chú</span>
+                            <input type="text" class="form-control" name="notetitle" value="{{info.notetitle}}">
+                        </div>
+                    </div>
+                </div>
+                {%for d in post %}
+                <div class="row justify-content-center p-1 m-1">
+                    <div class="col-sm-2">
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm" name="stt{{loop.index}}">
+                            <option value="{{d['stt']}}">{{d['stt']}}</option>
+                                {%for i in range(10)%}
+                                    <option value={{i}}>{{i}}</option>
+                                {%endfor%}
+                        </select>
+                    </div>
+                    <div class="col-sm-7">
+                        {%if d['stt']==0%}
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm" name="idp{{loop.index}}">
+                            <option value="{{d['id']}}">{{d['idname']}}</option>
+                                {%for px in allpost%}
+                                    <option value={{px.id}}>{{px.id_p}} - {{px.id_name}}</option>
+                                {%endfor%}
+                        </select>
+                        {%else%}
+                        <input type="hidden" name="idp{{loop.index}}", value="{{d['id']}}">
+                        <a href="{{ url_for('viewpr',idp=d['idp']) }}" target="_blank">{{d['idname']}}</a>
+                        {%endif%}
+                    </div>
+                </div>
+                {%endfor%}
+                <div class="row justify-content-center">
+                    <div class="d-grid gap-2 col-sm-3">
+                        <input class="btn btn-success" id="submit"  type="submit" value="Submit">
+                    </div>
+                </div>
+            </form>
+            
+            <span class="text-danger"><small>Chọn số thứ thự bằng 0 để xóa</small></span>
+        </div>
+    </div>    
+    <hr>
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+        {%for d in data%}
+          <div class='row'>
+              <a href="{{ url_for('addde',idx=d.id) }}">{{loop.index}}.<b>{{d.kythi}}</b> tỉnh <b>{{d.tinh}}</b> năm <b>{{d.year2}}</b> [<b>{{d.username}}</b>]</a>
+          </div>  
+        {%endfor%}
+        </div>
+    </div>
+{% endblock %}

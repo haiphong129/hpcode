@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block content %}
+    {%if post.id %}
+      <h4 class="text-success text-center">Sửa bài <strong><a href="{{ url_for('viewpr',idp=post.id_p) }}"> {{post.id_p}}</a></strong></h4>
+    {%else%}
+        <h4 class="text-success text-center">Thêm mới bài tập</h4>
+    {%endif%}
+        
+    {% if err %} <p class="text-danger text-center">{{err}}</p>  {% endif %}
+    
+    <form method = "POST"  enctype = "multipart/form-data" action="{{url_for('adminproblem')}}" >
+    <div class="form-group">
+        <div class="row justify-content-md-center d-flex">
+            <div class="col-md-2 mb-1 form-floating text-center">
+
+                {%if post.id %}
+                    <b>Mã bài</b><br>{{post.id_p}}
+                    <input type="hidden" name="id_p" value="{{post.id_p}}">
+                    <input type="hidden" value="lhphongah" id="id_p">
+                {% else %}
+                    <input type="text" class="form-control" name="id_p" id="id_p" value="{{post.id_p}}" onkeyup="check();">
+                    <label for="id_p"><b>Mã bài</b></label>
+                {%endif%}
+                
+            </div>
+            <div class="col-md-5 mb-1 form-floating">
+                <input type="text" class="form-control text-center" name="id_name" id="id_name" value="{{post.id_name}}" onkeyup="check();">
+                <label for="id_name"><b>Tên bài</b></label>
+            </div>
+            
+        </div>
+        <p class="text-danger text-center">
+            <span id="errid_p"></span>
+            <span id="errid_name"></span>
+        </p>
+
+        <div class="row m-1 p-1 justify-content-center">
+        <div class="col-sm-10">
+            <div class="input-group mb-1 p-1 m-1">
+                <span class="input-group-text" id="exe">Pas/Cpp</span>
+                <select class="form-select" aria-describedby="exe" name="exe" title="Thời gian chấm cho Pascal/C++">
+                    <option selected value="{{conf.tlexe}}">{{conf.tlexe}}s</option>
+                    {% for i in range(1,10,1) %}
+                        {%if conf.tlexe!=i %}
+                            <option value={{i}}>{{i}}s</option>
+                        {%endif%}
+                    {%endfor%}
+                </select>&nbsp
+                <span class="input-group-text" id="py">Py</span>
+                <select class="form-select" aria-describedby="py" name="py" title="Thời gian chấm cho Python">
+                    <option selected value="{{conf.tlpy}}">{{conf.tlpy}}s</option>
+                    {% for i in range(2,10,2) %}
+                        {%if conf.tlpy!=i %}
+                            <option value={{i}}>{{i}}s</option>
+                        {%endif%}
+                    {%endfor%}
+                </select>&nbsp
+                
+                <span class="input-group-text" id="tc">Tc</span>
+                <select class="form-select" aria-describedby="tc" title="Trình chấm bài" name="tc">
+                    <option selected value="{{conf.juger}}">{{conf.juger}}</option>
+                    {% for i in ['c1','c2','c3','s1','s2','ex'] %}
+                        {%if conf.juger!=i %}
+                            <option value={{i}}>{{i}}</option>
+                        {%endif%}
+                    {%endfor%}
+                </select>&nbsp
+                <span class="input-group-text" id="e">E</span>
+                <select class="form-select" aria-describedby="e" title="Sai số (chỉ áp dụng với c3)" name="e">
+                    <option selected value="{{conf.exp}}">{{conf.exp}}</option>
+                    {% for i in [0.001,0.0001,0.00001,0.000001,0.0000001,0.00000001] %}
+                        {%if conf.exp!=i %}
+                            <option value={{i}}>{{i}}</option>
+                        {%endif%}
+                    {%endfor%}
+                </select>&nbsp
+            </div>
+        </div>
+        </div>
+        
+        <div class="row justify-content-md-center d-flex">
+            <div class="col-sm-8 text-center form-check">
+                <div class="input-group mb-1 p-1 m-1">
+                    <span class="input-group-text" id="source">Nguồn</span>
+                    <input type="text" class="form-control" name="source" id="source" value="{{post.source}}" placeholder="VNOI, LQDOJ, Codeforces...">
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center d-flex">
+            <div class="col-sm-8 text-center">
+                <div class="input-group mb-1 p-1 m-1">
+                    <span class="input-group-text" id="file_docx">File docx</span>
+                    <input type = "file" name = "file_docx" id="file_docx" class="form-control " accept=".docx" max="5Mb"/>
+                </div>
+            </div>
+         </div>
+        <div class="row justify-content-md-center d-flex">
+            <div class="col-sm-8 text-center">
+                <div class="input-group m-1 p-1">
+                    <span class="input-group-text" id="file_docx">Phân loại</span>
+                    <input type="text" class="form-control" name="tag" id="tag" value="{{ tag }}" placeholder="dp,math,if,...">
+                </div>
+                <small class="form-text text-muted">Các thẻ không được có ký tự trắng, giữa hai thẻ phải/được ngăn cách bởi dấu phẩy</small>
+            </div>
+        </div>
+
+        <div class="row pt-1 pb-1 justify-content-center align-items-center" >
+            <div class="col-sm-4 d-grid gap-2">
+        	   <input class="btn btn-success d-grid gap-2" id="submit"  type="submit" value="Submit">
+       	    </div>
+        </div>
+    </div>
+    </form>
+    <hr>
+    {%if post.body%}
+    <h4 class="text-center text-success">Nội dung bài tập</h4>
+    <div class="row justify-content-center d-flex">
+        <div class="col-sm-10 p-1 m-1">
+            {{post.body|safe}}
+        </div>
+    </div>
+    {%endif%}
+ <script type="text/javascript">
+   function check() 
+    {
+        var ok="{{listp}}";
+        //alert(ok);
+        var regex = /\W/;
+        var x=document.getElementById('id_p').value;
+        //alert('&#39'+x+'&#39');
+        var err="";
+        var err1="";
+        if(x=="") err="Không được để trống <b>Mã bài tập</b>. ";
+        if(regex.test(x)) err = "Chỉ được dùng chữ cái và số. ";
+        if(x.length>15) err = "Tối đa 15 ký tự. ";
+        if(ok.indexOf('&#39;'+x+'&#39;')!==-1) err = err +"<b>Mã bài tập đã có</b>. "
+        
+        var x=document.getElementById('id_name').value;
+        if(x=="") err1="Không được để trống Tên bài tập.";
+        document.getElementById("errid_name").innerHTML = err1;
+        document.getElementById("errid_p").innerHTML = err;
+        if(err1!=""){
+            document.getElementById("errid_name").style.color = "#ff0000";
+            document.getElementById("id_name").style.borderColor = "red";
+        } else {
+            document.getElementById("id_name").style.borderColor = "green";
+        }
+
+        
+        if(err!=""){
+            document.getElementById("errid_p").style.color = "#ff0000";
+            document.getElementById("id_p").style.borderColor = "red";
+        } else{
+            document.getElementById("id_p").style.borderColor = "green";
+        }
+
+        if((err!="")||(err1!="")){
+            document.getElementById("submit").disabled = true;
+        } else {
+            document.getElementById("submit").disabled = false;
+        }   
+    }
+ </script>
+ <script>
+    $(function () {
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [["~","~"],["\\(","\\)"]]}
+            });
+            // alert("{{post.body}}");
+            document.getElementById("md-editor").value="{{post.body}}";
+            var QUEUE = MathJax.Hub.queue;
+            var simplemde = new SimpleMDE({
+                element: document.getElementById("md-editor"),
+                spellChecker: false,
+                previewRender: function(plainText) {
+                    var preview = document.getElementsByClassName("editor-preview-side")[0];
+                    preview.innerHTML = this.parent.markdown(plainText);
+                    preview.setAttribute('id','editor-preview')
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,"editor-preview"]);
+                    return preview.innerHTML;
+                },
+            });
+
+        })
+</script>
+{% endblock %}

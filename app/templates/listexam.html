@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="table-responsive justify-content-center">
+    <table class="table table-hover table-bordered table-striped" width="100%">
+    <thead>
+        <tr class="text-center">
+            <th>TT</th>
+            <th>Tài khoản</th>
+            <th>Bài tập</th>
+            <th>Ngôn ngữ</th>
+            <th>Xem Code</th>
+            <th>Del</th>
+            <th>Chấm bài</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for d in listsub %}
+   <tr class="small">
+        <td class="text-center">{{ loop.index}}</td>
+        <td><a href="{{url_for('info',user=d['user'])}}"target="_blank"class="link">{{ d['user'] }}</a></td>
+        <td><a href="{{ url_for('viewpr',idp=d['id_p']) }}">{{ d['id_p'] }}</a></td>
+        <td class="text-center">{{ d['ext'] }}</td>
+        <td class="text-center">
+            <a href="{{ url_for('viewcodeex',info=d['ids']) }}" class="link" target="_blank" >xem</a>
+        </td>
+        <td class="text-center">
+            <a href="{{ url_for('delsubex',idx=d['ids']) }}" class="link" target="_blank" >Del</a>
+        </td>
+        <td class="text-center">{{ d['graded'] }}</td>
+    </tr>
+    {% endfor %}        
+    </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

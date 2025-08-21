@@ -1,0 +1,23 @@
+{%if fhp_permit(["superadmin","admin"])==1 %}
+  <div class="border border-danger rounded m-0 p-0 mb-1">
+  <table class="table table-hover table-borderless table-sm">
+    <thead m-0 p-0>
+      <tr class="text-center bg-danger">
+        <th class="align-middle text-white">Admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in menus[1] %}
+        <tr class="p-0 m-0">
+          <td class="p-0 m-0 text-center">
+            <a class="link" aria-current="page" href="{{ url_for('index',menu=m[0]) }}"><small>{{m[1]}}</small></a>
+          </td>
+        </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+  </div>
+{%endif%}
+      
+          
+    

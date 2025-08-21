@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center">
+    
+    <div class="col-sm text-center border">
+        <h4 class="text-center text-success">{{namekythi}}</h4>
+        {%if stt==1%}
+            <span class="text-danger text-center"><b>Bạn không có lượt tải miễn phí!<br> Bạn cần có 500 điểm để tải đề thi này</b></span><br>
+            <a type="button" class="btn btn-success text-center" href = "{{ url_for('taidethi',idde=idde,allow=500,kythi=namekythi) }}" title="Đề bài, code, tests, hướng dẫn"> Toàn bộ đề thi với 500 điểm</a>
+        {%elif stt==2%}
+            <span class="text-danger "><b> Bạn không đủ điểm để tải đề thi!</b><br>
+            <span class="text-success "><b>Hãy <a href="{{ url_for('gopde') }}">Góp 01 đề thi</a> để nhận được 20 lượt tải đề miễn phí</b><br>
+            <span class="text-success "><b>Hoặc giải bài tập để có điểm!</b><br></span>
+        {%else%}
+            <h5 class="text-center text-success">Đợi 1 chút, tôi đang chuẩn bị đề cho bạn!</h5>
+            <div id="getinfo" class="border overflow-auto" style="height: 400px;"><p class="text-left"></p></div>
+            <p class="text-success">Bạn còn <b>{{sode_conlai}}</b> lượt tải miễn phí</p>    
+        {%endif%}
+    </div>
+    
+</div>
+
+<script>
+    function updateScroll(){
+        var element = document.getElementById("getinfo");
+        element.scrollTop = element.scrollHeight;
+    }
+    var refreshId = setInterval(function() {
+        
+            if('{{stt}}'!=3) clearInterval(refreshId);
+             var flog='/static/chambai/tmp/dethi_{{idde}}.txt';
+             var y=$.getScript(flog);
+                 y.done(function(data) { 
+
+                     var dt=data.replaceAll("\n", "<br>");
+                     document.getElementById("getinfo").innerHTML = dt.toString();
+                     updateScroll()
+                     if(dt.indexOf("click vào đây để tải về")>-1)  clearInterval(refreshId);
+                 });
+                  
+         },1000);
+ </script>
+
+{% endblock %}

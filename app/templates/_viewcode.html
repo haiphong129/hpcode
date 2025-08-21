@@ -1,0 +1,49 @@
+<div class="row justify-content-center align-items-center m-1">
+    <div class="col-sm-6 text-center">
+        <h5>Chương trình của <span class="text-success"><b>{{data["user"]}}</b></span></h5>
+    </div>
+</div>
+<div class="row justify-content-center align-items-center m-1">
+    <div class="col-sm-6 text-center">
+        <h5>Bài tập <span class="text-success">
+            <b><a href="{{ url_for('viewpr',idp=data['pro']) }}"> {{data["namepr"]}}</a></b>
+            </span></h5>
+    </div>
+</div>
+<div class="row justify-content-center d-flex">
+    <div class="col-sm-{{data['width']}}" id="editor">{{data["code"]}} </div>
+</div>
+{% if data["log"] %}
+<div class="row justify-content-center d-flex">
+    <div class="col-sm-{{data['width']}} m-1 pt-3 text-center" ><h5><span class="text-success"><b>Kết quả</b></span></h5></div>
+</div>
+{% endif %}
+<div class="row justify-content-center d-flex">
+    <div class="col-sm-auto" >{{data["log"]|safe}} </div>
+</div>
+<script src="/static/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/{{data['ext']}}");
+    editor.setFontSize(15);
+    editor.setAutoScrollEditorIntoView(true);
+    editor.setReadOnly(true);
+    editor.setOption("maxLines", 80);
+    editor.setOption("minLines", 10);
+    editor.resize();
+</script>
+<div class="row justify-content-center d-flex">
+    <div class="col-sm-auto" >
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+    <!-- first -->
+    <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="2091597288"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+</div>

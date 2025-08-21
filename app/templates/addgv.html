@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+     <div class="row d-flex justify-content-center">
+          <div class="col-sm-4 text-center ">
+               <h2 class="text-center">Thêm giáo viên</h2>
+               <form method="post" action="{{url_for('addgv') }}">
+                    <input type="text" class="form-control p-1 m-1" placeholder="Username" name="username" value="{{request.form.username }}">
+                    <input type="number" class="form-control p-1 m-1" placeholder="Số lượng" name="sl" value="{{request.form.sl }}">
+                    <input class="btn btn-success p-1 m-1" type="submit" value=" Submit ">
+               </form>
+               <p class="error"> {% if status %} {{ status|safe }} {% endif %}</p>
+          </div>
+    </div>
+    <hr>
+    <h2 class="text-center">Danh sách giáo viên đã thêm</h2>
+    <div class="row d-flex justify-content-center">
+          <div class="col-sm-5">
+               <ol class="p-1 m-1">
+               {%for x in data%}
+                    <li>
+                         <span class="text-success"><b>{{x.fullname}} </b> - {{x.username}} - {{x.sl}}</span>
+                         <a href="{{url_for('delgv', id=x.username)}}" class="btn btn-danger btn-sm p-0 m-0">Xóa</a>
+                    </li>
+               {%endfor%}
+               </ol>
+          </div>
+     </div>
+    
+{% endblock %}

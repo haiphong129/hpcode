@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="text-center text-success">RÚT GỌN LINK</h3>
+    <form method="post" action="{{url_for('shortlink')}}">
+    <div class="form-group">
+        <div class="row justify-content-center d-flex">
+            <div class="col-sm-5 mb-1 form-floating text-center">
+                <input type="url" class="form-control" name="link" id="link" value="{{data['link']}}">
+                <label for="link"><b>Link</b></label>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex">
+            <div class="col-sm-5 mb-1 form-floating">
+                <input type="text" class="form-control text-center" name="title" id="title" value="{{data['title']}}">
+                <label for="title"><b>Tiêu đề</b></label>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex">
+            <div class="col-sm-3 mb-1 form-floating">
+                <input type="text" class="form-control text-center" name="shortlink" id="shortlink" value="" onkeyup="check();">
+                <label for="shortlink"><b>Mã rút gọn</b></label>
+            </div>
+            <div class="col-sm-3 mb-1 form-floating">
+                <input type="text" class="form-control text-center" name="timewait" id="timewait" value="{{data['timewait']}}">
+                <label for="timewait"><b>Thời gian chờ</b></label>
+            </div>
+        </div>
+        <p class="text-danger text-center"><span id="err"></span></p>
+        <div class="row pt-1 pb-1 justify-content-center align-items-center" >
+            <div class="col-sm-5 d-grid gap-2">
+        	   <input class="btn btn-success d-grid gap-2" id="submit"  type="submit" value="Submit">
+       	    </div>
+        </div>
+    </div>
+    </form>
+    <div class="row justify-content-center d-flex">
+        <div class="col text-center">
+            {%if check==1%}
+                Link rút gọn: {{data['domain']+data['shortlink']}}<br>
+            {%endif%}    
+            {%if status %} {{status|safe}} {%endif%}
+        </div>
+    </div>
+    <hr>
+    <div class="justify-content-center d-flex row">
+        <div class="col-sm text-center">
+            <b>Đã có <span class="text-success">{{data['countviewlink']}}</span> lượt xem</b>
+        </div>
+    </div>
+    <hr>
+<div class="table-responsive justify-content-center">
+        <table class="table table-hover table-bordered table-striped" width="100%">
+        <thead>
+            <tr class="text-center">
+                <th>TT</th>
+                <th>Tiêu đề</th>
+                <th>Link rút gọn</th>
+                <th width="10%">Thời gian chờ</th>
+                <th width="10%">Số lượng</th>
+                <th>Update</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for d in datalink %}
+        <tr class="small">
+        <form method="post" action="{{url_for('updateshortlink')}}">
+            <td class="text-center">{{ loop.index }}</td>
+            <td class="text-center">
+                <input type="text" name="title" value="{{d['title']|safe}}" class="form-control {{d['slink']}}">
+            </td>
+            <td class="text-center">
+                <a href="{{data['domain']+d['shortlink']}}" class="link" target="_blank">{{data['domain']+d['shortlink']}}</a>
+                <input type="hidden" value="{{d['shortlink']}}" name="shortlink">
+            </td>
+            <td class="text-center">
+                <input type="number" name="timewait" value="{{d['timewait']}}" class="form-control">    
+            </td>
+            <td class="text-center" > {{d['sl']}}</td>
+            <td class="text-center">
+                <input class="btn btn-success btn-sm" id="submit"  type="submit" value="Update" class="form-control">
+            </td>
+            <td class="text-center">
+                <a href="{{url_for('editlink',key=d['shortlink'])}}" target="_blank">Edit</a>
+            </td>
+        </form>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+</div>
+
+ <script type="text/javascript">
+   function check() 
+    {
+        var regex = /\W/;
+        var x=document.getElementById('shortlink').value;
+        var err="";
+        if(regex.test(x)) err = "Chỉ được dùng chữ cái và số. ";
+        if(x.length>20) err = "Tối đa 20 ký tự. ";
+        document.getElementById("err").innerHTML = err;
+        document.getElementById("err").style.color = "#ff0000";
+        document.getElementById("shortlink").style.borderColor = "red";
+    }
+ </script>
+{% endblock %}

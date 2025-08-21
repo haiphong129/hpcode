@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+  <style type="text/css" media="screen">
+   #editor {
+        margin: 0;
+        position: sticky;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+      
+  </style>
+  
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta property="og:url"   content="{{session['meta']['url']}}" />
+  <meta property="og:title" content="{{session['meta']['title']}}" />
+  <meta property="og:description"  content="{{session['meta']['des']}}" />
+  <meta property="og:image" content="{{session['meta']['img']}}" />
+  
+  <title>{{session['meta']["title"]}}</title>
+  <script src="https://kit.fontawesome.com/8e3b3f6ba4.js" crossorigin="anonymous"></script>
+  <script src="../static/bootstrap/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
+  <link rel="stylesheet" href="../static/bootstrap/css/simplemde.min.css">
+  <script src="../static/bootstrap/js/simplemde.min.js"></script>
+  <script type="text/javascript" src="../static/bootstrap/js/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script src="../static/bootstrap/js/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B89DXCRW19"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-B89DXCRW19');
+</script>
+    
+</head>
+
+<body>
+  
+  <div class="container">
+    <!--Phần header-->
+    <div class="row p-0 m-0 d-flex justify-content-center">
+      <div class="col-xl-9 p-0 m-0">
+        {% include '_menu.html' %}
+      </div>
+      
+      <div class="col-xl dropdown p-0 m-0" >
+        
+        {% if current_user.is_authenticated %}
+              <img src="data:image/png;base64, {{current_user.imgbase64}}"  style="width: 50px;" class="rounded float-start mt-2"/>
+              <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="text-success"><strong>{{current_user.fullname}}</strong></span><br>
+                <small>Điểm: {{current_user.ndow}}</small>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+                <li><a class="dropdown-item" href="{{ url_for('info') }}">Thông tin</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Thoát</a></li>
+              </ul>
+          
+          {% else %}
+              <img src='/static/lhp.jpg' style="width: 50px;" class="rounded float-start mt-2"/>
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                Anonymous
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+                <li><a class="dropdown-item" href="{{ url_for('login') }}">Đăng nhập</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('signup') }}">Đăng ký</a></li>
+              </ul>
+          
+          {% endif %}
+        
+      </div> 
+    </div>
+
+    <!--Phần nội dung-->
+    <div class="row justify-content-center d-flex">
+      <div class="col-xl-10 p-0 m-0">
+        {% include '_notice.html' %}
+      </div>
+    </div>
+    <div class="row justify-content-center d-flex p-0 m-0">
+      <!--Bên trái-->
+        <div class="col-xl-9 p-0 m-0 border rounded-3" >
+          {% block content %}
+          {% endblock %}
+        </div>
+      <!--Bên phải-->
+        <div class="col-xl-3 p-0 m-0">
+          {% include '_hansudung.html' %}
+          <div>
+            <a href="https://www.facebook.com/hpcode.edu.vn">
+              <img src="/static/hinhanh/hpcode.png" alt="hpcode.edu.vn" class="img-fluid img-thumbnail" style="width: 100%;">
+            </a>
+          
+        </div>
+          {% include '_codetichcuc.html' %}
+          {% include '_menuadmin.html' %}
+          
+          {%if current_user.is_authenticated %}
+            {% include '_dexuat.html' %}
+          {%endif%}
+          
+          {% include '_newcontest.html' %}
+          <!-- {% include '_newpro.html' %} -->
+          {% include '_thongke.html' %}
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="2091597288"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        </div>
+    </div>
+    <!--Phần Footer-->
+    <div class="row justify-content-center d-flex m-1 p-1 border-top" >
+      <div class="col-xl-auto text-center">
+        <img src="{{ url_for('static', filename='favicon.ico') }}" width="70px"><br>
+        <span class="text-success">
+          <b>Lưu Hải Phong - 2020</b><br>
+          haiphong129.88@gmail.com
+        </span>
+      </div>
+    </div>
+
+</div>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- Cố định ngang -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:720px;height:90px"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3322050954"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+     
+    <form action="{{ url_for('resetranking') }}" method = "POST">
+        <div class="row justify-content-center">
+            <div class="col-sm-auto p-1 m-1">
+                <input type="text" class="form-control p-1 m-1" name="cname" placeholder="Mã Contest" value="{{request.form.cname}}"> 
+                <input type="submit" name="submit" class="form-control btn btn-block btn-primary" value="Reset Ranking">
+            </div>
+        </div>
+    </form>
+    <hr>
+    {%if request.form.cname %}
+        <p class="text-center"><a href="{{ url_for('ranking',cname=request.form.cname)}}">Bảng xếp hạng {{request.form.cname}}</a></p>
+    {%endif%}
+    
+{% endblock %}

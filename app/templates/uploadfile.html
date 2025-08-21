@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% set  subtitle= "Upload test" %}
+{% block content %}
+    
+    <form method=post enctype=multipart/form-data action="{{url_for('uploadfile')}}">
+        <div class="row justify-content-center">
+            <div class="col-sm-7 m-1 p-1 text-center">
+                <span class=" text-success">Chọn tệp *.zip hoặc *.docx</span>
+            <div class="input-group">
+                <input type="file" class="form-control" id="file" name="file"  onchange="return fileValidation()">
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-7 m-1 p-1 text-center">
+                <span id="err" class="text-danger">
+                    {% if status %} <span class="text-success">{{status}}</span> {% endif %}
+                </span>
+            </div>
+        </div>
+    </form>
+
+    
+    
+    <hr style="height:2px;border-width:1;color:red;background-color:green" class="m-0">
+    <div class="row">
+        <div class="col-sm p-1 m-1"><h5>Các bài chưa có test ({{ltest|length}})</h5> </div>
+    </div>
+    <div class="row">
+        <div class="col-sm p-1 m-1">
+            {% for post in ltest %}
+                <a href="{{url_for('viewpr',idp=post[:-4])}}"><b>{{post[0]}}</b>{{post[1:]}}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <hr style="height:2px;border-width:1;color:red;background-color:green" class="m-0">
+    <div class="row">
+        <div class="col-sm p-1 m-1"><h5>Các bài chưa có Solution ({{lsol|length}})</h5> </div>
+    </div>
+    <div class="row">
+        <div class="col-sm p-1 m-1">
+            {% for post in lsol %}
+                <a href="{{url_for('viewpr',idp=post[:-9])}}"><b>{{post[0]}}</b>{{post[1:]}}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <hr style="height:2px;border-width:1;color:red;background-color:green" class="m-0">
+    <div class="row">
+        <div class="col-sm p-1 m-1"><h5>Các bài chưa có đề (*.docx) ({{lpr|length}})</h5> </div>
+    </div>
+    <div class="row">
+        <div class="col-sm p-1 m-1">
+            {% for post in lpr %}
+                <a href="{{url_for('viewpr',idp=post[:-5])}}"><b>{{post[0]}}</b>{{post[1:]}}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+
+        function fileValidation() {
+            document.getElementById("err").innerHTML = "";
+            var fileInput = document.getElementById('file');
+            var filePath = fileInput.value;
+            //alert("{{post}}");
+            var allowedExtensions = /(\.zip|\.docx)$/i;
+            if (!allowedExtensions.exec(filePath)) {
+                document.getElementById("err").innerHTML = "Chỉ được upload *.zip/docx ";
+                return false;
+            } 
+            var filename = /([^\\]+)$/.exec(filePath)[1].toLowerCase();
+            var ext=filename.split('.')[1];
+            var name=filename.split('.')[0];
+            var tmpname=(name+'_').split('_')[0];
+            if("{{post}}".indexOf(tmpname)===-1)
+            {
+                document.getElementById("err").innerHTML = "File upload không thuộc bài tập bạn quản lý";
+                return false;
+            }
+            if("{{ltest}}".indexOf(filename)!==-1 && ext==='zip')  { return true; }
+            if("{{lsol}}".indexOf(filename)!==-1 && ext==='docx') { return true; }
+            if("{{lpr}}".indexOf(filename)!==-1 && ext==='docx')  {return true;}
+            document.getElementById("err").innerHTML = "file sẽ bị ghi đè";
+            return false;
+        }
+    </script>
+{% endblock %}

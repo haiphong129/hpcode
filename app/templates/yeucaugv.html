@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+   	<h2 class="text-center">YÊU CẦU</h2>
+    <form class="justify-content-center" method="post" action="{{url_for('yeucaugv') }}">
+    <div class="form-group border border-success ml-4 mr-4" >
+        <div class="row m-1 pt-2 ">
+            <div class="col-sm-4 text-right"><b>Tên đăng nhập: </b></div>
+            <div class="col-sm-8 text-left"> {{ current_user.username }} </div>
+        </div>
+
+        <div class="row m-1 pt-2" >
+        	<div class="col-sm-4 text-right"><b>Họ và tên: </b></div>
+        	<div class="col-sm-8 text-left"> {{ current_user.fullname }} </div>
+        </div>
+
+        <div class="row m-1 pt-2">
+        	<div class="col-sm-4 text-right"><b>Email: </b></div>
+        	<div class="col-sm-8 text-left"> {{ current_user.email }}  </div>
+        </div>
+       
+        <div class="row m-1 pt-2">
+            <div class="col-sm-4 text-right"><b>Trường: </b></div>
+            <div class="col-sm-6 text-left">
+                <input type="text" class="form-control" name="school">
+            </div>
+        </div>
+
+        <div class="row m-1 pt-2" >
+        	<div class="col-sm-4 text-right"><b>Zalo: </b></div>
+        	<div class="col-sm-6 text-left">
+        		<input type="text" class="form-control" name="zalo">
+        	</div>
+        </div>
+        
+        <div class="row m-1 pt-2">
+        	<div class="col-sm-4 text-right"><b>Facebook: </b></div>
+        	<div class="col-sm-6 text-left">
+        		<input type="text" class="form-control" name="fb">
+        	</div>
+        </div>
+
+        <div class="row m-1 pt-2 justify-content-md-center" >
+        	<div class="col-sm-4 ">
+        		<input class="btn btn-success btn-block"  type="submit" value="Submit">
+        	</div>
+        </div>
+        {% if err != None %} <p class="error text-center text-danger"><strong>{{ err }}</strong> </p> {% endif %}
+    </div>
+    </form>
+    
+    <hr>
+    <p class="text-center m-1 text-info"><strong>Danh sách yêu cầu quyền Giáo viên ({{ listyc|length}})</strong> </p>
+    {% if listyc|length==0 %}
+    <p class="text-center">Chưa có dữ liệu </p>
+    {% else %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">TT</th>
+                <th scope="col">username</th>
+                <th scope="col">Trường</th>
+                <th scope="col">Xác thực</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(listyc|length) %}
+            <tr>
+                <td> {{i+1}} </td>
+                <td> {{listyc[i][0]}}</td>
+                <td> {{listyc[i][1]}}</td>
+                <td> {{listyc[i][2]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+ </div>
+
+{% endblock %}

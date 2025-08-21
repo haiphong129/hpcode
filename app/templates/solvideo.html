@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+        <h4 class="text-center text-success">
+            Chọn Link youtube cho bài tập
+        </h4>
+        <form method = "post" action="{{ url_for('solvideo') }}" >
+            <div class="row m-1 p-1 justify-content-center">
+            <div class="col-sm-3 text-center border border-primary">
+                <select class="form-select form-select-sm" aria-label=".form-select-sm" name="idp">
+                    <option value="">Chọn bài tập</option>
+                    {%for px in allpost%}
+                        {%if idp==px.id%}
+                            <option value={{px.id}} selected>{{px.id_p}} - {{px.id_name}}</option>
+                        {%else%}
+                            <option value={{px.id}}>{{px.id_p}} - {{px.id_name}}</option>
+                        {%endif%}
+                    {%endfor%}
+                </select>
+            </div>
+            <div class="col-sm-5 text-center border border-primary">
+                <input type="text" class="form-control" name="ytlink" value="{{request.form.ytlink }}">
+            </div>
+            <div class="col-sm-2 text-center border border-primary">
+                <input type="submit" value="Submit" class="btn btn-sm btn-success">
+            </div>
+            </div>
+        </form>
+        {%if ytlink%}
+
+        <div class="row justify-content-center d-flex" >
+            <div class="col-sm-11 text-center responsive" id="playvideo">
+                <div class="ratio ratio-16x9 text-center mt-4 mb-4 ">
+                    <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/{{ytlink}}" allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+{% endblock %}

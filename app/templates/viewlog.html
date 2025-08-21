@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="row m-1 p-1 d-flex justify-content-center">
+		<div class="col-sm-auto text-center ">
+			<h4 class="text-success">{{title}}</h4>
+		{{data|safe}}
+		</div>
+	</div>
+	{% endblock %}

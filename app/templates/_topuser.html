@@ -1,0 +1,18 @@
+<div class="border border-success rounded m-0 p-0">
+  <table class="table table-hover table-borderless table-sm">
+    <thead class="m-0 p-0">
+      <tr class="text-center bg-primary ms-0 me-0">
+        <th class="align-middle ms-0 me-0 text-white" colspan="3">Top User</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for key in rankndow %}
+        <tr class="ms-0 me-0 p-0 border">
+          <td class="text-center "><small>{{rankndow[key][0]}}<small></td>
+          <td class="text-center  text-break"><small><a href="{{url_for('info',user=key)}} "target="_blank"class="link " title="{{key}}">{{key[:10]}}</a><small></td>
+          <td class="text-center"><small>{{rankndow[key][1]}}</small></td>
+        </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>

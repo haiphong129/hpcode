@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+  <style type="text/css" media="screen">
+   #editor {
+        margin: 0;
+        position: sticky;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    
+  </style>
+  
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  
+<body>
+<script src="/static/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
+{%for d in data %}
+    <br>
+    <div class="row justify-content-center align-items-center m-1 p-1">
+        <div class="col-sm-12 text-center">
+            <h5><span class="text-success">
+                <b>{{d["title"]}}</b>
+                </span></h5>
+        </div>
+    </div>
+    <div class="row justify-content-center d-flex">
+        <div class="col-sm-12" id="{{d['id']}}">{{d["code"]}} </div>
+    </div>
+
+    <script type="text/javascript">
+        var editor = ace.edit("{{d['id']}}");
+        editor.setTheme("ace/theme/twilight");
+        editor.session.setMode("ace/mode/{{d['ext']}}");
+        editor.setFontSize(15);
+        editor.setAutoScrollEditorIntoView(true);
+        editor.setReadOnly(true);
+        editor.setOption("maxLines", "{{d['numrow']}}");
+        editor.setOption("minLines", "{{d['numrow']}}");
+        editor.resize();
+    </script>
+{%endfor%}

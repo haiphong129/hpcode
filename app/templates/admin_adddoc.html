@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+    <form method="post" action="{{url_for('admin_adddoc')}}" enctype="multipart/form-data">
+    <div class="form-group">
+        <div class="row justify-content-md-center d-flex">
+        <div class="col-md-5 m-1 p-1 border">
+            <div class="row"><div class="col-md mb-2 form-floating">
+                <input type="text" class="form-control text-center" name="tieude" id="tieude" value="{{doc.tieude}}" onkeyup="convert();">
+                <label for="id_name"><b>Tiêu đề</b></label>
+            </div></div>
+            <div class="row m-1 p-1"><div class="col-md " id="slug">
+                
+            </div></div>
+            <div class="row m-1 p-1"> <div class="col-md form-check ">
+                {% if doc.congkhai %}
+                    <input class="form-check-input" type="checkbox" value="" id="congkhai" name="congkhai" checked>
+                {% else %}
+                    <input class="form-check-input" type="checkbox" value="" id="congkhai" name="congkhai">
+                    {%endif%}
+                <label class="form-check-label text-success" for="congkhai">
+                    <strong>Cho phép người khác xem tài liệu này</strong>
+                </label>
+            </div> </div>
+            <div class="mb-2 form-floating">
+                <select class="form-select form-select-sm text-center" aria-label=".form-select-sm example" name="lop" id="lop">
+                    {%if doc %}
+                    <option selected value="{{doc.lop}}">{{doc.lop.replace('_coban',' cơ bản').replace('_chuyen',' chuyên')}}</option>
+                    {%endif%}
+                    <option value="10_coban">10 cơ bản</option>
+                    <option value="11_coban">11 cơ bản</option>
+                    <option value="12_coban">12 cơ bản</option>
+                    <option value="10_chuyen">10 chuyên</option>
+                    <option value="11_chuyen">11 chuyên</option>
+                    <option value="12_chuyen">12 chuyên</option>
+                </select>
+                <label for="lop"><b>Chọn lớp</b></label>
+            </div>
+            <div class="mb-2 form-floating">
+                {%if doc %}
+                    <input type="text" class="text-center form-control" name="diem" id="diem" value="{{doc.diem}}">
+                {%else%}
+                    <input type="text" class=" text-center form-control" name="diem" id="diem" value=100>
+                {%endif%}
+                   <label for="diem"><b>Điểm số</b></label>
+            </div>
+        </div>
+        <div class="col-sm-6 border m-1 p-1 text-center">
+            <span class=" text-success">Chọn tệp *.png|*.jpg|*.docx|*.pdf|*.pptx|*.exe</span>
+            <input type="file" class="form-control" id="file" name="file[]" multiple>
+            <hr>
+            <h6 class="text-success m-0 mt-1">Danh sách files<small class="text-danger">( Click tên file để xóa )</small></h6>
+            
+            {%for fn in imageall%}
+                <a href="{{ url_for('admin_delfile',slug=doc.slug,fn=fn) }}" role="button" class="btn btn-sm btn-danger m-1" onclick="return confirm_delete('Xác nhận xóa file {{fn}}')">{{fn}}</a>
+            {%endfor%}
+        </div>
+        </div>
+        <div class="form-floating m-1 p-1">
+            <textarea class="form-control" name="gioithieu" style="height: 100px" id="gioithieu">{{doc.gioithieu}}</textarea>
+            <label for="gioithieu"><b>Giới thiệu</b></label>
+        </div>
+        
+        <div class=" m-1 p-1" >
+            <label for="md-editor"><b>Nội dung</b></label>
+            <textarea class="form-control" name="noidung"  id="md-editor"></textarea>
+        </div>
+
+        <div class="row pt-1 pb-1 justify-content-center align-items-center" >
+            <div class="col-sm-4 d-grid gap-2">
+        	   <input class="btn btn-success d-grid gap-2" id="submit"  type="submit" value="Submit">
+       	    </div>
+        </div>
+    </div>
+    </form>
+
+ <script type="text/javascript">
+    //https://gist.github.com/hu2di/e80d99051529dbaa7252922baafd40e3
+    function removeVietnameseTones(str) {
+        str = str.toLowerCase();
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g,"i"); 
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o"); 
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u"); 
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y"); 
+        str = str.replace(/đ/g,"d");
+        str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "a");
+        str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+        str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+        str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "o");
+        str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "u");
+        str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "y");
+        str = str.replace(/Đ/g, "d");
+        str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // ̀ ́ ̃ ̉ ̣  huyền, sắc, ngã, hỏi, nặng
+        str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // ˆ ̆ ̛  Â, Ê, Ă, Ơ, Ư
+        str = str.replace(/ + /g," ");
+        str = str.trim();
+        str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|{|}|\||\\/g," ");
+        str = str.replaceAll(" ","-");
+        return str;
+    }
+    function convert()
+    {
+        var slugall = "{{slugall}}";
+        //alert(slugall);
+        var slug = removeVietnameseTones(document.getElementById("tieude").value);
+        if(slugall.indexOf('&#39;'+slug+'&#39;')!==-1)
+        {
+            document.getElementById("slug").innerHTML = "<span class='text-danger'><b>Tiêu đề đã có</b></span>";
+        } else document.getElementById("slug").innerHTML = "<span class='text-success'><b>Đường dẫn: </b>"+slug+"</span>";
+
+        return;
+    }
+    function confirm_delete(question) {
+        if(confirm(question)){  return true; }else{  return false;  }
+    }
+ </script>
+ <script>
+    $(function () {
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [["~","~"],["\\(","\\)"]]}
+            });
+            document.getElementById("md-editor").value="{{doc.noidung}}";
+            var QUEUE = MathJax.Hub.queue;
+            var simplemde = new SimpleMDE({
+                element: document.getElementById("md-editor"),
+                spellChecker: false,
+                previewRender: function(plainText) {
+                    var preview = document.getElementsByClassName("editor-preview-side")[0];
+                    preview.innerHTML = this.parent.markdown(plainText);
+                    preview.setAttribute('id','editor-preview')
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,"editor-preview"]);
+                    return preview.innerHTML;
+                },
+            });
+
+        })
+</script>
+{% endblock %}

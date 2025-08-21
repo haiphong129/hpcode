@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="text-center text-success p-1 m-1">CHẤM BÀI BẰNG PHẦN MỀM THEMIS</h3>
+<div class="row justify-content-center">
+    <div class="col-sm-10 m-1 p-1 text-center">
+        {%if data['checkdethi'] %}
+            <img src="{{data['linkimg']}}" class="img-fluid img-thumbnail" alt="Tổng quan đề thi">
+            <h4><a href="{{data['linkdethi']}}" target="_blank">Xem đề thi</a></h4>
+        {%endif%}
+        <h5 class="text-center text-danger">Contest diễn ra từ ngày <b>{{data['timebx']}}</b> đến hết ngày <b>{{data['timeex']}}</b></h5>
+    </div>
+</div>
+<hr>
+{%if current_user.is_authenticated %}
+    <h4 class="text-center text-success">Upload file để nộp bài</h4>
+    <form method=post enctype=multipart/form-data action="{{url_for('themisx')}}">
+    <div class="row justify-content-center">
+        <div class="col-sm-7 m-1 p-1 text-center">
+            <span class=" text-success">Chọn tệp *.cpp|*.py|*.pas<br>kích thước tệp không quá 1Mb</span>
+        <div class="input-group">
+            <input type="file" class="form-control" id="file" name="file" accept=".py,.pas,.cpp" >
+            {%if data['checkdethi'] %}
+                <button type="submit" class="btn btn-primary btn-block">Nộp bài</button>
+            {%else%}
+                <button type="submit" class="btn btn-primary btn-block" disabled>Nộp bài</button>
+            {%endif%}
+        </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-7 m-1 p-1 text-center">
+            <span id="err" class="text-danger">
+                {% if data['status'] %} {{data['status']|safe}} {% endif %}
+            </span>
+        </div>
+    </div>
+    </form>
+    <hr>
+    
+    <div class="row justify-content-center">
+        <div class="col-sm-6 m-1 p-1">
+            <div id="ketquathemis" class="themisresult">
+                <h5 class="text-danger text-center">Bạn chưa nộp bài</h5>
+            </div>
+        </div>
+        <div class="col-sm-4 m-1 p-1">
+        <h4 class="text-center text-success">Lịch sử nộp bài</h4>
+        <ul>
+            {%for fn in data['his']%}
+                <li><a href="{{fn[0]}}{{fn[1]}}">{{fn[1]}}</a></li>
+            {%endfor%}
+        </ul>
+        </div>
+    </div>
+{%else%}
+    <h5 class="text-danger text-center p-1 m-1">Bạn cần đăng nhập để nộp bài</h5>
+{%endif%}
+<hr>
+<div class="row justify-content-center">
+    <div class="col-sm-4 m-1 p-1">
+
+    <h4 class="text-center text-danger">Lưu ý</h4>
+    <ul>
+        <li>Bài nộp được chấm bằng phần mềm <b>Themis</b> của thầy Lê Minh Hoàng và Đỗ Đức Đông</li>
+        <li>Quy định về đặt tên tệp và dữ liệu vào/ra như trong phần Tổng quan đề thi</li>
+        <li>Số lượt nộp bài không hạn chế, kết quả được ghi nhận cho lần nộp tốt nhất</li>
+        <li>Đối tượng tham gia: Tất cả mọi người có tài khoản trên <a href="https://hpcode.edu.vn">hpcode.edu.vn</a></li>
+    </ul>
+    <h4 class="text-center text-danger">Đề thi</h4>
+    <ul>
+        {%for fn in data['ketqua'] %}
+            <li><a href="{{fn[0]}}{{fn[1]}}" target="_blank">{{fn[1]}}</a></li>
+        {%endfor%}
+    </ul>
+    </div>
+    <div class="col-sm-7 m-1 p-1">
+        <h4 class="text-center text-danger">Thống kê</h4>
+        {%for ct in data['contest']%}
+        <p class="text-success"><b>
+            {{loop.index}}. {{ct}}</b>   <a href="https://hpcode.edu.vn/ranking/{{ct}}">Xem bảng xếp hạng</a></p>
+        <ul>
+            {%for pr in data['contest'][ct]%}
+                <li><b>{{pr}} - {{data['namepr'][pr]}}</b> - {{data['contest'][ct][pr]}} Lượt nộp bài
+                {%if data['havetest'][pr]>0 %} - <a href="https://hpcode.edu.vn/{{pr}}">Tải bộ test</a>{%endif%}</li>
+            {%endfor%}
+        </ul>
+        {%endfor%}
+    </div>
+</div>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="2091597288"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<script>
+    const uploadField = document.getElementById("file");
+    uploadField.onchange = function() {
+    if(this.files[0].size > 1024*1024) {
+       alert("Chỉ được upload file có kích thước <=1Mb!");
+       this.value = "";
+    }
+};
+</script>
+{%if data['checknopbai']==1%}
+<script>
+$('html, body').animate({ scrollTop: $('.themisresult').offset().top }, 100);
+var countlimit=10,runwait=0,refreshId = setInterval(function() {
+    var flog="/static/themis/oj/logs/{{data['flog']}}";
+                var y=$.getScript(flog);
+                    y.done(function(data) { 
+
+                        var dt=data.replaceAll("\n", "<br>");
+                        document.getElementById("ketquathemis").innerHTML = dt.toString();
+                        countlimit--;
+                        console.log(countlimit);
+                        if(countlimit<=0)  clearInterval(refreshId);     
+                    });
+                    
+                    y.fail(function(data) { 
+                        //clearInterval(refreshId);
+                        runwait++;
+                        z=$.getScript('/static/themis/oj/logs/alllog.txt');
+                        z.done(function(dataz)
+                        {
+                            document.getElementById("ketquathemis").innerHTML = dataz.toString();;
+                        })
+                        
+                        // var dt=data.replaceAll("\n", "<br>");
+                        // document.getElementById("ketquathemis").innerHTML = dt.toString();
+                    });
+            },1000);
+</script>
+{%endif%}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="text-center text-success">CHỈNH SỬA LINK</h3>
+    <form method="post" action="{{url_for('editlink',key=data['shortlink'])}}">
+    <div class="form-group">
+        <div class="row justify-content-center d-flex">
+            <div class="col-sm-5 mb-1 form-floating text-center">
+                <input type="url" class="form-control" name="link" id="link" value="{{data['link']}}">
+                <label for="link"><b>Link</b></label>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex">
+            <div class="col-sm-5 mb-1 form-floating">
+                <input type="text" class="form-control text-center" name="title" id="title" value="{{data['title']}}">
+                <label for="title"><b>Tiêu đề</b></label>
+            </div>
+        </div>
+        <div class="row justify-content-center d-flex">
+            <div class="col-sm-3 mb-1 form-floating">
+                <input type="text" class="form-control text-center" name="shortlink" id="shortlink" value="{{data['shortlink']}}" disabled>
+                <label for="shortlink"><b>Mã rút gọn</b></label>
+            </div>
+            <div class="col-sm-3 mb-1 form-floating">
+                <input type="text" class="form-control text-center" name="timewait" id="timewait" value="{{data['timewait']}}">
+                <label for="timewait"><b>Thời gian chờ</b></label>
+            </div>
+        </div>
+        <p class="text-danger text-center"><span id="err"></span></p>
+        <div class="row pt-1 pb-1 justify-content-center align-items-center" >
+            <div class="col-sm-5 d-grid gap-2">
+        	   <input class="btn btn-success d-grid gap-2" id="submit"  type="submit" value="Submit">
+       	    </div>
+        </div>
+    </div>
+    </form>
+    <div class="row justify-content-center d-flex">
+        <div class="col text-center">
+            {%if check==1%}
+                Link rút gọn: {{data['domain']+data['shortlink']}}<br>
+            {%endif%}    
+            {%if status %} {{status|safe}} {%endif%}
+        </div>
+    </div>
+
+{% endblock %}

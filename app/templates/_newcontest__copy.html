@@ -1,0 +1,30 @@
+<div class="border border-success rounded m-0 p-0 mt-1">
+  <table class="table table-hover table-borderless table-sm">
+    <thead m-0 p-0>
+      <tr class="text-center bg-danger">
+        <th class="align-middle text-white">Kỳ thi</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr><td><a href="{{ url_for('contest',tagname='laptrinhcb') }}" target="_blank"class="link" title="Lập trình cơ bản">Lập trình cơ bản</b></a></td></tr>
+        <tr><td><a href="{{ url_for('contest',tagname='chuyentincb') }}" target="_blank"class="link" title="Luyện thi Chuyên Tin - cơ bản">Luyện thi Chuyên Tin - CB</b></a>
+          </td></tr>
+        <tr><td><a href="{{ url_for('contest',tagname='chuyentinnc') }}" target="_blank"class="link" title="Luyện thi Chuyên Tin - nâng cao">Luyện thi Chuyên Tin - NC</b></a>
+          </td></tr>
+        <tr><td><a href="{{ url_for('contest',tagname='ts10') }}" target="_blank"class="link" title="Tuyển tập Đề thi Tuyển sinh 10">Tuyển tập Đề thi Tuyển sinh 10</b></a></td></tr>
+        <tr><td><a href="{{ url_for('contest',tagname='thcs') }}" target="_blank"class="link" title="Tuyển tập Đề thi HSG THCS">Tuyển tập Đề thi HSG THCS</b></a></td></tr>
+        <tr><td><a href="{{ url_for('contest',tagname='hsgb') }}" target="_blank"class="link" title="Tuyển tập Đề thi HSG THPT">Tuyển tập Đề thi HSG THPT</b></a></td></tr>
+        <tr><td><a href="{{ url_for('contest',tagname='hsga') }}" target="_blank"class="link" title="Tuyển tập Đề thi HSG Chọn đội tuyển">Tuyển tập Đề thi HSG Chọn đội tuyển</b></a></td></tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  function getColor(value) {
+  //value from 0 to 1
+  var hue = ((value) * 240).toString(10);
+  return ["hsl(", hue, ",100%,50%)"].join("");
+  }
+  document.getElementById("laptrinhcb").style.color=getColor("{{getStatisContest('laptrinhcb')[3]}}")
+  document.getElementById("chuyentincb").style.color=getColor("{{getStatisContest('chuyentincb')[3]}}")
+  document.getElementById("chuyentinnc").style.color=getColor("{{getStatisContest('chuyentinnc')[3]}}")
+</script>

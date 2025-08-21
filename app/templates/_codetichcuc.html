@@ -1,0 +1,39 @@
+{% set ctc = ctc() %}
+<div class="border border-success rounded m-0 p-0 mt-1">
+  <table class="table table-hover table-borderless table-sm">
+    <thead m-0 p-0>
+      <tr class="text-center bg-success">
+        <th class="align-middle text-white text-center">Code tích cực</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="p-0 m-0"><td class="p-0 m-0"><span style="font-weight: bold;color: green;">Trong 24h</span></td></tr>
+      <tr class="p-0 m-0"><td class="ps-4 ms-4"><ol class="mb-0 pb-0">
+        {% for x in ctc[0] %}
+          <li style="color: blue;" ><a href="{{ url_for('info',user=x[0]) }}" target="_blank"class="link" title="{{x[0]}}">{{x[0]}}</b></a>
+          <small>(<span class="text-success" title="Bài nộp kết quả đúng">{{x[1]}}</span>/<span class="text-danger"  title="Bài nộp kết quả đúng 1 phần/sai">{{x[2]}}</span>)</small>
+          </li>
+        {%endfor%}
+      </ol></td></tr>
+
+      <tr class="p-0 m-0"><td class="p-0 m-0"><span style="font-weight: bold;color: green;">Trong 7 ngày</span></td></tr>
+      <tr class="p-0 m-0"><td class="ps-4 ms-4 p-0 m-0"><ol class="mb-0 pb-0">
+        {% for x in  ctc[1] %}
+          <li style="color: blue;" ><a href="{{ url_for('info',user=x[0]) }}" target="_blank"class="link" title="{{x[0]}}">{{x[0]}}</b></a>
+          <small>(<span class="text-success" title="Bài nộp kết quả đúng">{{x[1]}}</span>/<span class="text-danger"  title="Bài nộp kết quả đúng 1 phần/sai">{{x[2]}}</span>)</small>
+          </li>
+        {%endfor%}
+      </ol></td></tr>
+
+
+      <tr class="p-0 m-0"><td class="p-0 m-0"><span style="font-weight: bold;color: green;">Trong 30 ngày</span></td></tr>
+      <tr class="p-0 m-0"><td class="ps-4 ms-4 p-0 m-0"><ol class="mb-0 pb-0">
+        {% for x in ctc[2] %}
+          <li style="color: blue;" ><a href="{{ url_for('info',user=x[0]) }}" target="_blank"class="link" title="{{x[0]}}">{{x[0]}}</b></a>
+          <small>(<span class="text-success" title="Bài nộp kết quả đúng">{{x[1]}}</span>/<span class="text-danger"  title="Bài nộp kết quả đúng 1 phần/sai">{{x[2]}}</span>)</small>
+          </li>
+        {%endfor%}
+      </ol></td></tr>
+    </tbody>
+  </table>
+</div>

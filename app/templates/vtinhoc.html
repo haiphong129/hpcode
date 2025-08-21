@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- <a href="static\elearning\anken\index.htm">Bài giảng Anken</a> -->
+    {%if fhp_permit(["admin","superadmin"])==1 %}
+    <div class="row d-flex justify-content-center m-1 p-1 ">
+    	<div class="col-sm-7 text-center border border-success">
+    		<b>Nhập link video từ Youtube.com<br>Ví dụ: </b><span class=" text-success"> https://www.youtube.com/watch?v=tNFq9B97wug</span>
+    		<form method="post" action="{{url_for('vtinhoc') }}">
+    			<div class="row justify-content-center d-flex m-1 p-1">
+                    <div class="col text-center">
+                    	<div class="input-group">
+    						<input type="text" class="form-control" id="url" name="url" value="{{request.form.url }}" placeholder="Link Youtube">
+    						<input class="btn btn-success" type="submit" value=" Submit ">		
+    					</div>
+    				</div>
+    			</div>
+    		</form>
+    		{%if status %}
+    			<div class="row d-flex justify-content-center">
+    				<div class="col text-center">	<span class="text-primary"> {{status|safe}} </span> </div>
+    			</div>
+    		{%endif%}
+    	</div>
+    </div>
+    {%endif%}
+    <div class="row">
+    	<div class="col-sm-12 text-center  z-depth-1-half">
+    		<b>{{lid[0].title}}</b>
+            <p style="font-size:12px">Lượt xem: {{lid[0].views}}</p>
+    		<iframe  width=100% height="375px" src="https://www.youtube.com/embed/{{lid[0].idv}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    	</div>
+	</div>
+	<hr>
+	{% for i in range(1,lid|length,4) %}
+	<div class="row">
+		{% for j in range(i,i+4) %}
+			{% if j < lid|length %}
+    			<div class="col-sm-3 text-center">
+                    <a href="{{ url_for('vtinhoc',sott=j) }}">
+    				    <img src="{{lid[j].thumb}}" style="width:165px;" ><br>
+    				    <b>{{lid[j].title}}</b><br>
+                        <p style="font-size:12px">Lượt xem: {{lid[j].views}}</p>
+                    </a>
+    			</div>
+    		{% endif %}
+    	{% endfor %}
+	</div>
+	{% endfor %}
+
+{% endblock %}

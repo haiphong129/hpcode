@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% set  subtitle= "Lịch sử nộp bài" %}
+{% block content %}
+ <div class="sticky mt-1 ">
+    <form method="post" action="{{url_for('listsubmit') }}">
+    <div class="form-group">
+        <div class="row justify-content-center align-items-center" >
+            <div class="col-sm-2 text-right m-0"> <b>Tài khoản</b></div>
+            <div class="col-sm-2 p-0 m-0">
+                <input type="text" class="form-control" name="user" value="{{ request.form.user }}">
+            </div>
+            <div class="col-sm-2 m-0">
+                <input class="btn btn-success btn-block" type="submit" value="Tìm kiếm">
+            </div>
+        </div>
+    </div>
+    </form>
+ </div>
+ <hr>
+{% include '_listsubmit.html' %}
+{% set direct = 'listsubmit' %}
+{% set tag = user %}
+{% include '_direct.html' %}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="2091597288"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html >
+<head>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center align-items-center m-1">
+        <div class="col-sm-11 text-center">
+
+<textarea id="editor" class="form-control">
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+  cout<<"http:\\www.hpcode.pro\n";
+  vector <int> a;
+  for(int i=1;i<=10;i++)
+     a.push_back(i*i);
+  for(auto x:a) cout<< x <<" ";
+  return 0;
+}
+</textarea>
+</div>
+</div>
+<script src="/static/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+   <script type="text/javascript">
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/c_cpp");
+    editor.setFontSize(13);
+    editor.setAutoScrollEditorIntoView(true);
+    editor.setReadOnly(true);
+    editor.setOption("maxLines", 80);
+    editor.setOption("minLines", 10);
+    editor.resize();
+   </script>
+</body>
+</html>

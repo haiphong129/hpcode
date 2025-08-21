@@ -1,0 +1,33 @@
+{% for d in dethi %}
+        <div class="row justify-content-center">
+            <div class="col-sm-9">
+                    {{loop.index}}.
+                    <a href = "{{ url_for('xemde',idde=d.id) }}" target="_blank">
+                        Đề thi
+                        {% if shownamekythi==0%}
+                           <b>{{d.kythi}}</b>
+                        {%endif%}
+                       tỉnh&nbsp;<b>{{d.tinh}}</b>&nbsp;năm học&nbsp;<b>{{d.year2}}</b>
+                    </a>
+                    {% if shownamekythi==1%}
+                    <small>
+                    &nbsp;-&nbsp;Người góp
+                    <a href="{{url_for('info',user=d.username)}}"target="_blank"class="link">{{d.username}}</a>
+                    </small>
+                    {%endif%}
+                    &nbsp;-&nbsp; 
+                    {%if d.check==1%}
+                        <span class="text-success">
+                            <small>{{conertTimePythontoHTML(d.ngayduyet)}}</small>
+                        </span>    
+                    {%elif d.check==0%}
+                        <span class="text-danger"> [Chưa duyệt] </span>
+                    {%else%}
+                        <span class="text-warning"> [Bị từ chối] </span><br>
+                        {%if d.cmt %}
+                            <b>&nbsp;&nbsp;Admin: </b> {{d.cmt}}
+                        {%endif%}
+                    {%endif%}
+            </div>
+        </div>
+{%endfor%}

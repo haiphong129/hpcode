@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<style>
+    img {
+    display: block;
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    }
+</style>
+    {% if data['id'] == None %}
+        <h4 class="text-center text-bold">Chào mừng bạn đến với hpcode.edu.vn</h4>
+    {% else %}
+        <h4 class="text-center text-bold">{{data['title']|safe}}</h4>
+        {{ data['content']|safe }}
+    
+    <div class="row m-1 p-1 d-flex justify-content-end">
+        <div class="col-sm d-flex justify-content-end"> <b>{{data['auther']|safe}}</b> &nbsp
+        {%if current_user.is_authenticated and fhp_permit(["superadmin","admin"])==1 %}
+            <div class="d-grid gap-2 d-md-block">
+                <a class="btn btn-success btn-sm" type="button" href="{{url_for('admin_ql_tintuc',idn=data['id'])}}">Sửa</a>
+                <a class="btn btn-danger btn-sm" type="button" href="{{url_for('delnew',idn=data['id'])}}">Xóa</a>
+            </div>
+            
+        {%endif%}
+        </div>
+    </div>
+    {%endif%}
+
+    </script>
+    
+    <hr style="height:2px;border-width:1;color:red;background-color:green" class="m-0">
+
+
+    {%for tt in tintuc %}
+        <div class="row">
+        <div class="col">
+            <a href="{{url_for('tintuc',idn=tt['idn'])}}"> <b>{{loop.index}}.&nbsp;{{tt['title']|safe}}</b></a>&emsp;
+            <small class="p-1">
+            <a href="{{url_for('info',user=tt['auther'])}}" target="_blank">{{tt['auther']}}</a>&nbsp;-&nbsp;
+            {{tt['time']}} </small>
+           </div>
+        </div>
+    {%endfor%}
+    
+    {% set direct = 'tintuc' %}
+    {% include '_direct.html' %}
+{% endblock %}

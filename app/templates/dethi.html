@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row d-flex justify-content-center">
+    <div class="col-sm-7 m-0 p-0">
+    <form method="post" action="{{url_for('dethi') }}" enctype = "multipart/form-data">
+        <div class="input-group mb-1">
+            <label class="input-group-text" style="width: 100px;">Đề thi</label>
+            <select class="form-select" placeholder="kythi" name="kythi" value="{{request.form.kythi }}">
+                {% for kythi in data["kythi"] %}
+                    <option>{{kythi}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="input-group mb-2 form-inline">
+            <label class="input-group-text" style="width: 100px;">Tỉnh/TP</label>
+            <select class="form-select me-1" placeholder="tinh" name="tinh"  value="{{request.form.tinh}}">
+                {% for tinh in data["tinh"] %}
+                    <option>{{tinh}}</option>
+                {%endfor%}
+            </select>
+            <label class="input-group-text" style="width: 100px;">Năm học</label>
+            <select class="form-select" placeholder="namhoc" name="namhoc" value="{{request.form.namhoc }}">
+                {% for namhoc in data["namhoc"] %}
+                    <option>{{namhoc}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        
+        <div class="row justify-content-center align-items-center m-1 p-1" >
+            <div class="col-sm-4 d-grid gap-2"> 
+                <input class="btn btn-success" id="submit"  type="submit" value="Tìm đề thi">
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+
+<hr>
+<h4 class="text-center text-success">{{namekythi|safe}}</h4>
+<h6 class="text-center text-info">(Có {{dethi|length}} đề thi)</h6>
+<hr>
+<div class="row justify-content-center">
+    <div class="col-sm-9 text-center">
+        <a href="{{ url_for('gopde') }}" class="btn btn-success btn-lg">Click vào đây để đóng góp đề thi</a>
+    </div>
+</div>
+<hr>
+{% for d in dethi %}
+    <div class="row justify-content-center">
+    <div class="col-sm-12">
+            &nbsp;{{loop.index}}.
+            <a href = "{{ url_for('xemde',idde=d['idde']) }}" target="_blank">
+                {%set year2 = "năm học" %}
+                {%if d['kythi']=="Olympic 30/4" %}
+                    {%set year2 = "năm" %}
+                {%endif%}
+                {%if d['tinh'] in ['Hà Nội','Hải Phòng','Đà Nẵng','Cần Thơ','Hồ Chí Minh']%}
+                    Đề thi <b>{{d['kythi']}}</b> TP <b>{{d['tinh']}}</b> {{year2}} <b>{{d['namhoc']}}</b> 
+                {%else%}
+                    Đề thi <b>{{d['kythi']}}</b> tỉnh <b>{{d['tinh']}}</b> {{year2}} <b>{{d['namhoc']}}</b>
+                {%endif%} {{d['notetitle']}}
+            </a>
+            
+            <small>
+                &nbsp;-&nbsp;Người góp
+                <a href="{{url_for('info',user=d.username)}}"target="_blank"class="link">{{d['nguoigop']}}</a>
+            </small>
+            
+            {%if d['stt']==0 and fhp_permit(['superadmin']) %}
+                &nbsp;&nbsp;  <a href="{{url_for('duyetde',idde=d['idde'])}}"><span class="text-danger"> [Duyệt đề] </span></a>
+            {%else%}
+              <small class="text-secondary">&nbsp;&nbsp;{{d['luotxem']}} lượt xem</small>
+            {%endif%}
+    </div>
+    </div>
+    
+{%endfor%}
+
+{% endblock %}

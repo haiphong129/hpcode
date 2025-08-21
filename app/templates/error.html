@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="row m-1 p1 justify-content-center d-flex ">
+        <div class="col-10 text-center text-danger">
+            <h5>{{messeg|safe}}</h5>
+            {% if data %}
+                <a href="{{ url_for('contest',tagname=data)}}">Tham gia Contest {{data}}</a>
+            {%endif%}
+        </div>  
+    </div>
+    
+{% include 'multiads.html' %}
+{% endblock %}

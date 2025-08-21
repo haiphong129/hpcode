@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <style type="text/css" media="screen">
+   #editor {
+        margin: 0;
+        position: sticky;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    
+  </style>
+  
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  
+  
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 text-success text-center" id="infovideo">
+                <b>{{datav['title']}}</b><br>
+                <a href="https://www.youtube.com/watch?v={{datav['idv']}}">Xem trên Youtube</a>
+            </div>
+        <div class="row justify-content-center d-flex" >
+            <div class="col-sm-12 text-center" id="playvideo">
+                <video width="90%" height="auto" controls> 
+                    <source src="https://drive.google.com/uc?export=download&id={{datav['idgd']}}" type="video/mp4"> 
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+<hr>
+<div class="d-flex align-items-start m-1 p-1">
+  <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    
+    <button class="nav-link active btn-sm" id="v-pills-{{keyfirst}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{keyfirst}}" type="button" role="tab" aria-controls="v-pills-{{keyfirst}}" aria-selected="false"><b>{{data[keyfirst][0]['ytber']+" - "+data[keyfirst][0]['sach']}}</b></button>
+
+    {%for key in data %} {%if key != keyfirst%}
+        <button class="nav-link btn-sm" id="v-pills-{{key}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{key}}" type="button" role="tab" aria-controls="v-pills-{{key}}" aria-selected="false"><b>{{data[key][0]['ytber']+" - "+data[key][0]['sach']}}</b></button>
+    {%endif%} {%endfor%}
+  </div>
+
+  <div class="tab-content" id="v-pills-tabContent">
+    <div class="tab-pane fade show active" id="v-pills-{{keyfirst}}" role="tabpanel" aria-labelledby="v-pills-{{keyfirst}}-tab">
+        <ol>
+            {%for d in data[keyfirst]%}
+                <li><a href="" onclick="myfunction({{d}}); return false;" id="{{d['idv']}}"> {{d['title']}}</a></li>
+            {%endfor%}
+        </ol>
+    </div>
+    {%for key in data %}{%if key != keyfirst%}
+        <div class="tab-pane fade" id="v-pills-{{key}}" role="tabpanel" aria-labelledby="v-pills-{{key}}-tab">
+            <ol>
+            {%for d in data[key]%}
+                <li><a href="" onclick="myfunction({{d}}); return false;" id="{{d['idv']}}"> {{d['title']}}</a></li>
+            {%endfor%}
+        </ol>
+        </div>
+    {%endif%}{%endfor%}
+  </div>
+</div>
+<script>
+    function myfunction(st) {
+
+        document.getElementById("infovideo").innerHTML = "<b>"+st.title+'</b><br><a href="https://www.youtube.com/watch?v='+ st.idv +'"' + ">Xem trên Youtube</a>";
+        
+        var htplhp = '<video width="90%" height="auto" class="gdriveVideo" preload="auto" controls> <source src="https://drive.google.com/uc?export=download&id=' +st.idgd + '" type="video/mp4"> Your browser does not support the video tag.</video>';
+        if (st.lager!=0)
+        {
+            htplhp = '<video width="90%" height="auto" class="gdriveVideo" preload="auto" controls> <source src="'+st.lager+'" type="video/mp4"> Your browser does not support the video tag.</video>';
+        }
+
+        document.getElementById("playvideo").innerHTML = htplhp;
+
+        if(document.getElementById(st.idv).style.fontWeight=="bold") document.getElementById(st.idv).style.color="red";
+        document.getElementById(st.idv).style.fontWeight="bold";
+    
+    }
+    
+</script>
+</div>
+</body>

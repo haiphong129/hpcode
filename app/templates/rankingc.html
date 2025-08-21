@@ -1,0 +1,163 @@
+<html lang="vi">
+<head>
+	<style type="text/css">
+    th.rotate {
+  height:60px;
+  white-space: nowrap;
+  position:relative;
+}
+  th.rotate > div {
+    transform: rotate(50deg);
+    position:absolute;
+    left:1px;
+    right:1px;
+    top: 10px;
+    text-align: right;
+    margin:auto; 
+  }
+  </style>
+
+	<title>Bảng xếp hạng {{name}}</title>
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="refresh" content="60" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/jquery.tablesorter.min.js"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<script>
+  function hexFromRGB(r, g, b) {
+      var hex = [
+        r.toString( 16 ),
+        g.toString( 16 ),
+        b.toString( 16 )
+      ];
+      $.each( hex, function( nr, val ) {
+        if ( val.length === 1 ) {
+          hex[ nr ] = "0" + val;
+        }
+      });
+      return "#"+hex.join( "" ).toUpperCase();
+    }
+    const color =[]; 
+    color.push(hexFromRGB(0,0,255));
+    for (let i = 0; i < Math.round(125/5); i++) {color.push(hexFromRGB(0,(i+1)*5,255)); }
+    color.push(hexFromRGB(0,125,255));  
+    for (let i = 0; i < Math.round(255/10); i++) {color.push(hexFromRGB((i+1)*10,155,255)); }
+    color.push(hexFromRGB(255,125,255));
+    for (let i = 0; i < Math.round(255/10); i++) {color.push(hexFromRGB(255,155,255-(i+1)*10));}
+    color.push(hexFromRGB(255,125,0));
+    for (let i = 0; i < Math.round(125/5); i++) {color.push(hexFromRGB(255,125-(i+1)*5,0));}
+    
+
+  $(function() {
+    // initial sort set using sortList option
+    $(".ranking").tablesorter({
+      theme : 'blue',
+      // sort on the first column and second column in ascending order
+      sortList: [[2,1]]
+    });
+  });
+
+  var i=0;
+  $(document).ready(function(){
+    var total=99999999;
+    $("#ranking tr").each(function(){
+        var currentRow=$(this).closest("tr"); 
+        var value=currentRow.find("td:eq(2)").text();
+        if( $.isNumeric(value) && total>Number(value))
+          {
+            i=i+1;
+            total=Number(value); 
+          }
+        currentRow.find("td:eq(0)").html("<b>"+i+"</b>");
+    });
+  });
+
+  $(document).ready(function(){
+    $("#ranking tr").each(function(){
+        var currentRow=$(this).closest("tr");
+        var value=currentRow.find("td:eq(0)").text();
+        if( $.isNumeric(value))
+          {
+            var c=Math.round(value*color.length/Math.max(i+1,1));
+            currentRow.find("td:eq(0)").css('background', color[c]); 
+          }
+    });
+  });
+</script>
+</head>
+<!-- https://mottie.github.io/tablesorter/docs/#Download -->
+<body>
+  <div class="row justify-content-center">
+      <div class="col-sm-auto">
+        {% include '_menu.html' %}
+      </div>
+    </div>
+  <h4 class="text-center text-info">{{name}}</h4>
+  <h5 class="text-center text-info">{{grname|safe}}</h5>
+  <h6 class="text-success text-center">Số lượng: {{data.items()|length}}</h6>
+  <div class="container " > <!-- d-flex justify-content-center -->
+      <div class="row justify-content-center">
+        <div class="col-auto table-responsive">
+  	      <table class="table table-hover table-bordered small w-auto ranking " id="ranking">
+            <thead class="table-dark">
+              <tr class="text-center small">
+                <th class="align-middle" >Rank</th>
+      	        <th class="align-middle mb-0 mt-0" >Username</th>
+                <th class="align-middle" >Tổng điểm</th>
+                <th class="align-middle" title="Số bài AC">Đúng</th>
+                <th class="align-middle" title="Số bài chưa AC">Sai</th>
+                <th class="align-middle" title="Số bài chưa làm">Chưa làm</th>
+                <th class="align-middle" title="(Số lần nộp AC)/(tổng số lần nộp)">Tỉ lệ</th>
+              </tr>
+            </thead>
+                <!-- style="background-color:rgb{{(0,0,0)}} "  -->
+            <tbody>
+    	        {% for user in data %}
+    	          <tr class="m-0 p-0 small">
+                  <td class="text-center"></td>
+                  <td class="text-center mb-0 mt-0">
+                    <a href="{{url_for('info',user=user)}}"target="_blank"class="link"><b>{{user}}</b></a>
+                    <br><small>{{fullname[user]}}.</small>
+                  </td>
+    		          <td class="text-center "> {{data[user]['mark']}} </td>
+                  <td class="text-center"> 
+                    <a href="" onclick="showproblem({{data[user]['listAC']|safe}}); return false;">{{data[user]['listAC']|length}}</a>
+                  </td>
+                  <td class="text-center"> 
+                    <a href="" onclick="showproblem({{data[user]['listw']|safe}}); return false;">{{data[user]['listw']|length}}</a>
+                  </td>
+                  <td class="text-center"> 
+                    <a href="" onclick="showproblem({{data[user]['listz']|safe}}); return false;">{{data[user]['listz']|length}}</a>
+                  </td>
+                  <td class="text-center"> 
+                      {% if data[user]['Num']>0 %}
+                          {{"%.2f"|format(100*data[user]['listAC']|length/data[user]['Num'])}}%
+                      {%else%}
+                        0/0
+                      {%endif%}
+                  </td>
+    	          </tr>
+    	        {% endfor %}
+            </tbody>
+	        </table>
+	      </div>
+      <div class="col-sm-auto" id="viewidp">
+      </div>
+    </div>
+  </div>
+  <script>
+    function showproblem(st) {
+      var problem='';
+      var link = "<a href=\"http://hpcode.pro/viewctpr/?idp=xidp\" target=\"_blank\">xidp</a>";
+      for ( i = 0; i < st.length; i++)
+      {
+        if(i%5==0) problem=problem+"<br>";
+        problem=problem+" | <b>"+link.replace(/xidp/g,st[i]) +"</b> |";
+      }
+      document.getElementById("viewidp").innerHTML = problem;
+    }
+</script>
+</body>

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-center">
+    <ul class="nav nav-tabs mb-1" id="nav-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active btn btn-lg m-1 p-1" id="newlink-tab" data-bs-toggle="tab" data-bs-target="#newlink" type="button" role="tab" aria-controls="nav-newlink" aria-selected="true">50 Shortlink mới nhất</button>
+        </li>
+        <li class="nav-item fw-b" role="presentation">
+            <button class="nav-link btn btn-lg m-1 p-1" id="toplink-tab" data-bs-toggle="tab" data-bs-target="#toplink" type="button" role="tab" aria-controls="nav-toplink" aria-selected="false">50 Shortlink có nhiều lượt xem nhất</button>
+        </li>
+    </ul>
+</div>
+<div class="tab-content hpscroll" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="newlink" role="tabpanel" aria-labelledby="newlink-tab">
+        
+        <div class="table-responsive justify-content-center">
+            <table class="table table-hover table-bordered table-striped" width="100%">
+            <thead>
+                <tr class="text-center">
+                    <th>TT</th>
+                    <th>Tiêu đề</th>
+                    <th>Link rút gọn</th>
+                    <th width="12%">Đếm ngược</th>
+                    <th width="10%" title="Số lượng lượt xem">Số lượng</th>
+                    <th width="8%">Tác giả</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in datalink %}
+            <tr class="small">
+                <td class="text-center">{{ loop.index }}</td>
+                <td class="text-center"> {{d['title']|safe}} </td>
+                <td class="text-center">
+                    <a href="{{domain+d['shortlink']}}" class="link" target="_blank">{{domain+d['shortlink']}}</a>
+                </td>
+                <td class="text-center"> {{d['timewait']}} </td>
+                <td class="text-center" > {{d['sl']}}</td>
+                <td class="text-center" > {{d['user']}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="toplink" role="tabpanel" aria-labelledby="toplink-tab">
+        <div class="table-responsive justify-content-center">
+            <table class="table table-hover table-bordered table-striped" width="100%">
+            <thead>
+                <tr class="text-center">
+                    <th>TT</th>
+                    <th>Tiêu đề</th>
+                    <th>Link rút gọn</th>
+                    <th width="12%">Đếm ngược</th>
+                    <th width="10%" title="Số lượng lượt xem">Số lượng</th>
+                    <th width="8%">Tác giả</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for d in datatoplink %}
+            <tr class="small">
+                <td class="text-center">{{ loop.index }}</td>
+                <td class="text-center"> {{d['title']|safe}} </td>
+                <td class="text-center">
+                    <a href="{{domain+d['shortlink']}}" class="link" target="_blank">{{domain+d['shortlink']}}</a>
+                </td>
+                <td class="text-center"> {{d['timewait']}} </td>
+                <td class="text-center" > {{d['sl']}}</td>
+                <td class="text-center" > {{d['user']}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

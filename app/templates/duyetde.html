@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% set  subtitle= "Danh sách kỳ thi" %}
+{% block content %}
+<h5 class="text-center text-success">Còn {{data['count']}} đề chưa duyệt</h5>
+<div class="row justify-content-center">
+    <div class="col-sm-10">
+        <form method="post" action="{{url_for('duyetde') }}">
+            <input type="hidden" name="idx" value="{{data['id']}}">
+            <div class="input-group m-1">
+                <label class="input-group-text fw-bold">ID</label>
+                <input type="text" class="form-control me-2 " value="{{data['id']}}" disabled>
+                <label class="input-group-text fw-bold" >Ngày</label>
+                <input class="form-control me-2 w-25" type="datetime-local" value="{{conertTimePythontoHTML(data['ngaygop'])}}" disabled>
+                <label class="input-group-text fw-bold" >Người góp</label>
+                <input type="text" class="form-control" value="{{data['username']}}" disabled>
+            </div>
+            <div class="input-group m-1 form-inline">
+                <label class="input-group-text fw-bold">Kỳ thi</label>
+                <input type="text" class="form-control" name='kythi' value="{{data['kythi']}}">
+                <label class="input-group-text fw-bold">Tỉnh</label>
+                <input type="text" class="form-control" name='tinh' value="{{data['tinh']}}">
+                <label class="input-group-text fw-bold">Năm</label>
+                <input type="text" class="form-control" name='year' value="{{data['year']}}">
+            </div>
+            <div class="row justify-content-center d-flex">
+                <div class="col text-center">
+                    {%for fname in data['fname'] %} 
+                        <a href="{{data['link']}}{{fname}}" >{{fname[12:]}}</a><br>
+                    {%endfor%}
+                </div>
+            </div>
+            <div class="input-group m-1">
+                <span class="input-group-text fw-bold" >Ghi chú</span>
+                <textarea class="form-control" aria-label="With textarea">{{data['note']}}</textarea>
+            </div>
+            <div class="input-group m-1 text-center">
+                <span class="input-group-text fw-bold" >ý kiến <br> admin</span>
+                <textarea class="form-control" aria-label="With textarea" name="cmt"></textarea>
+            </div>
+            <div class="row justify-content-center align-items-center m-1 p-1" >
+                <div class="col-sm-4">
+                    <input class="btn btn-sm btn-success" name="submit" type="submit" value="Đồng ý">
+                    <input class="btn btn-sm btn-danger"  name="submit" type="submit" value="Từ chối">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr>
+
+{% endblock %}

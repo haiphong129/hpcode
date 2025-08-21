@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% set  subtitle= "" %}
+{% block content %}
+        
+<div class="row d-flex justify-content-center">
+    <h2 class="text-center">Thiết lập mặc định</h2>
+    <div class="col-sm-4 text-center ">
+        <form method="post" action="{{url_for('setdef') }}">
+            <div class="col-auto m-1 p-1 ">
+                <select class="form-select" name="langtmp" >
+                    {% for key in config['LANG'] %}
+                        {%if current_user.langdf==key %}
+                            <option value="{{key}}" selected="selected">{{config['LANG'][key]}}</option>
+                        {%else%}
+                            <option value="{{key}}" >{{config['LANG'][key]}}</option>
+                        {%endif%}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto m-1 p-1 ">
+                <select class="form-select" name="layout" >
+                    {% for key in config['LAYOUT'] %}
+                        {%if current_user.layout==key %}
+                            <option value="{{key}}" selected="selected">{{config['LAYOUT'][key]}}</option>
+                        {%else%}
+                            <option value="{{key}}" >{{config['LAYOUT'][key]}}</option>
+                        {%endif%}
+                    {% endfor %}                    
+                </select>
+            </div>
+                <input class="btn btn-success p-1 m-1" type="submit" value=" Submit ">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

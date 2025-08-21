@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center">
+    <a href={{tagdata.taglink}}><h4 class="text-info">{{tagdata.tagtitle}}</h4></a>
+    <!-- <a href="{{ url_for('ranking',cname=tag)}}" target="_bank"><h5 class="text-primary">Xem bảng xếp hạng</h5></a> -->
+</div>
+<hr>
+{% include '_listproblem.html' %}
+{% if err!=None %}
+    <p class="error text-center text-danger">{{ err|safe }}</p>
+{% endif %}
+
+    
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{url_for('adtailieu') }}" class="btn btn-primary btn-block m-1 p-1" role="button" aria-pressed="true">Click để thêm mới tài liệu</a>
+<form action="{{url_for('tailieu') }}">
+  <div class="form-group">
+    <label for="lop">Lớp</label>
+     <select class="form-control" id="lop">
+        {% for i in range(12,0,-1)%} 
+            <option>{{i}}</option>
+        {% endfor %}
+        <option>Đại học</option>
+        <option>.Khác.</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="noidung">Nội dung</label>
+    <p id="noidung"></p>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<div class="m-1 p-1 border border-success rounded">
+  <ol>
+  {% for doc in data %}
+  <li class="m-1 p-1">
+    <b><i>{{doc["acc"]}}</i></b> \( - \)
+
+    <i>{{doc["lop"]}}</i> \( - \)
+    <b>{{doc["tieude"]}}</b> \( - \)
+    {{doc["noidung"]}} <br>
+
+    <input type="button" onclick='xemchitiet({{doc["id"]}})' value="Xem chi tiết" class="btn-success m-1 t-1">
+    <a href="{{doc['link']}}" class="btn btn-success btn-sm active m-1 p-1" role="button" aria-pressed="true">Xem</a>
+    <p id="{{doc['id']}}"></p>
+   </li>
+  {% endfor %}
+</ol>
+</div>
+<script type="text/javascript" language="javascript">
+  function xemchitiet(st) 
+  {
+    alert(st);
+    //document.getElementById(s2).innerHTML=s1;
+  }
+</script>
+{% endblock %}

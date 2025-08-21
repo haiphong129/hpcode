@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block content %}
+{%if data == 0 %}
+
+<h3 class="text-center text-success">Nhập Captcha</h3>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <form method="post" action="{{url_for('gettests') }}" enctype = "multipart/form-data" class="form-inline">
+                <div class="input-group mb-1 mt-1">
+                    <input type="hidden" name="idt" value="{{idt}}">
+                    {{ captcha_html(captcha)|safe }}
+                    <input class="btn btn-sm btn-success" id="submit"  type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first_2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3180750038"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    {%if err %}
+      <p class="text-center"><span class="text-danger">{{err}}</span></p>
+    {%endif%}
+{%else%}
+
+<h3 class="text-center text-success">{{data["idp"]}}</h3>
+
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <button type="button" class="btn-sm btn-success" onclick="downOnClick()">Tải về</button>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-auto">
+        {{data['ndownless']|safe}}
+    </div>
+</div>
+<hr>
+<div class="row justify-content-center">
+    <div class="col-auto table-responsive">
+        <table class="table table-hover table-bordered small" id="testcase">
+            <thead>
+                <tr class="">
+                    <th class="position-relative" >
+                        <input type="button" class="position-absolute end-0 btn-sm bg-transparent border p-0 me-1" id="0" onclick="copyOnClick(0)" value="Copy"/>
+                        Input&emsp;&emsp;&emsp;&emsp;&emsp;
+                    </th>
+                    <th class="position-relative" >
+                        <input type="button" class="position-absolute end-0 btn-sm bg-transparent border p-0 me-1" id="1" onclick="copyOnClick(1)" value="Copy"/>
+                        Output&emsp;&emsp;&emsp;&emsp;&emsp;
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td >{{data["inp"]|safe}}</td>
+                    <td >{{data["out"]|safe}}</td>
+                <tr>
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+
+
+<script>
+    var table = document.getElementById("testcase")
+    function copyOnClick(x) { 
+    var brRegex = /<br\s*[\/]?>/gi;
+    var tmptext = table.rows[1].cells[x].innerHTML.replace(brRegex, "");
+    var input = document.createElement("input");
+    document.body.appendChild(input);
+    input.value =tmptext;
+    input.select();
+    
+    navigator.clipboard.writeText(tmptext);
+    input.remove();
+    if(x==0) {
+        document.getElementById("0").value="Copied";
+        document.getElementById("1").value="Copy";
+    }
+    if(x==1) {
+        document.getElementById("1").value="Copied";
+        document.getElementById("0").value="Copy";
+    }
+    
+}
+function downOnClick()
+{
+    var linkinput=document.createElement('a');
+    document.body.appendChild(linkinput);
+    linkinput.href="{{data['link'][0]}}";
+    linkinput.setAttribute("download", "{{data['link'][0]}}");
+    linkinput.click();
+    
+    var linkoutput=document.createElement('a');
+    document.body.appendChild(linkoutput);
+    linkoutput.href="{{data['link'][1]}}";
+    linkoutput.setAttribute("download", "{{data['link'][1]}}");
+    linkoutput.click();
+    
+}
+</script>
+{%endif%}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+     crossorigin="anonymous"></script>
+<!-- first_2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6806423260473745"
+     data-ad-slot="3180750038"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+     <h2 class="text-center text-success">Thêm học sinh</h2>
+     <h5 class="text-center text-info">
+          hoặc <a href="{{url_for('signuphs')}}">Đăng ký tài khoản học sinh</a>
+     </h5> 
+         <span id="err">{{ error }}</span>
+     <div class="row d-flex justify-content-center">
+          <div class="col-sm-8 text-center ">
+               
+               <form method="post" action="{{url_for('giaovien') }}">
+                    <input type="text" class="form-control p-1 m-1" placeholder="Username" name="username" value="{{request.form.username }}">
+                    <input class="btn btn-success p-1 m-1" type="submit" value=" Submit ">
+               </form>
+               {% if status %} {{ status|safe }}<br> {% endif %}
+               <span class="text-info"><b>Lưu ý: </b>Chỉ có giáo viên mới có thể thêm học sinh; Thời gian sử dụng tài khoản của học sinh được thêm mới là 365 ngày. Khi học sinh bị giáo viên xóa khỏi danh sách thì tài khoản bị khóa. </span>
+          </div>
+    </div>
+    
+    <hr>
+    <h2 class="text-center">Danh sách học sinh</h2>
+    <h5 class="text-center"><span class="text-primary"><small>Mật khẩu sau khi reset: <b>haiphongoj</b></small></span></h5>
+    <div class="row d-flex justify-content-center">
+          <div class="col-sm-10">
+               
+               <ol class="p-1 m-1">
+               {%for x in data%}
+                    <li>
+                         <span class="text-success"><b>{{x.fullname}} </b> - {{x.username}}</span>
+                         <a href="{{url_for('delhs', id=x.username)}}" class="btn-sm">Xóa</a>
+                         <a href="{{url_for('resetpasshs', id=x.username)}}" class="btn-sm ">Reset Mật khẩu</a>
+                         Thời hạn: {{x.thoihan}}<br>
+                         {%if x.AC1d|length>0%}
+                         <span class="text-info">&nbsp;&nbsp;&nbsp;Hoàn thành trong 1 ngày: </span>
+                              {% for idp in x.AC1d %}
+                                   <a href="{{url_for('viewctpr', idp=idp)}}" class="btn btn-primary btn-sm p-0 m-0">{{idp}}</a>&nbsp;
+                              {% endfor %}
+                         <br>
+                         {%endif%}
+                         {%if x.WA1d|length>0%}
+                         <span class="text-danger">&nbsp;&nbsp;&nbsp;Chưa hoàn thành trong 1 ngày:</span>
+                              {% for idp in x.WA1d %}
+                                   <a href="{{url_for('viewctpr', idp=idp)}}" class="btn btn-primary btn-sm p-0 m-0">{{idp}}</a>&nbsp;
+                              {% endfor %}
+                         <br>
+                         {%endif%}
+                         {%if x.AC1w|length>0%}
+                         <span class="text-info">&nbsp;&nbsp;&nbsp;Hoàn thành trong 1 tuần: </span>
+                              {% for idp in x.AC1w %}
+                                   <a href="{{url_for('viewctpr', idp=idp)}}" class="btn btn-primary btn-sm p-0 m-0">{{idp}}</a>&nbsp;
+                              {% endfor %}
+                         <br>
+                         {%endif%}
+                         {%if x.WA1w|length>0%}
+                         
+                         <span class="text-danger">&nbsp;&nbsp;&nbsp; Chưa hoàn thành trong 1 tuần: </span>
+                              {% for idp in x.WA1w %}
+                                   <a href="{{url_for('viewctpr', idp=idp)}}" class="btn btn-primary btn-sm p-0 m-0">{{idp}}</a>&nbsp;
+                              {% endfor %}
+                         {%endif%}
+                    </li>
+               {%endfor%}
+               </ol>
+          </div>
+     </div>
+     <hr>
+    {%include "_notegv.html" %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row d-flex justify-content-center">
+     <div class="col-sm-4 text-center ">
+         <h2 class="text-center">Cộng điểm và thời gian</h2>
+          <form method="post" action="{{url_for('addmark') }}">
+            
+                 <input type="text" class="form-control p-1 m-1" placeholder="Username" name="username" value="{{request.form.username }}">
+                 <input type="number" class="form-control p-1 m-1" placeholder="Nhập thời gian" name="addtime" value="{{request.form.addtime }}">
+                 <input type="number" class="form-control p-1 m-1" placeholder="Nhập điểm" name="addmark" value="{{request.form.addmark }}">
+             
+             <input class="btn btn-success p-1 m-1" type="submit" value=" Submit ">
+     </form>
+     <p class="error"> {{status|safe}}</p>
+     
+     </div>
+ </div>   
+{% endblock %}

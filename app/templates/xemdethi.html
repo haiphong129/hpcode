@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center d-flex">
+    <div class="col-sm-full ">
+        <h4 class="text-center text-success">{{namekythi}}</h4>
+        {%if check['daduyet']==0%}
+        <h5 class="text-center text-danger">(Đề thi chưa được duyệt!)</h5>
+        {%endif%}
+        <h6 class="text-center text-success"> 
+            Người góp đề: <a href="{{url_for('info',user=tacgia)}}"target="_blank"class="link">{{ tacgia }}</a>
+        </h6>
+        <hr>
+        
+            {%if post|length > 0%}
+            <b>Bài tập: &nbsp;</b>
+                {%for x in post%}
+                    <a href = "{{ url_for('viewpr',idp=x) }}">{{loop.index}}.&nbsp;{{x}}</a>&nbsp;&nbsp;
+                {%endfor%}
+            {%endif%}
+            <br>
+                <strong>Tải về:</strong>&emsp;
+                <a href = "{{ url_for('taidethi',idde=idde,allow=0,kythi=namekythi) }}" target="_blank" title="Đề bài, code, tests, hướng dẫn"> [Toàn bộ đề thi]</a>
+                &emsp;
+                {%if check["de"]%}
+                    <a href = "{{ url_for('downloadde',idde=idde,tag=1) }}" target="_blank"> [Đề thi (*.docx)]</a>
+                {%endif%} &emsp;
+                {%if check["sol"]%}
+                    <a href = "{{ url_for('downloadde',idde=idde,tag=2) }}" target="_blank"> [Hướng dẫn] </a> 
+                {%endif%}
+                <p> <small class="text-danger">-20 điểm khi tải Đề thi; -100 điểm khi tải Hướng dẫn</small> </p>
+      
+
+        <iframe src="{{fn}}" frameBorder="0" scrolling="auto" height="1000px" width="100%" ></iframe>
+    </div>
+</div>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6806423260473745"
+crossorigin="anonymous"></script>
+<!-- first -->
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-6806423260473745"
+data-ad-slot="2091597288"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endblock %}

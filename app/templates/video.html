@@ -1,0 +1,80 @@
+{% extends "basepr.html" %}
+{% block content %}
+
+        <div class="row justify-content-center">
+            <div class="col-sm-12 text-success text-center" id="infovideo">
+                <b>{{datav['title']}}</b><br>
+                <a href="https://www.youtube.com/watch?v={{datav['idv']}}">Xem trên Youtube</a>
+            </div>
+        <div class="row justify-content-center d-flex" >
+            <div class="col-sm-11 text-center responsive" id="playvideo">
+                {%if datav['idgd']==""%}
+                     <div class="ratio ratio-16x9 text-center mt-4 mb-4 ">
+                        <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/{{datav['idv']}}?rel=0" allowfullscreen>
+                        </iframe>
+                    </div>
+                {%else%}
+                <video width="90%" height="auto" controls> 
+                    <source src="https://drive.google.com/uc?export=download&id={{datav['idgd']}}" type="video/mp4"> 
+                </video>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+    <hr>
+<div class="row justify-content-center d-flex">
+    <div class="col-sm-auto border">
+    <div class="d-flex align-items-start m-1 p-1">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    
+            <button class="nav-link active btn-sm" id="v-pills-{{keyfirst}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{keyfirst}}" type="button" role="tab" aria-controls="v-pills-{{keyfirst}}" aria-selected="false"><b>{{data[keyfirst][0]['mon']+" - "+data[keyfirst][0]['ytber']+" - "+data[keyfirst][0]['sach']}}</b></button>
+
+            {%for key in data %} {%if key != keyfirst%}
+                <button class="nav-link btn-sm" id="v-pills-{{key}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{key}}" type="button" role="tab" aria-controls="v-pills-{{key}}" aria-selected="false"><b>{{data[key][0]['mon']+" - "+data[key][0]['ytber']+" - "+data[key][0]['sach']}}</b></button>
+            {%endif%} {%endfor%}
+        </div>
+
+        <div class="tab-content border-start border-success" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-{{keyfirst}}" role="tabpanel" aria-labelledby="v-pills-{{keyfirst}}-tab">
+                <ol>
+                    {%for d in data[keyfirst]%}
+                        <li>
+                            <a href="" onclick="embedvideo({{d|safe}}); return false;" id="{{d['idv']}}"> {{d['title']}}</a> [{{d['views']}} views] 
+                            {%if fhp_permit(['superadmin'])==1%}
+                                <a href="{{ url_for('editv',idv=d['idv']) }}">[Edit]</a>[{{d['num']}}]
+                            {%endif%}
+                        </li>
+                    {%endfor%}
+                </ol>
+            </div>
+            {%for key in data %}{%if key != keyfirst%}
+                <div class="tab-pane fade" id="v-pills-{{key}}" role="tabpanel" aria-labelledby="v-pills-{{key}}-tab">
+                    <ol>
+                        {%for d in data[key]%}
+                            <li>
+                                <a href="" onclick="embedvideo({{d|safe}}); return false;" id="{{d['idv']}}"> {{d['title']}} </a> [{{d['views']}} views] 
+                                {%if fhp_permit(['superadmin'])==1%}
+                                    <a href="{{ url_for('editv',idv=d['idv']) }}">[Edit]</a>[{{d['num']}}]
+                                {%endif%}
+                            </li>
+                        {%endfor%}
+                    </ol>
+                </div>
+            {%endif%}{%endfor%}
+        </div>
+    </div>
+    </div>
+</div>
+    <script>
+        function embedvideo(st) {
+            document.getElementById("infovideo").innerHTML = "<b>"+st.title+'</b><br><a href="https://www.youtube.com/watch?v='+ st.idv +'"' + ">Xem trên Youtube</a>";
+            var htplhp = '<video width="90%" height="auto" class="gdriveVideo" preload="auto" controls> <source src="https://drive.google.com/uc?export=download&id=' +st.idgd + '" type="video/mp4"> Your browser does not support the video tag.</video>';
+            if(st.idgd=='') {
+                htplhp = '<div class="ratio ratio-16x9 text-center mt-4 mb-4 "> <iframe  class="embed-responsive-item" src="https://www.youtube.com/embed/'+st.idv+'" allowfullscreen></iframe></div>';
+            }
+            document.getElementById("playvideo").innerHTML = htplhp;
+            if(document.getElementById(st.idv).style.fontWeight=="bold") document.getElementById(st.idv).style.color="red";
+            document.getElementById(st.idv).style.fontWeight="bold";
+        }
+    </script>
+{% endblock %}

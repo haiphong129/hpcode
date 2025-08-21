@@ -1,0 +1,68 @@
+{% if listsub|length==0 %}
+    <h4 class="text-center text-danger">Chưa có bài nộp</h4>
+{%else%}
+<div class="table-responsive justify-content-center">
+        <table class="table table-hover table-bordered table-striped" width="100%">
+        <thead>
+            <tr class="text-center">
+                <th>TT</th>
+                <th>Tài khoản</th>
+                <th>Bài tập</th>
+                <th>Thời gian</th>
+                <th>Kết quả</th>
+                <th>Ngôn ngữ</th>
+                {% if current_user.is_authenticated %}
+                    <th>Code</th>
+                        {%if fhp_permit(["admin"])==1%}
+                            <th>Del</th>
+                        {%endif%}
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for d in listsub %}
+        
+        <tr class="small">
+            <td class="text-center">{{ loop.index+(page-1)*listsub|length }}</td>
+            <td><a href="{{url_for('info',user=d['user'])}}"target="_blank"class="link">{{ d['user'] }}</a></td>
+            <td><a href="{{ url_for('viewpr',idp=d['id_p']) }}">{{ d['id_p'] }}</a></td>
+            <td class="text-center">{{ d['time'] }}</td>
+            <td class="text-center" >
+                <a href="{{ url_for('viewlog',ids=(d['ids']|string) ) }}" class="link" target="_blank" >
+                    {{ d['numtest'] }}/{{d['alltest']}}
+                </a>
+            </td>
+            <td class="text-center">
+                {% if d['ext']=='sb3'%} <span class="text-danger"> <b>Scratch</b> </span> {%else%}
+                {{ d['ext'] }}
+                {%endif%}
+            </td>
+            {% if current_user.is_authenticated %}
+                <td class="text-center">
+                {%if d["checkcode"]==1 %}
+                    <a href="{{ url_for('viewcode',info=(d['ids']|string)) }}" class="link" target="_blank" >xem</a>
+                {%endif%}
+                </td>
+                {%if fhp_permit(["admin"])==1%}
+                <td class="text-center">
+                    <a href="{{ url_for('delsub',idx=d['ids']) }}" class="link" target="_blank" >Del</a>
+                </td>
+                {%endif%}
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        {% if err!=None %}<p class="error text-center text-danger">{{ err|safe }}</p>{% endif %}
+</div>
+{%endif%}
+<script type="text/javascript">
+    function numberToColorRgb(i) {
+    // we calculate red and green
+    var red = Math.floor(255 - (255 * i / 100));
+    var green = Math.floor(255 * i / 100);
+    // we format to css value and return
+    return 'rgb('+red+','+green+',0)'
+}
+</script>
