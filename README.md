@@ -1,5 +1,3 @@
-
-
 ### **Hệ thống chấm bài tự động HPCODE**
 
 
@@ -36,7 +34,7 @@ Ngôn ngữ cho phép: Pascal, C++, Python, Scratch
 
 #### **Chạy chương trình:**
 
-&nbsp;	Chạy file **run.bat** trong cùng thư mục
+ 	Chạy file **run.bat** trong cùng thư mục
 
 
 
@@ -46,5 +44,5 @@ Ngôn ngữ cho phép: Pascal, C++, Python, Scratch
 
 **zalo:** 0935911218
 
-
+web: [https://hpcode.edu.vn](https://hpcode.edu.vn)
 
