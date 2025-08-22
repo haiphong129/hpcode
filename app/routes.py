@@ -56,10 +56,6 @@ def before_request():
 	if "logout" in url: return 
 	if "xacthuctaikhoan" in url: return 
 	if current_user.is_authenticated:
-		if current_user.thoihan is None: 
-			current_user.thoihan = datetime.now() + timedelta(days=30)
-			current_user.khoatk=0
-			db.session.commit()
 		if current_user.giaovien==1: 
 			current_user.thoihan = datetime.now() + timedelta(days=365)
 			current_user.khoatk=0
@@ -112,12 +108,7 @@ def homepage():
 		tmp["id_name"]=p.id_name
 		tmp["id_p"]=p.id_p
 		tmp['imgbase64']=0
-		tmp["body"]=p.body#.replace("\r","\\n").replace("\\n","\n")
-		# tmp['body']=markdown.markdown(tmp['body'])
-		# tmp['body']=tmp['body'].replace("</code>","</code> </pre>")
-		# tmp['body']=tmp['body'].replace("<code>","<pre><code>")
-		# tmp['body']=tmp['body'].replace("<br>","")
-		# tmp['source']=p.source
+		tmp["body"]=p.body if p.body is not None else ""
 		pro.append(tmp)
 		#if len(pro)==5: break
 	
@@ -603,13 +594,19 @@ def getfile_dethi(file,filename):
 @app.route("/gopde/",methods=['GET', 'POST'])
 @login_required
 def gopde():
-	if fhp_permit(["admin"])==0: return render_template('error.html',messeg="Chức năng này đang bị hạn chế!",data=None)
-
+	if fhp_permit(["superadmin"])==0: return render_template('error.html',messeg="Chức năng này đang bị hạn chế!",data=None)
+	if current_user.ndow<500:
+		return render_template('error.html',messeg="Bạn cần đạt tối thiểu 500 điểm để Góp đề",data=None)
+	dethi = Dethi.query.filter(Dethi.username==current_user.username, Dethi.check==0).count()
+	if dethi>=5 and fhp_permit(["superadmin"])==0:
+		return render_template('error.html',messeg="Bạn còn "+str(dethi)+" đề thi chưa được duyệt",data=None)
 	ffolder = "app/static/data"
 	filesize = get_dir_size(ffolder)
 	if filesize//1024//1024>1024: 
 		st = "Đang có nhiều đề thi chưa được duyệt. Mong bạn thông cảm và quay lại sau!"
 		return render_template('error.html',messeg=st,data=None)
+	st="Chức năng đang thử nghiệm.<br> Vui lòng chờ đến 02/8/2022"
+	if current_user.username!="haiphong" and fhp_permit(["superadmin"])==0 and datetime.now()<datetime.strptime('01/08/2022 23:59:00', '%d/%m/%Y %H:%M:%S'): return render_template('error.html',messeg=st,data=None)
 	status=None
 	cv=app.config['CV']
 	datagopde = [["dedocx","Đề thi (.docx)","required",".docx"],
@@ -1029,7 +1026,8 @@ def submitcode():
 		idp = request.form['idp']
 		p=Post.query.filter(Post.id_p == idp).first()
 		session['meta']['title']=p.id_name+" - hpcode.edu.vn"
-		session['meta']['des']=remove_tags(p.body[:min(len(p.body),150)])
+		pbody = p.body if p.body is not None else ""
+		session['meta']['des']=remove_tags(pbody[:min(len(pbody),150)])
 		
 		slsub= Submitcode.query.filter(Submitcode.user==username,Submitcode.problem==p.id).count()
 		listc=[]
@@ -1039,7 +1037,7 @@ def submitcode():
 		maxsub=solannpbaiconlai()
 		
 		if(slsub+1>maxsub): ischeck="Lượt nộp bài đã hết"
-		if str(p.source)!="None": session['meta']['des']=p.source+" - "+remove_tags(p.body[:min(len(p.body),150)])
+		if str(p.source)!="None": session['meta']['des']=p.source+" - "+remove_tags(pbody[:min(len(pbody),150)])
 		extcode=request.form['lang']#Ví dụ c_cpp
 		ext = app.config['L2L'][extcode]#=>Chuyển về cpp
 		
@@ -1249,8 +1247,9 @@ def viewctpr():
 	slsub= Submitcode.query.filter(Submitcode.user==username,Submitcode.problem==p.id).count()
 
 	session['meta']['title']=p.id_name+" - hpcode.edu.vn"
-	session['meta']['des']= remove_tags(p.body[:min(len(p.body),150)])
-	if str(p.source)!="None": session['meta']['des']=p.source+" - "+remove_tags(p.body[:min(len(p.body),150)])
+	pbody = p.body if p.body is not None else ""
+	session['meta']['des']= remove_tags(pbody[:min(len(pbody),150)]) 
+	if str(p.source)!="None": session['meta']['des']=p.source+" - "+remove_tags(pbody[:min(len(pbody),150)])
 	
 	listc=[] #danh sách Contest có chứa bài tập mà User được phép tham gia
 	for tp in checkPinC(p): #Xét từng Contest có sự tham gia của bài tập
@@ -1261,8 +1260,7 @@ def viewctpr():
 	if len(listc)>0 and listc[0].ts>datetime.now(): 
 		return render_template('error.html',messeg="Kỳ thi chưa bắt đầu")
 	maxsub=solannpbaiconlai()
-	extcode=current_user.langdf 
-	
+	extcode=current_user.langdf
 	ccode=""
 	if fhp_permit(["admin","superadmin"])==1:
 		maxsub = 100
@@ -2807,6 +2805,8 @@ def directlink():
 	fcheck = "app/static/chambai/tmp/"+link+"_"+str(arg1)+".txt"
 	
 	if not os.path.isfile(fcheck): f=open(fcheck,"w"); f.close()
+	
+
 	tmp = urlparse(request.url)
 	urlx = tmp.scheme +"://"+tmp.netloc + "/"+link
 	timeleft = 30
